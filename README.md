@@ -1,5 +1,7 @@
 # Streaming platform
+
 *TODO Brief presentation of the project & the architecture of the repo.*
+![streaming-platform-architecture.jpg](images/streaming-platform-architecture.jpg)
 
 ## How to contribute
 
@@ -14,4 +16,4 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 * Have access to the project board (ask access to adouang on Slack)
 
 ### GitHub
-Have a GitHub account and write permissions on this repository.
+Have a GitHub account and write permissions on this repository (ask access to adouang on Slack).
