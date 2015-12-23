@@ -1,6 +1,15 @@
 # Streaming platform
 
-*TODO Brief presentation of the project & the architecture of the repo.*
+How to ingest million of transactions every day and produce accurate reporting in near real-time? This is the challenge that we face nowadays in Financial industry. 
+
+Front-Office, Risk Management and Compliance used to be separate systems with different workload: online interaction and real-time analytics in intraday on a side, batch and consolidated reporting on the other.
+
+Things as change, regulatory report and risk monitoring needs to be perform in intraday. Trading desk are looking for opportunities in by having a 360 vision of their customers.
+
+Technologies such Big Data and Reactive sytems offer now the possibilities to build innovative Financial Platform to face all these challlenges.
+
+This project aims to build a unify solution that offers a way to produce intraday report based on streaming data in reactive manner. The platform use an event driven architecture with Big Data components such as HBase, Spark, Kakfa, Elasticsearch and so on...
+
 ![streaming-platform-architecture.jpg](images/streaming-platform-architecture.jpg)
 
 ## How to contribute
