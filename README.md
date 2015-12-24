@@ -23,3 +23,10 @@ We will use a project management tool online to manage the project development a
 To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-streaming-platform, you must:
 * Have a Trello account
 * Have access to the project board (ask access to adouang on Slack)
+
+### Our cluster
+
+*TODO Give the access informations*
+* *Hosts*
+* *Web UI*
+* *Account / Password*
