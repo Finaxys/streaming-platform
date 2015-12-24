@@ -51,3 +51,14 @@ However, you can change the configuration of your ElasticSearch instance through
 > ```ruby
 > elasticsearch-2.1.1/config/elasticsearch.yml
 > ```
+
+## Elasticsearch-head plugin
+
+Elasticsearch-head is a web front end for browsing and interacting with an Elasticsearch cluster.
+> ```ruby
+> elasticsearch-2.1.1/bin/plugin install mobz/elasticsearch-head
+> ```
+
+Check the Elasticsearch-head plugin through: 
+
+> [http://localhost:9200/_plugin/head/](http://localhost:9200/_plugin/head/)
