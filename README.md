@@ -28,11 +28,11 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 
 *TODO Give the access informations*
 * *Hosts*
-    - master01.cl02.sr.x2p.fr 195.154.134.135 finaxys far4.pif
-    - worker01.cl02.sr.x2p.fr 195.154.134.136 finaxys1 finaxys1
-    - worker02.cl02.sr.x2p.fr 195.154.134.137 finaxys1 finaxys1
+    - master01.cl02.sr.x2p.fr 195.154.134.135 finaxys 
+    - worker01.cl02.sr.x2p.fr 195.154.134.136 finaxys1 
+    - worker02.cl02.sr.x2p.fr 195.154.134.137 finaxys1 
 * *Web UI*
-    - Ambari interface : master01.cl02.sr.x2p.fr:8080 admin requin
+    - Ambari interface : master01.cl02.sr.x2p.fr:8080 admin
     - HDFS interface : master01.cl02.sr.x2p.fr:50070
     - HBase interface : master01.cl02.sr.x2p.fr:60010
     - YARN interface : worker01.cl02.sr.x2p.fr:8088
