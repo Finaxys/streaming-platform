@@ -26,7 +26,6 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 
 ### Our cluster
 
-*TODO Give the access informations*
 * *Hosts*
     - master01.cl02.sr.x2p.fr 195.154.134.135 finaxys 
     - worker01.cl02.sr.x2p.fr 195.154.134.136 finaxys1 
