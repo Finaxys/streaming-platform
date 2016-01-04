@@ -20,6 +20,8 @@ Extract it:
 > tar xvf elasticsearch-2.1.1.tar.gz
 > ```
 
+## How to run Elasticsearch 
+
 Run a local elasticsearch instance in daemon:
 > ```ruby
 > elasticsearch-2.1.1/bin/elasticsearch -d
