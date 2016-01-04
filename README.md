@@ -29,7 +29,7 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 * *Hosts*
     - master01.cl02.sr.x2p.fr 195.154.134.135 finaxys 
     - worker01.cl02.sr.x2p.fr 195.154.134.136 finaxys1 
-    - worker02.cl02.sr.x2p.fr 195.154.134.137 finaxys1 
+    - worker02.cl02.sr.x2p.fr 195.154.134.107 finaxys1 
 * *Web UI*
     - Ambari interface : master01.cl02.sr.x2p.fr:8080 admin
     - HDFS interface : master01.cl02.sr.x2p.fr:50070
