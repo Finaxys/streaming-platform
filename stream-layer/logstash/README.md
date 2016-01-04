@@ -20,6 +20,8 @@ Extract it:
 > tar xvf logstash-2.1.1.tar.gz
 > ```
 
+## How to configure Logstash to consume data from Kafka topic and send it to Elasticsearch 
+
 Create a Logstash configuration file named test.config:
 > ```ruby
 > input {
@@ -61,10 +63,15 @@ Create a Logstash configuration file named test.config:
 > 	stdout { 
 > 		codec => rubydebug 
 > 	}
+>
+> 	elasticsearch { 
+> 	}
 > }
 > ```
 
-Run a logstash agent with the configuration file test.config:
+## How to run a Logstash agent 
+
+Run a Logstash agent with the configuration file test.config:
 > ```ruby
 > logstash-2.1.1/bin/logstash agent -f ../config/test.config
 > ```
