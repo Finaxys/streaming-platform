@@ -23,5 +23,5 @@ Extract it:
 ## How to run a Kibana
 
 > ```ruby
-> kibana-4.3.1-linux-x64
+> kibana-4.3.1-linux-x64/bin/kibana &
 > ```
