@@ -7,6 +7,7 @@
 * Linux
 * At least Java 7
 * The command line wget
+* A running Elasticsearch instance 
 
 ## How to install 
 
