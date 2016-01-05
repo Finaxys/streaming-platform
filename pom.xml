@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                     http://maven.apache.org/maven-v4_0_0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+
+ <groupId>com.finaxys</groupId>
+ <artifactId>streaming-platform</artifactId>
+ <packaging>pom</packaging>
+ <version>1.0</version>
+ <name>Streaming platform parent project</name>
+ 
+ <developers>
+    <developer>
+      <id>BittnerPierre</id>
+      <name>Pierre Bittner</name>
+      <email>pbittner@finaxys.com</email>
+      <organization>Finaxys</organization>
+      <organizationUrl>http://www.finaxys.com/</organizationUrl>
+    </developer>
+ 
+    <developer>
+      <id>adouang</id>
+      <name>Alain Douangpraseuth</name>
+      <email>adouangpraseuth@finaxys.com</email>
+      <organization>Finaxys</organization>
+      <organizationUrl>http://www.finaxys.com/</organizationUrl>
+    </developer>
+    
+    <developer>
+      <id>mehdibenissa</id>
+      <name>Mohamed Mehdi Ben Aissa</name>
+      <email>mmbenaissa@finaxys.com</email>
+      <organization>Finaxys</organization>
+      <organizationUrl>http://www.finaxys.com/</organizationUrl>
+    </developer>
+  </developers>
+ 
+ <modules>
+    <module>data-sources-layer/atom-generator</module>
+  </modules>
+ 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
