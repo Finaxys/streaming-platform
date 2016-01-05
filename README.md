@@ -40,7 +40,7 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 ### Add the Finaxys nexus repository
 
 You'll need to modify the maven configuration file **setting.xml**, it must be in the bin folder of your maven installation.
-For example, *$M2_HOME/bin/setting.xml*
+For example, *$M2_HOME/conf/setting.xml*
 
 >```xml
 >...
