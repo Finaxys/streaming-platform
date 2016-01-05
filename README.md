@@ -37,4 +37,27 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
     - YARN interface : worker01.cl02.sr.x2p.fr:8088
     - Spark interface : worker01.cl02.sr.x2p.fr:18080
 
+### Add the Finaxys nexus repository
 
+You'll need to modify the maven configuration file **setting.xml**, it must be in the bin folder of your maven installation.
+For example, */opt/apache-maven-3.2.1/bin/setting.xml*
+
+>```xml
+>...
+><mirror>
+>  <id>alm-mirror</id>
+>  <mirrorOf>central</mirrorOf>
+>  <name>ALM mirror</name>
+>  <url>https://alm.finaxys.com:44313/nexus/content/groups/public/</url>
+></mirror>
+>...
+>```	
+
+### Patch your JDK
+
+Download the certificat: https://alm.finaxys.com/ALMsite/cacert.alm.finaxys.com.cer
+
+Add the previous certificat downloaded to your java trust store.
+>```ruby
+>sudo keytool -importcert -file cacert.alm.finaxys.com.cer -keystore /usr/lib/jvm/java-7-oracle/jre/lib/security/cacerts -trustcacerts
+>```
