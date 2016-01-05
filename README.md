@@ -40,7 +40,7 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
 ### Add the Finaxys nexus repository
 
 You'll need to modify the maven configuration file **setting.xml**, it must be in the bin folder of your maven installation.
-For example, */opt/apache-maven-3.2.1/bin/setting.xml*
+For example, */M2_HOME/bin/setting.xml*
 
 >```xml
 >...
@@ -59,5 +59,5 @@ Download the certificat: https://alm.finaxys.com/ALMsite/cacert.alm.finaxys.com.
 
 Add the previous certificat downloaded to your java trust store.
 >```ruby
->sudo keytool -importcert -file cacert.alm.finaxys.com.cer -keystore /usr/lib/jvm/java-7-oracle/jre/lib/security/cacerts -trustcacerts
+>sudo keytool -importcert -file cacert.alm.finaxys.com.cer -keystore /JAVA_HOME/jre/lib/security/cacerts -trustcacerts
 >```
