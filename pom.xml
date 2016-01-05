@@ -1,7 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                     http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
 
  <groupId>com.finaxys</groupId>
@@ -36,10 +34,6 @@
     </developer>
   </developers>
  
- <modules>
-    <module>data-sources-layer/atom-generator</module>
-  </modules>
- 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -48,4 +42,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <modules>
+    <module>data-sources-layer/atom-generator</module>
+  </modules>
 </project>
