@@ -42,7 +42,9 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
   <modules>
     <module>data-sources-layer/atom-generator</module>
   </modules>
+  
 </project>
