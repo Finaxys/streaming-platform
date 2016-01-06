@@ -35,16 +35,58 @@
         </developer>
     </developers>
 
-    <dependencies>
+    <properties>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
+        <log4j.version>2.3</log4j.version>
 
-    </dependencies>
+        <junit.version>4.11</junit.version>
+
+        <kafka.version>0.8.2.2</kafka.version>
+
+    </properties>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <!-- LOGGING-->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <!-- TESTS-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- KAFKA -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_2.10</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka_2.10</artifactId>
+                <version>${kafka.version}</version>
+                <classifier>test</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
 
     <modules>
         <module>inject-layer</module>
