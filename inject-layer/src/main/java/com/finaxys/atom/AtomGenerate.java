@@ -1,7 +1,7 @@
 package com.finaxys.atom;
 
 import com.finaxys.kafka.KafkaInjector;
-import com.finaxys.utils.AtomConfiguration;
+import com.finaxys.utils.InjectConfiguration;
 import com.finaxys.utils.InjectLayerException;
 import org.apache.log4j.Logger;
 import v13.Day;
@@ -24,7 +24,7 @@ public class AtomGenerate {
 	static private List<String> agents;
 
 	private static v13.Logger logger = null;
-	private static AtomConfiguration atomConf;
+	private static InjectConfiguration atomConf;
 
 	// Main configuration for Atom
 	public static void main(String args[]) throws IOException {
@@ -110,7 +110,7 @@ public class AtomGenerate {
 
 	private static void getConfiguration() {
 
-		atomConf = AtomConfiguration.getInstance();
+		atomConf = InjectConfiguration.getInstance();
 
 		// Get agents & orderbooks
 		agents = atomConf.getAgents();

@@ -2,7 +2,7 @@ package com.finaxys.kafka;
 
 
 import com.finaxys.atom.AtomDataInjector;
-import com.finaxys.utils.AtomConfiguration;
+import com.finaxys.utils.InjectConfiguration;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -22,10 +22,10 @@ public class KafkaInjector implements AtomDataInjector {
     private String topic;
     private int count = 0;
 
-    public KafkaInjector(AtomConfiguration atomConfiguration) {
-        topic = atomConfiguration.getKafkaTopic();
+    public KafkaInjector(InjectConfiguration injectConfiguration) {
+        topic = injectConfiguration.getKafkaTopic();
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, atomConfiguration.getKafkaBoot());
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, injectConfiguration.getKafkaBoot());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put("request.timeout.ms", 100);

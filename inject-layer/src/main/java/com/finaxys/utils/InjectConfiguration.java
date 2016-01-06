@@ -9,9 +9,9 @@ import java.util.Properties;
 /**
  * Main configuration object that holds all properties.
  */
-public class AtomConfiguration {
+public class InjectConfiguration {
 
-    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AtomConfiguration.class);
+    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(InjectConfiguration.class);
 
     // Business Data
     private String agentsParam;
@@ -51,17 +51,17 @@ public class AtomConfiguration {
     private int nbAgents;
     private int nbOrderBooks;
 
-    private static AtomConfiguration instance;
+    private static InjectConfiguration instance;
 
-    private AtomConfiguration() throws InjectLayerException {
+    private InjectConfiguration() throws InjectLayerException {
         load();
     }
 
-    public static final AtomConfiguration getInstance() {
+    public static final InjectConfiguration getInstance() {
         if (instance == null) {
-            synchronized (AtomConfiguration.class) {
+            synchronized (InjectConfiguration.class) {
                 if (instance == null) {
-                    instance = new AtomConfiguration();
+                    instance = new InjectConfiguration();
                     instance.load();
                 }
             }

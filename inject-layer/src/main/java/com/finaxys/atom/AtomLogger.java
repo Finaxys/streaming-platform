@@ -1,6 +1,6 @@
 package com.finaxys.atom;
 
-import com.finaxys.utils.AtomConfiguration;
+import com.finaxys.utils.InjectConfiguration;
 import com.finaxys.utils.TimeStampBuilder;
 import v13.*;
 import v13.agents.Agent;
@@ -11,9 +11,9 @@ public class AtomLogger extends Logger {
 
     private AtomDataInjector injectors[];
     private TimeStampBuilder tsb;
-    private AtomConfiguration conf;
+    private InjectConfiguration conf;
 
-    public AtomLogger(AtomConfiguration conf, AtomDataInjector... injectors) {
+    public AtomLogger(InjectConfiguration conf, AtomDataInjector... injectors) {
         super();
         this.conf = conf;
         this.injectors = injectors;
