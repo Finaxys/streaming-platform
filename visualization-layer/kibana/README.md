@@ -26,3 +26,7 @@ Extract it:
 > ```ruby
 > kibana-4.3.1-linux-x64/bin/kibana &
 > ```
+
+Check the Kibana interface through: 
+
+> [http://localhost:5601/](http://localhost:5601/)
