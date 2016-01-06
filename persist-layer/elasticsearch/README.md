@@ -1,3 +1,3 @@
 # Elasticsearch
 
-*TODO elasticsearch installation script*
+*TODO Elasticsearch installation script*
