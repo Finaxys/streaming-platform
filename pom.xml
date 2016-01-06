@@ -35,6 +35,14 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>alm-finaxys</id>
+            <name>ALM Finaxys</name>
+            <url>https://alm.finaxys.com:44313/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <properties>
 
         <log4j.version>2.3</log4j.version>
