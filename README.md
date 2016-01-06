@@ -37,7 +37,7 @@ To view the Trello board of the project https://trello.com/b/2o0uBcrB/finaxys-st
     - YARN interface : worker01.cl02.sr.x2p.fr:8088
     - Spark interface : worker01.cl02.sr.x2p.fr:18080
 
-### Patch your JDK
+### Add ALM Finaxys certificat to your JDK
 
 Download the certificat: https://alm.finaxys.com/ALMsite/cacert.alm.finaxys.com.cer
 
