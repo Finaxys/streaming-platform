@@ -1,6 +1,5 @@
 package com.finaxys.utils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,6 @@ public class AtomConfiguration {
     private int orderBooksRandom;
     private int agentsRandom;
 
-    private int dayGap;
     private int tickOpening;
     private int tickContinuous;
     private int tickClosing;
@@ -35,37 +33,12 @@ public class AtomConfiguration {
     private boolean marketMarker;
     private int marketMakerQuantity;
 
-    // HBase - MultiThreading - buff options
-    private int worker;
-    private int flushRatio;
-    private int bufferSize;
-    private int stackPuts;
-    private boolean autoFlush;
-    private byte[] cfName;
-    private String tableName = "trace";
-    private String sparkTableName;
 
     // App data
-    private long startTime;
-    private boolean outHbase;
-    private boolean outSystem;
-    private String outFilePath;
-    // private boolean replay;
-    // private String replaySource;
-    private boolean outFile;
     private boolean outKafka;
-    private boolean outAvro;
-    private String avroSchema;
-    private String avroHDFSDest;
-    private String parquetHDFSDest;
-    private String pathAvro;
 
-    private String hadoopConfCore;
-    private String hbaseConfHbase;
-    private String hadoopConfHdfs;
     private String kafkaTopic;
     private String kafkaBoot;
-    private String kafkaQuorum;
 
     private int agentCash;
     private int agentMinPrice;
@@ -105,7 +78,7 @@ public class AtomConfiguration {
         Properties p = new Properties(System.getProperties());
 
         try {
-            p.load(new FileInputStream("config/config.properties"));
+            p.load(this.getClass().getClassLoader().getResourceAsStream("config/config.properties"));
         } catch (IOException e) {
             LOGGER.info("Not able to load properties from file");
             throw new InjectLayerException(e.getMessage());
@@ -160,32 +133,14 @@ public class AtomConfiguration {
             nbOrderBooks = orderBooks.size();
 
 
-            this.outFile = Boolean.parseBoolean(System.getProperty(
-                    "simul.output.file", "false"));
+
             this.outKafka = Boolean.parseBoolean(System.getProperty(
                     "simul.output.kafka", "false"));
-            this.outFilePath = System.getProperty("simul.output.file.path",
-                    "outPutAtom.log");
-            this.outSystem = System.getProperty("simul.output.standard",
-                    "false").equals("false");
-            this.dayGap = Integer.parseInt(System.getProperty(
-                    "simul.day.startDay", "1")) - 1;
-
             this.marketMarker = System.getProperty("atom.marketmaker", "true")
                     .equals("true");
             this.marketMakerQuantity = Integer.parseInt(System.getProperty("atom.marketmaker.quantity", "1"));
 
-            this.outAvro = System.getProperty("simul.output.avro", "true")
-                    .equals("true");
-            this.avroSchema = System.getProperty("avro.schema");
-            this.parquetHDFSDest = System.getProperty("dest.hdfs.parquet");
-            this.startTime = System.currentTimeMillis();
-            this.worker = Integer.parseInt(System.getProperty("simul.worker",
-                    "10"));
-            this.flushRatio = Integer.parseInt(System.getProperty(
-                    "simul.flushRatio", "1000"));
-            this.bufferSize = Integer.parseInt(System.getProperty(
-                    "simul.bufferSize", "10000"));
+
 
 
             this.tickOpening = Integer.parseInt(System.getProperty(
@@ -204,13 +159,7 @@ public class AtomConfiguration {
             this.agentMaxQuantity = Integer.parseInt(System.getProperty("simul.agent.maxquantity", "50"));
 
 
-            this.hadoopConfCore = System.getProperty("hadoop.conf.core");
-            this.hadoopConfHdfs = System.getProperty("hadoop.conf.hdfs");
-
-            this.avroHDFSDest = System.getProperty("dest.hdfs.avro");
-            this.pathAvro = System.getProperty("avro.path");
             this.kafkaTopic = System.getProperty("kafka.topic");
-            this.kafkaQuorum = System.getProperty("kafka.quorum");
             this.kafkaBoot = System.getProperty("bootstrap.kafka.servers");
 
             this.tsbDateBegin = System.getProperty("simul.time.startdate");
@@ -233,17 +182,6 @@ public class AtomConfiguration {
 
     }
 
-    public String getTableName() {
-        return tableName;
-    }
-
-    public byte[] getColumnFamily() {
-        return cfName;
-    }
-
-    public boolean isAutoFlush() {
-        return autoFlush;
-    }
 
     public List<String> getAgents() {
         return agents;
@@ -251,46 +189,6 @@ public class AtomConfiguration {
 
     public List<String> getOrderBooks() {
         return orderBooks;
-    }
-
-    public int getDayGap() {
-        return dayGap;
-    }
-
-    public int getWorker() {
-        return worker;
-    }
-
-    public int getFlushRatio() {
-        return flushRatio;
-    }
-
-    public int getBufferSize() {
-        return bufferSize;
-    }
-
-    public int getStackPuts() {
-        return stackPuts;
-    }
-
-    public byte[] getCfName() {
-        return cfName;
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public boolean isOutHbase() {
-        return outHbase;
-    }
-
-    public boolean isOutSystem() {
-        return outSystem;
-    }
-
-    public String getOutFilePath() {
-        return outFilePath;
     }
 
     public int getTickOpening() {
@@ -309,41 +207,8 @@ public class AtomConfiguration {
         return tickContinuous;
     }
 
-
-    public boolean isOutFile() {
-        return outFile;
-    }
-
     public boolean isOutKafka() {
         return outKafka;
-    }
-
-    public boolean isOutAvro() {
-        return outAvro;
-    }
-
-    public String getAvroSchema() {
-        return avroSchema;
-    }
-
-    public String getAvroHDFSDest() {
-        return avroHDFSDest;
-    }
-
-    public String getPathAvro() {
-        return pathAvro;
-    }
-
-    public String getHadoopConfCore() {
-        return hadoopConfCore;
-    }
-
-    public String getHbaseConfHbase() {
-        return hbaseConfHbase;
-    }
-
-    public String getHadoopConfHdfs() {
-        return hadoopConfHdfs;
     }
 
     public String getAgentsParam() {
@@ -414,43 +279,12 @@ public class AtomConfiguration {
         return nbOrderBooks;
     }
 
-    public String getParquetHDFSDest() {
-        return parquetHDFSDest;
-    }
-
-    public void setParquetHDFSDest(String parquetHDFSDest) {
-        this.parquetHDFSDest = parquetHDFSDest;
-    }
-
-    public String getSparkTableName() {
-        return sparkTableName;
-    }
-
-    public void setSparkTableName(String sparkTableName) {
-        this.sparkTableName = sparkTableName;
-    }
-
     public String getKafkaTopic() {
         return kafkaTopic;
-    }
-
-    public void setKafkaTopic(String kafkaTopic) {
-        this.kafkaTopic = kafkaTopic;
     }
 
     public String getKafkaBoot() {
         return kafkaBoot;
     }
 
-    public void setKafkaBoot(String kafkaBoot) {
-        this.kafkaBoot = kafkaBoot;
-    }
-
-    public String getKafkaQuorum() {
-        return kafkaQuorum;
-    }
-
-    public void setKafkaQuorum(String kafkaQuorum) {
-        this.kafkaQuorum = kafkaQuorum;
-    }
 }

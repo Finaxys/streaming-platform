@@ -3,9 +3,7 @@ package com.finaxys.atom;
 import com.finaxys.kafka.KafkaInjector;
 import com.finaxys.utils.AtomConfiguration;
 import com.finaxys.utils.InjectLayerException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import v13.Day;
 import v13.MonothreadedSimulation;
 import v13.Simulation;
@@ -15,12 +13,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level ;
 
 
 public class AtomGenerate {
 
-	private static final Logger LOGGER = LogManager
-			.getLogger(AtomGenerate.class.getName());
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger
+            .getLogger(AtomGenerate.class.getName());
 
 	// Static informations
 	static private List<String> orderBooks;
@@ -35,7 +34,7 @@ public class AtomGenerate {
 		try {
 			getConfiguration();
 		} catch (InjectLayerException e) {
-			LOGGER.log(Level.ERROR, "Could not load properties", e);
+			LOGGER.log(Level.SEVERE, "Could not load properties", e);
 			return;
 		}
 
@@ -53,7 +52,7 @@ public class AtomGenerate {
             }
 
 		} catch (Exception e) {
-			LOGGER.log(Level.ERROR, "Could not instantiate logger", e);
+			LOGGER.log(Level.SEVERE, "Could not instantiate logger", e);
 			return;
 		}
 		if (injectors.isEmpty()) {
@@ -102,7 +101,7 @@ public class AtomGenerate {
 			try {
 				((AtomLogger) logger).close();
 			} catch (Exception e) {
-				LOGGER.log(Level.FATAL, "Could not close logger", e);
+				LOGGER.log(Level.SEVERE, "Could not close logger", e);
 				return;
 			}
 		}
@@ -120,7 +119,7 @@ public class AtomGenerate {
 		orderBooks = atomConf.getOrderBooks();
 
 		if (agents.isEmpty() || orderBooks.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Agents/Orderbooks not set");
+			LOGGER.log(Level.SEVERE, "Agents/Orderbooks not set");
 			throw new InjectLayerException("agents or orderbooks not set");
 		}
 	}
