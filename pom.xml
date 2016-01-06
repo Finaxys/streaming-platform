@@ -44,4 +44,8 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>inject-layer</module>
+    </modules>
+
 </project>
