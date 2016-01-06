@@ -3,7 +3,7 @@ package com.finaxys.atom;
 import com.finaxys.kafka.KafkaInjector;
 import com.finaxys.utils.AtomConfiguration;
 import com.finaxys.utils.InjectLayerException;
-
+import org.apache.log4j.Logger;
 import v13.Day;
 import v13.MonothreadedSimulation;
 import v13.Simulation;
@@ -13,13 +13,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level ;
 
 
 public class AtomGenerate {
 
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger
-            .getLogger(AtomGenerate.class.getName());
+	private static Logger LOGGER = Logger.getLogger(AtomGenerate.class);
 
 	// Static informations
 	static private List<String> orderBooks;
@@ -34,7 +32,7 @@ public class AtomGenerate {
 		try {
 			getConfiguration();
 		} catch (InjectLayerException e) {
-			LOGGER.log(Level.SEVERE, "Could not load properties", e);
+			LOGGER.error("Could not load properties", e);
 			return;
 		}
 
@@ -52,7 +50,7 @@ public class AtomGenerate {
             }
 
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Could not instantiate logger", e);
+			LOGGER.error("Could not instantiate logger", e);
 			return;
 		}
 		if (injectors.isEmpty()) {
@@ -67,7 +65,7 @@ public class AtomGenerate {
 		// sim.setLogger(new FileLogger(System.getProperty("atom.output.file",
 		// "dump")));
 
-		LOGGER.log(Level.INFO, "Setting up agents and orderbooks");
+		LOGGER.info("Setting up agents and orderbooks");
 
 		// Create Agents and Order book to MarketMaker depending properties
 		final boolean marketmaker = atomConf.isMarketMarker();
@@ -87,13 +85,13 @@ public class AtomGenerate {
 			sim.addNewOrderBook(orderBooks.get(i));
 		}
 
-		LOGGER.log(Level.INFO, "Launching simulation");
+		LOGGER.info("Launching simulation");
 
 		sim.run(Day.createEuroNEXT(atomConf.getTickOpening(),
                         atomConf.getTickContinuous(), atomConf.getTickClosing()),
 				atomConf.getDays());
 
-		LOGGER.log(Level.INFO, "Closing up");
+		LOGGER.info("Closing up");
 
 		sim.market.close();
 
@@ -101,7 +99,7 @@ public class AtomGenerate {
 			try {
 				((AtomLogger) logger).close();
 			} catch (Exception e) {
-				LOGGER.log(Level.SEVERE, "Could not close logger", e);
+				LOGGER.error("Could not close logger", e);
 				return;
 			}
 		}
@@ -119,7 +117,7 @@ public class AtomGenerate {
 		orderBooks = atomConf.getOrderBooks();
 
 		if (agents.isEmpty() || orderBooks.isEmpty()) {
-			LOGGER.log(Level.SEVERE, "Agents/Orderbooks not set");
+			LOGGER.error("Agents/Orderbooks not set");
 			throw new InjectLayerException("agents or orderbooks not set");
 		}
 	}

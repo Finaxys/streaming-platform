@@ -5,11 +5,9 @@ import com.finaxys.utils.TimeStampBuilder;
 import v13.*;
 import v13.agents.Agent;
 
-import java.util.logging.Level;
-
 public class AtomLogger extends Logger {
 
-    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(AtomLogger.class.getName());
+    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AtomLogger.class);
 
     private AtomDataInjector injectors[];
     private TimeStampBuilder tsb;
@@ -23,7 +21,7 @@ public class AtomLogger extends Logger {
     }
 
     public void init() {
-        LOGGER.log(Level.INFO, "Initializing AtomLogger");
+        LOGGER.info("Initializing AtomLogger");
         tsb = new TimeStampBuilder(conf.getTsbDateBegin(), conf.getTsbOpenHour(), conf.getTsbCloseHour(), conf.getTsbNbTickMax(), conf.getNbAgents(), conf.getNbOrderBooks());
         tsb.init();
         for (int i = 0; i < injectors.length; i++) {

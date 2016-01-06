@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Main configuration object that holds all properties.
  */
 public class AtomConfiguration {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(AtomConfiguration.class.getName());
+    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AtomConfiguration.class);
 
     // Business Data
     private String agentsParam;
@@ -78,7 +75,7 @@ public class AtomConfiguration {
         Properties p = new Properties(System.getProperties());
 
         try {
-            p.load(this.getClass().getClassLoader().getResourceAsStream("config/config.properties"));
+            p.load(this.getClass().getClassLoader().getResourceAsStream("config.properties"));
         } catch (IOException e) {
             LOGGER.info("Not able to load properties from file");
             throw new InjectLayerException(e.getMessage());
@@ -124,7 +121,7 @@ public class AtomConfiguration {
             }
 
             if (agents.isEmpty() || orderBooks.isEmpty()) {
-                LOGGER.log(Level.SEVERE, "Agents/Orderbooks not set");
+                LOGGER.error("Agents/Orderbooks not set");
                 throw new IOException("agents/orderbooks not set");
             }
 
