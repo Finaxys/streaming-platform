@@ -1,4 +1,5 @@
 *.iml
 .idea/*
 data-sources-layer/atom-generator/target/*
+**/target/*
 
