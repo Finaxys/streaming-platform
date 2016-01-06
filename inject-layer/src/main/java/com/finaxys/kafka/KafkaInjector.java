@@ -123,7 +123,8 @@ public class KafkaInjector implements AtomDataInjector {
     public void sendExec(long ts, Order o) {
         StringBuilder sb = new StringBuilder();
         sb.append("Exec").append(";");
-        sb.append(o.sender.name).append("-").append(o.extId).append(";");
+        sb.append(o.sender.name).append(";");
+        sb.append(o.extId).append(";");
         sb.append(ts);
         count++;
         producer.send(new ProducerRecord<String, String>(topic, Integer.toString(count), sb.toString()));
