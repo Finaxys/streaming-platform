@@ -2,29 +2,54 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <modelVersion>4.0.0</modelVersion>
+
+
+
+
     <parent>
         <groupId>com.finaxys</groupId>
         <artifactId>streaming-platform</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <groupId>com.finaxys</groupId>
+
+
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>inject-layer</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>inject-layer</name>
-    <url>http://maven.apache.org</url>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+
+
+
     <dependencies>
 
+        <!-- ===== ATOM ===== -->
         <dependency>
             <groupId>atom</groupId>
             <artifactId>atom</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../atom.jar</systemPath>
         </dependency>
+        <!-- ================= -->
 
-        <!-- LOGGING -->
+        <!-- ===== LOGGING ===== -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -35,23 +60,17 @@
             <artifactId>log4j-core</artifactId>
         </dependency>
 
-        <!-- TESTS -->
+        <!-- ===== TESTS ===== -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- KAFKA -->
+        <!-- ===== KAFKA ===== -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.10</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.10</artifactId>
-            <classifier>test</classifier>
+            <artifactId>kafka_2.11</artifactId>
         </dependency>
 
         <dependency>
@@ -59,5 +78,48 @@
             <artifactId>kafka-clients</artifactId>
         </dependency>
 
+        <dependency> <!-- Used to create Kafka cluster for kafka unit testing -->
+             <!--https://github.com/chbatey/kafka-unit |||-->
+            <groupId>info.batey.kafka</groupId>
+            <artifactId>kafka-unit</artifactId>
+            <version>0.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
+
+
+
+
+
+
+
+
+<!--  Not needed at the moment but worth keeping in mind  -->
+
+<!-- To use Kafka test utilities
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka_2.10</artifactId>
+    <classifier>test</classifier>
+    <scope>test</scope>
+</dependency>
+-->
+
+<!-- To use Kafka test utilities
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <classifier>test</classifier>
+    <scope>test</scope>
+</dependency>
+-->
+
+
+<!-- to use ATOM on a remote repository
+<dependency>
+    <groupId>atom</groupId>
+    <artifactId>atom</artifactId>
+    <version>1.0</version>
+</dependency>
+-->

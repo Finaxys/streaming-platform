@@ -2,7 +2,7 @@ package com.finaxys.kafka;
 
 
 import com.finaxys.atom.AtomDataInjector;
-import com.finaxys.utils.InjectConfiguration;
+import com.finaxys.utils.AtomInjectConfiguration;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -14,18 +14,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class KafkaInjector implements AtomDataInjector {
+public class AtomKafkaInjector implements AtomDataInjector {
 
-    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(KafkaInjector.class);
+    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AtomKafkaInjector.class);
 
     private Producer<String, String> producer;
     private String topic;
     private int count = 0;
 
-    public KafkaInjector(InjectConfiguration injectConfiguration) {
-        topic = injectConfiguration.getKafkaTopic();
+    public AtomKafkaInjector(AtomInjectConfiguration atomInjectConfiguration) {
+        topic = atomInjectConfiguration.getKafkaTopic();
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, injectConfiguration.getKafkaBoot());
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, atomInjectConfiguration.getKafkaBoot());
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put("request.timeout.ms", 100);

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.finaxys</groupId>
     <artifactId>streaming-platform</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
     <name>Streaming platform parent project</name>
 
     <developers>
@@ -34,21 +34,33 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>alm-finaxys</id>
-            <name>ALM Finaxys</name>
-            <url>https://alm.finaxys.com:44313/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
+
+
+    <modules>
+        <module>inject-layer</module>
+        <module>stream-layer</module>
+    </modules>
+
+
+
 
     <properties>
+        <!-- General properties -->
+        <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <log4j.version>2.3</log4j.version>
 
-        <junit.version>4.11</junit.version>
+        <!-- Libraries versions -->
+        <log4j.version>2.6.2</log4j.version> <!-- http://logging.apache.org/log4j/2.x/maven-artifacts.html -->
+        <junit.version>4.12</junit.version> <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <kafka.version>0.10.0.0</kafka.version> <!-- https://mvnrepository.com/artifact/org.apache.kafka -->
+        <spark.version>1.5.2</spark.version> <!-- https://mvnrepository.com/artifact/org.apache.spark -->
+        <hbase.version>1.1.2</hbase.version> <!-- https://mvnrepository.com/artifact/org.apache.hbase -->
+        <flink.version>1.1.0</flink.version> <!-- https://mvnrepository.com/artifact/org.apache.flink -->
+        <curator.test.version>3.2.0</curator.test.version>
 
-        <kafka.version>0.8.2.2</kafka.version>
+        <!-- maven plugin versions -->
+        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 
     </properties>
 
@@ -56,7 +68,7 @@
 
         <dependencies>
 
-            <!-- LOGGING-->
+            <!-- ===== LOGGING =====  -->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
@@ -69,7 +81,7 @@
                 <version>${log4j.version}</version>
             </dependency>
 
-            <!-- TESTS-->
+            <!-- ===== TESTS ===== -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -77,18 +89,11 @@
                 <scope>test</scope>
             </dependency>
 
-            <!-- KAFKA -->
+            <!-- ===== KAFKA ===== -->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka_2.10</artifactId>
+                <artifactId>kafka_2.11</artifactId>
                 <version>${kafka.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka_2.10</artifactId>
-                <version>${kafka.version}</version>
-                <classifier>test</classifier>
             </dependency>
 
             <dependency>
@@ -96,14 +101,47 @@
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka.version}</version>
             </dependency>
-
         </dependencies>
 
     </dependencyManagement>
-
-    <modules>
-        <module>inject-layer</module>
-    <module>stream-layer</module>
-  </modules>
-
 </project>
+
+
+
+
+<!--  Not needed at the moment but worth keeping in mind  -->
+
+
+
+<!-- To use ALM repository
+<repositories>
+   <repository>
+       <id>alm-finaxys</id>
+       <name>ALM Finaxys</name>
+       <url>https://alm.finaxys.com:44313/nexus/content/groups/public/</url>
+   </repository>
+</repositories>
+-->
+
+
+
+
+<!-- To use Kafka test utilities
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka_2.11</artifactId>
+    <version>${kafka.version}</version>
+    <classifier>test</classifier>
+    <scope>test</scope>
+</dependency>
+-->
+
+<!-- To use Kafka test utilities
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>${kafka.version}</version>
+    <classifier>test</classifier>
+    <scope>test</scope>
+</dependency>
+-->

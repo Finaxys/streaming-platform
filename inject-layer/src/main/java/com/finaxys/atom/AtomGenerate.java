@@ -1,7 +1,7 @@
 package com.finaxys.atom;
 
-import com.finaxys.kafka.KafkaInjector;
-import com.finaxys.utils.InjectConfiguration;
+import com.finaxys.kafka.AtomKafkaInjector;
+import com.finaxys.utils.AtomInjectConfiguration;
 import com.finaxys.utils.InjectLayerException;
 import org.apache.log4j.Logger;
 import v13.Day;
@@ -24,7 +24,7 @@ public class AtomGenerate {
 	static private List<String> agents;
 
 	private static v13.Logger logger = null;
-	private static InjectConfiguration atomConf;
+	private static AtomInjectConfiguration atomConf;
 
 	// Main configuration for Atom
 	public static void main(String args[]) throws IOException {
@@ -46,7 +46,7 @@ public class AtomGenerate {
 		List<AtomDataInjector> injectors = new ArrayList<AtomDataInjector>();
 		try {
             if (parseArgs.contains("-kafka") || atomConf.isOutKafka()) {
-                injectors.add(new KafkaInjector(atomConf));
+                injectors.add(new AtomKafkaInjector(atomConf));
             }
 
 		} catch (Exception e) {
@@ -69,8 +69,8 @@ public class AtomGenerate {
 
 		// Create Agents and Order book to MarketMaker depending properties
 		final boolean marketmaker = atomConf.isMarketMarker();
-		final int marketmakerQuantity = marketmaker ? atomConf
-				.getMarketMakerQuantity() : 0;
+		final int marketmakerQuantity =
+				marketmaker ? atomConf.getMarketMakerQuantity() : 0;
 
 		for (String agent : agents) {
 			sim.addNewAgent(new ZIT(agent, atomConf.getAgentCash(), atomConf
@@ -110,7 +110,7 @@ public class AtomGenerate {
 
 	private static void getConfiguration() {
 
-		atomConf = InjectConfiguration.getInstance();
+		atomConf = AtomInjectConfiguration.getInstance();
 
 		// Get agents & orderbooks
 		agents = atomConf.getAgents();
