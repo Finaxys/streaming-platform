@@ -21,6 +21,7 @@ public class StreamConfiguration {
     private String hadoopConfHdfs;
     private String kafkaTopic ;
     private String kafkaQuorum ;
+    private String kafkaBroker ;
 
 
     private static StreamConfiguration instance;
@@ -63,6 +64,7 @@ public class StreamConfiguration {
 
             this.kafkaTopic = System.getProperty("kafka.topic") ;
             this.kafkaQuorum = System.getProperty("kafka.quorum") ;
+            this.kafkaBroker = System.getProperty("kafka.broker") ;
 
     }
 
@@ -103,12 +105,17 @@ public class StreamConfiguration {
         this.kafkaTopic = kafkaTopic;
     }
 
-    public String getKafkaQuorum() {
-        return kafkaQuorum;
-    }
+    public String getKafkaQuorum() {return kafkaQuorum;}
 
     public void setKafkaQuorum(String kafkaQuorum) {
         this.kafkaQuorum = kafkaQuorum;
     }
 
+    public String getKafkaBroker() {
+        return kafkaBroker;
+    }
+
+    public void setKafkaBroker(String kafkaBroker) {
+        this.kafkaBroker = kafkaBroker;
+    }
 }
