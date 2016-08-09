@@ -1,9 +1,14 @@
 package com.finaxys.atom;
 
-import com.finaxys.utils.InjectConfiguration;
+import com.finaxys.utils.AtomInjectConfiguration;
 import com.finaxys.utils.TimeStampBuilder;
-import v13.*;
+import v13.Order;
+import v13.OrderBook;
+import v13.PriceRecord;
+import v13.Day;
 import v13.agents.Agent;
+import v13.Logger;
+
 
 public class AtomLogger extends Logger {
 
@@ -11,9 +16,9 @@ public class AtomLogger extends Logger {
 
     private AtomDataInjector injectors[];
     private TimeStampBuilder tsb;
-    private InjectConfiguration conf;
+    private AtomInjectConfiguration conf;
 
-    public AtomLogger(InjectConfiguration conf, AtomDataInjector... injectors) {
+    public AtomLogger(AtomInjectConfiguration conf, AtomDataInjector... injectors) {
         super();
         this.conf = conf;
         this.injectors = injectors;
@@ -24,8 +29,8 @@ public class AtomLogger extends Logger {
         LOGGER.info("Initializing AtomLogger");
         tsb = new TimeStampBuilder(conf.getTsbDateBegin(), conf.getTsbOpenHour(), conf.getTsbCloseHour(), conf.getTsbNbTickMax(), conf.getNbAgents(), conf.getNbOrderBooks());
         tsb.init();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].createOutput();
+        for (AtomDataInjector injector : injectors) {
+            injector.createOutput();
         }
     }
 
@@ -34,8 +39,8 @@ public class AtomLogger extends Logger {
     public void agent(Agent a, Order o, PriceRecord pr) {
         super.agent(a, o, pr);
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendAgent(ts, a, o, pr);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendAgent(ts, a, o, pr);
         }
     }
 
@@ -44,8 +49,8 @@ public class AtomLogger extends Logger {
     public void exec(Order o) {
         super.exec(o);
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendExec(ts, o);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendExec(ts, o);
         }
     }
 
@@ -53,8 +58,8 @@ public class AtomLogger extends Logger {
     public void order(Order o) {
         super.order(o);
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendOrder(ts, o);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendOrder(ts, o);
         }
     }
 
@@ -62,8 +67,8 @@ public class AtomLogger extends Logger {
     public void price(PriceRecord pr, long bestAskPrice, long bestBidPrice) {
         super.price(pr, bestAskPrice, bestBidPrice);
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendPriceRecord(ts, pr, bestAskPrice, bestBidPrice);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendPriceRecord(ts, pr, bestAskPrice, bestBidPrice);
         }
     }
 
@@ -74,8 +79,8 @@ public class AtomLogger extends Logger {
 
         tsb.setCurrentDay(nbDays);
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendDay(ts, nbDays, orderbooks);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendDay(ts, nbDays, orderbooks);
         }
     }
 
@@ -87,15 +92,15 @@ public class AtomLogger extends Logger {
         tsb.setCurrentTick(day.currentTick());
         tsb.setTimeStamp(tsb.baseTimeStampForCurrentTick());
         long ts = tsb.nextTimeStamp();
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].sendTick(ts, day, orderbooks);
+        for (AtomDataInjector injector : injectors) {
+            injector.sendTick(ts, day, orderbooks);
         }
 
     }
 
     public void close() throws Exception {
-        for (int i = 0; i < injectors.length; i++) {
-            injectors[i].closeOutput();
+        for (AtomDataInjector injector : injectors) {
+            injector.closeOutput();
         }
     }
 
