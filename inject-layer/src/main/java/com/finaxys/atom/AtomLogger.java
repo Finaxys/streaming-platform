@@ -27,8 +27,12 @@ public class AtomLogger extends Logger {
 
     public void init() {
         LOGGER.info("Initializing AtomLogger");
-        tsb = new TimeStampBuilder(conf.getTsbDateBegin(), conf.getTsbOpenHour(), conf.getTsbCloseHour(), conf.getTsbNbTickMax(), conf.getNbAgents(), conf.getNbOrderBooks());
-        tsb.init();
+        tsb = new TimeStampBuilder(
+                conf.getTsbDateBegin(), conf.getTsbOpenHour(),
+                conf.getTsbCloseHour(), conf.getTsbNbTickMax(),
+                conf.getNbAgents(), conf.getNbOrderBooks()
+        );
+
         for (AtomDataInjector injector : injectors) {
             injector.createOutput();
         }
@@ -88,9 +92,8 @@ public class AtomLogger extends Logger {
     @Override
     public void tick(Day day, java.util.Collection<OrderBook> orderbooks) {
         super.tick(day, orderbooks);
-
         tsb.setCurrentTick(day.currentTick());
-        tsb.setTimeStamp(tsb.baseTimeStampForCurrentTick());
+        tsb.setTimeStamp(tsb.computeTimestampForCurrentTick());
         long ts = tsb.nextTimeStamp();
         for (AtomDataInjector injector : injectors) {
             injector.sendTick(ts, day, orderbooks);

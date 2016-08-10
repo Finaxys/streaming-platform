@@ -2,132 +2,148 @@ package com.finaxys.utils;
 
 import org.apache.log4j.Logger;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TimeStampBuilder {
 
-    private static Logger LOGGER = Logger.getLogger(TimeStampBuilder.class);
+    private static Logger LOGGER = Logger.getLogger(TimeStampBuilderOld.class);
 
-    public static final String TIME_FORMAT = "h:mm";
+    // Useful constants used to build a timestamp
+    private static final String TIME_FORMAT = "h:mm"; //TODO why use hours and minutes and not seconds ?
+    private static final String DATE_FORMAT = "mm/dd/yyyy"; // W
+    private static final long NB_MILLI_SEC_PER_DAY = 86400000;
+    private static final long NB_MILLI_SEC_PER_HOUR = 3600000;
 
-    public static final String DATE_FORMAT = "MM/dd/yyyy";
-
+    // simulation properties from AtomInjectConfiguration
     private int nbAgents;
     private int nbOrderBooks;
-    private int nbTickMax;
+    private int nbTickMaxPerDay;
+
+    // variables obtained from simulation properties
+    private long dateBeginInMillis = 0L;
+    private long marketOpenHourInMillis = 0L;
+    private long marketCloseHourInMillis = 0L;
+
+    // iterate over ticks and days
     private int currentTick = 1;
     private int currentDay = 0;
-    private long dateToSeconds = 0L;
-    private long openHoursToSeconds;
-    private long closeHoursToSeconds;
-    private long ratio;
-    private long timeStamp;
-    private long nbMaxOrderPerTick;
-    private long timePerOrder;
-    private static final long nbMilliSecDay = 86400000;
-    private static final long nbMilliSecHour = 3600000;
 
-    public TimeStampBuilder(String dateBegin, String openHourStr,
-                            String closeHourStr, int nbTickMax, int nbAgents, int nbOrderBooks) {
-        this.nbTickMax = nbTickMax;
+    // temporary calculation results used to build the timestamp
+    private long nbMillisPerTick;
+    private long nbMaxOrdersPerTick;
+    private long nbMillisPerOrder;
+
+    // the result of calculation : simulate a timestamp
+    private long timeStamp;
+
+
+
+
+    public TimeStampBuilder(String dateBegin, String marketOpenHour,
+                            String marketCloseHour, int nbTicksPerDay,
+                            int nbAgents, int nbOrderBooks) {
+        this.nbTickMaxPerDay = nbTicksPerDay;
         this.nbAgents = nbAgents;
         this.nbOrderBooks = nbOrderBooks;
-        resetFromString(dateBegin, openHourStr, closeHourStr);
+
+        transformBeginDateAndOpeningClosingHoursInMillis(dateBegin, marketOpenHour, marketCloseHour);
+
+        computeParametersUsedToBuildTimestamp();
+
+        this.timeStamp = computeTimestampForCurrentTick();
     }
 
-    public TimeStampBuilder() {
-    }
 
-    // @TODO ajouter une verification pour que ce ne soit fait qu'une fois
-    public void init() {
-        ratio = (closeHoursToSeconds - openHoursToSeconds) / (nbTickMax);
-        // +1 to not reach the closehour on the last tick or not +1 but begin at open hour
 
-        LOGGER.info("ratio = " + ratio);
-
-        // calc nb max order between 2 ticks
-        nbMaxOrderPerTick = getNbAgents() * getNbOrderBooks() * 2;
-        LOGGER.info("nbmaxorderpertick = " + nbMaxOrderPerTick);
-        timePerOrder = (ratio / nbMaxOrderPerTick);
-        LOGGER.info("timePerOrder is = " + timePerOrder);
-        setTimeStamp(baseTimeStampForCurrentTick());
-    }
-
-    public long baseTimeStampForCurrentTick() {
-        long baseTimeStampCurrentTick;
-        if (currentTick == nbTickMax) {
-            baseTimeStampCurrentTick = nbMilliSecHour + dateToSeconds
-                    + (currentDay - 1) * nbMilliSecDay + openHoursToSeconds
-                    + (currentTick - 1) * ratio;
-        } else {
-            baseTimeStampCurrentTick = nbMilliSecHour + dateToSeconds
-                    + currentDay * nbMilliSecDay + openHoursToSeconds
-                    + (currentTick - 1) * ratio;
-        }
-        return (baseTimeStampCurrentTick);
-    }
-
-    public long baseTimeStampForNextTick() {
-        long baseTimeStampNextTick;
-        if (currentTick == nbTickMax) {
-            baseTimeStampNextTick = nbMilliSecHour + dateToSeconds
-                    + (currentDay - 1) * nbMilliSecDay + openHoursToSeconds
-                    + (currentTick) * ratio;
-        } else {
-            baseTimeStampNextTick = nbMilliSecHour + dateToSeconds + currentDay
-                    * nbMilliSecDay + openHoursToSeconds + (currentTick)
-                    * ratio;
-        }
-        return (baseTimeStampNextTick);
-    }
-
-    public long nextTimeStamp() {
-        timeStamp += timePerOrder;
-        return (timeStamp);
-    }
-
-    protected void resetFromString(String dateBegin, String openHourStr,
-                                   String closeHourStr) throws InjectLayerException {
+    private void transformBeginDateAndOpeningClosingHoursInMillis(
+            String dateBegin, String marketOpenHour, String marketCloseHour) {
 
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-            Date date = formatter.parse(dateBegin);
+            /* use of SimpleDateFormat objects to transform strings into
+               Date objects to then get the number of millis from the date */
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
+            SimpleDateFormat timeFormatter = new SimpleDateFormat(TIME_FORMAT);
 
-            // LOGGER.info("date = " + date);
-            dateToSeconds = date.getTime();
-            // LOGGER.info("timestamp à partir du fichier de conf : " +
-            // dateToSeconds);
+            /* get the number of millis corresponding to the market begin date
+               and the opening/closure hours */
+            dateBeginInMillis = dateFormatter.parse(dateBegin).getTime();
+            marketOpenHourInMillis = timeFormatter.parse(marketOpenHour).getTime();
+            marketCloseHourInMillis = timeFormatter.parse(marketCloseHour).getTime();
 
-            DateFormat dateFormatter = new SimpleDateFormat(TIME_FORMAT);
-            Date openHour = null;
-            Date closeHour = null;
-            openHour = (Date) dateFormatter.parse(openHourStr);
-            assert openHour != null;
-            closeHour = (Date) dateFormatter.parse(closeHourStr);
-            assert closeHour != null;
-            openHoursToSeconds = openHour.getTime();
-            closeHoursToSeconds = closeHour.getTime();
+            // assert that the conversion in millis is completed
+            boolean convertionInMillisCompleted = dateBeginInMillis != 0L
+                    && marketOpenHourInMillis != 0L
+                    && marketCloseHourInMillis != 0L;
+            assert convertionInMillisCompleted;
+
+
         } catch (ParseException e) {
             throw new InjectLayerException(
-                    "cannot init TimeStampBuilder. Check configuration", e);
+                    "Cannot convert market begin date and opening/closure hours to milliseconds ", e);
         }
-
     }
+
+
+    private void computeParametersUsedToBuildTimestamp() {
+        // compute the number of milliseconds far a single tick
+        long nbMillisInAMarketDay = marketCloseHourInMillis - marketOpenHourInMillis;
+        nbMillisPerTick = nbMillisInAMarketDay / nbTickMaxPerDay;
+        LOGGER.info("Number of milliseconds per Tick = " + nbMillisPerTick);
+        // +1 to not reach the closehour on the last tick or not +1 but begin at open hour //TODO Demander a Mehdi ce que ce commentaire veut dire
+
+        // compute the maximum number of orders that can be issued between two ticks
+        nbMaxOrdersPerTick = nbAgents * nbOrderBooks * 2;
+        LOGGER.info("nbmaxorderpertick = " + nbMaxOrdersPerTick);
+
+        // compute the average time needed to send one single order
+        nbMillisPerOrder = (nbMillisPerTick / nbMaxOrdersPerTick);
+        LOGGER.info("nbMillisPerOrder is = " + nbMillisPerOrder);
+    }
+
+
+    public long computeTimestampForCurrentTick() {
+        long timeStampCurrentTick;
+
+        if (currentTick == nbTickMaxPerDay) {
+            timeStampCurrentTick = NB_MILLI_SEC_PER_HOUR //TODO pourquoi on ajoute 1h au timestamp (NB_MILLI_SEC_PER_HOUR)
+                    + dateBeginInMillis
+                    + (currentDay - 1) * NB_MILLI_SEC_PER_DAY
+                    + marketOpenHourInMillis
+                    + (currentTick - 1) * nbMillisPerTick;
+        }
+        else {
+            timeStampCurrentTick = NB_MILLI_SEC_PER_HOUR //TODO pourquoi on ajoute 1h au timestamp (NB_MILLI_SEC_PER_HOUR)
+                    + dateBeginInMillis
+                    + currentDay * NB_MILLI_SEC_PER_DAY
+                    + marketOpenHourInMillis
+                    + (currentTick - 1) * nbMillisPerTick;
+        }
+        return timeStampCurrentTick;
+    }
+
+
+    public long nextTimeStamp() {
+        timeStamp += nbMillisPerOrder;
+        return timeStamp;
+    }
+
+
+
+
+
+
 
     public int getNbAgents() {
         return nbAgents;
-
     }
 
     public int getNbOrderBooks() {
         return nbOrderBooks;
     }
 
-    public int getNbTickMax() {
-        return nbTickMax;
+    public int getNbTickMaxPerDay() {
+        return nbTickMaxPerDay;
     }
 
     public void setNbAgents(int nbAgents) {
@@ -138,8 +154,8 @@ public class TimeStampBuilder {
         this.nbOrderBooks = nbOrderBooks;
     }
 
-    public void setNbTickMax(int nbTickMax) {
-        this.nbTickMax = nbTickMax;
+    public void setNbTickMaxPerDay(int nbTickMaxPerDay) {
+        this.nbTickMaxPerDay = nbTickMaxPerDay;
     }
 
     public int getCurrentTick() {
@@ -166,24 +182,24 @@ public class TimeStampBuilder {
         this.timeStamp = timeStamp;
     }
 
-    public long getTimePerOrder() {
-        return timePerOrder;
+    public long getNbMillisPerOrder() {
+        return nbMillisPerOrder;
     }
 
-    public long getDateToSeconds() {
-        return dateToSeconds;
+    public long getDateBeginInMillis() {
+        return dateBeginInMillis;
     }
 
-    public long getOpenHoursToSeconds() {
-        return openHoursToSeconds;
+    public long getMarketOpenHourInMillis() {
+        return marketOpenHourInMillis;
     }
 
-    public long getCloseHoursToSeconds() {
-        return closeHoursToSeconds;
+    public long getMarketCloseHourInMillis() {
+        return marketCloseHourInMillis;
     }
 
-    public long getNbMaxOrderPerTick() {
-        return nbMaxOrderPerTick;
+    public long getNbMaxOrdersPerTick() {
+        return nbMaxOrdersPerTick;
     }
 
 }
