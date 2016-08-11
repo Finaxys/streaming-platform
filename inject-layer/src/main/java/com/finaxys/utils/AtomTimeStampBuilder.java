@@ -11,7 +11,7 @@ public class AtomTimeStampBuilder {
 
     // Useful constants used to build a timestamp
     private static final String TIME_FORMAT = "h:mm"; //TODO why use hours and minutes and not seconds ?
-    private static final String DATE_FORMAT = "mm/dd/yyyy"; // W
+    private static final String DATE_FORMAT = "mm/dd/yyyy";
     private static final long NB_MILLI_SEC_PER_DAY = 86400000;
     private static final long NB_MILLI_SEC_PER_HOUR = 3600000;
 
@@ -29,7 +29,7 @@ public class AtomTimeStampBuilder {
     private int currentTick = 1;
     private int currentDay = 0;
 
-    // temporary calculation results used to build the timestamp
+    // calculated parameters used to build the timestamp
     private long nbMillisPerTick;
     private long nbMaxOrdersPerTick;
     private long nbMillisPerOrder;
@@ -92,11 +92,11 @@ public class AtomTimeStampBuilder {
 
         // compute the maximum number of orders that can be issued between two ticks
         nbMaxOrdersPerTick = nbAgents * nbOrderBooks * 2;
-        LOGGER.info("nbmaxorderpertick = " + nbMaxOrdersPerTick);
+        LOGGER.info("Max number of orders by tick (nbMaxOrdersPerTick) = " + nbMaxOrdersPerTick);
 
         // compute the average time needed to send one single order
         nbMillisPerOrder = (nbMillisPerTick / nbMaxOrdersPerTick);
-        LOGGER.info("nbMillisPerOrder is = " + nbMillisPerOrder);
+        LOGGER.info("Average time needed to send one single order (nbMillisPerOrder) = " + nbMillisPerOrder);
     }
 
 
@@ -121,7 +121,7 @@ public class AtomTimeStampBuilder {
     }
 
 
-    public long nextTimeStamp() {
+    public long incrementTimeStampByOrderMillis() {
         timeStamp += nbMillisPerOrder;
         return timeStamp;
     }
@@ -198,6 +198,14 @@ public class AtomTimeStampBuilder {
 
     public long getNbMaxOrdersPerTick() {
         return nbMaxOrdersPerTick;
+    }
+
+    public long getNbMillisPerTick() {
+        return nbMillisPerTick;
+    }
+
+    public void setNbMillisPerTick(long nbMillisPerTick) {
+        this.nbMillisPerTick = nbMillisPerTick;
     }
 
 }

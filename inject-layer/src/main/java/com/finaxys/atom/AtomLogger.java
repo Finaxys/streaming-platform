@@ -42,7 +42,7 @@ public class AtomLogger extends Logger {
     @Override
     public void agent(Agent a, Order o, PriceRecord pr) {
         super.agent(a, o, pr);
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendAgent(ts, a, o, pr);
         }
@@ -52,7 +52,7 @@ public class AtomLogger extends Logger {
     @Override
     public void exec(Order o) {
         super.exec(o);
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendExec(ts, o);
         }
@@ -61,7 +61,7 @@ public class AtomLogger extends Logger {
     @Override
     public void order(Order o) {
         super.order(o);
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendOrder(ts, o);
         }
@@ -70,7 +70,7 @@ public class AtomLogger extends Logger {
     @Override
     public void price(PriceRecord pr, long bestAskPrice, long bestBidPrice) {
         super.price(pr, bestAskPrice, bestBidPrice);
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendPriceRecord(ts, pr, bestAskPrice, bestBidPrice);
         }
@@ -82,7 +82,7 @@ public class AtomLogger extends Logger {
         super.day(nbDays, orderbooks);
 
         tsb.setCurrentDay(nbDays);
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendDay(ts, nbDays, orderbooks);
         }
@@ -94,7 +94,7 @@ public class AtomLogger extends Logger {
         super.tick(day, orderbooks);
         tsb.setCurrentTick(day.currentTick());
         tsb.setTimeStamp(tsb.computeTimestampForCurrentTick());
-        long ts = tsb.nextTimeStamp();
+        long ts = tsb.incrementTimeStampByOrderMillis();
         for (AtomDataInjector injector : injectors) {
             injector.sendTick(ts, day, orderbooks);
         }
