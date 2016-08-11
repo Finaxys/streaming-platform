@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class TimeStampBuilder {
+public class AtomTimeStampBuilder {
 
     private static Logger LOGGER = Logger.getLogger(TimeStampBuilderOld.class);
 
@@ -18,7 +18,7 @@ public class TimeStampBuilder {
     // simulation properties from AtomInjectConfiguration
     private int nbAgents;
     private int nbOrderBooks;
-    private int nbTickMaxPerDay;
+    private int nbTicksIntraday;
 
     // variables obtained from simulation properties
     private long dateBeginInMillis = 0L;
@@ -38,12 +38,10 @@ public class TimeStampBuilder {
     private long timeStamp;
 
 
-
-
-    public TimeStampBuilder(String dateBegin, String marketOpenHour,
-                            String marketCloseHour, int nbTicksPerDay,
-                            int nbAgents, int nbOrderBooks) {
-        this.nbTickMaxPerDay = nbTicksPerDay;
+    public AtomTimeStampBuilder(String dateBegin, String marketOpenHour,
+                                String marketCloseHour, int nbTicksIntraday,
+                                int nbAgents, int nbOrderBooks) {
+        this.nbTicksIntraday = nbTicksIntraday;
         this.nbAgents = nbAgents;
         this.nbOrderBooks = nbOrderBooks;
 
@@ -88,7 +86,7 @@ public class TimeStampBuilder {
     private void computeParametersUsedToBuildTimestamp() {
         // compute the number of milliseconds far a single tick
         long nbMillisInAMarketDay = marketCloseHourInMillis - marketOpenHourInMillis;
-        nbMillisPerTick = nbMillisInAMarketDay / nbTickMaxPerDay;
+        nbMillisPerTick = nbMillisInAMarketDay / nbTicksIntraday;
         LOGGER.info("Number of milliseconds per Tick = " + nbMillisPerTick);
         // +1 to not reach the closehour on the last tick or not +1 but begin at open hour //TODO Demander a Mehdi ce que ce commentaire veut dire
 
@@ -105,7 +103,7 @@ public class TimeStampBuilder {
     public long computeTimestampForCurrentTick() {
         long timeStampCurrentTick;
 
-        if (currentTick == nbTickMaxPerDay) {
+        if (currentTick == nbTicksIntraday) {
             timeStampCurrentTick = NB_MILLI_SEC_PER_HOUR //TODO pourquoi on ajoute 1h au timestamp (NB_MILLI_SEC_PER_HOUR)
                     + dateBeginInMillis
                     + (currentDay - 1) * NB_MILLI_SEC_PER_DAY
@@ -142,8 +140,8 @@ public class TimeStampBuilder {
         return nbOrderBooks;
     }
 
-    public int getNbTickMaxPerDay() {
-        return nbTickMaxPerDay;
+    public int getNbTicksIntraday() {
+        return nbTicksIntraday;
     }
 
     public void setNbAgents(int nbAgents) {
@@ -154,8 +152,8 @@ public class TimeStampBuilder {
         this.nbOrderBooks = nbOrderBooks;
     }
 
-    public void setNbTickMaxPerDay(int nbTickMaxPerDay) {
-        this.nbTickMaxPerDay = nbTickMaxPerDay;
+    public void setNbTicksIntraday(int nbTicksIntraday) {
+        this.nbTicksIntraday = nbTicksIntraday;
     }
 
     public int getCurrentTick() {

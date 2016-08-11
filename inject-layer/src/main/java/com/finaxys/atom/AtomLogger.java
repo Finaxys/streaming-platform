@@ -1,7 +1,7 @@
 package com.finaxys.atom;
 
 import com.finaxys.utils.AtomInjectConfiguration;
-import com.finaxys.utils.TimeStampBuilder;
+import com.finaxys.utils.AtomTimeStampBuilder;
 import v13.Order;
 import v13.OrderBook;
 import v13.PriceRecord;
@@ -15,7 +15,7 @@ public class AtomLogger extends Logger {
     private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(AtomLogger.class);
 
     private AtomDataInjector injectors[];
-    private TimeStampBuilder tsb;
+    private AtomTimeStampBuilder tsb;
     private AtomInjectConfiguration conf;
 
     public AtomLogger(AtomInjectConfiguration conf, AtomDataInjector... injectors) {
@@ -27,7 +27,7 @@ public class AtomLogger extends Logger {
 
     public void init() {
         LOGGER.info("Initializing AtomLogger");
-        tsb = new TimeStampBuilder(
+        tsb = new AtomTimeStampBuilder(
                 conf.getTsbDateBegin(), conf.getTsbOpenHour(),
                 conf.getTsbCloseHour(), conf.getTsbNbTickMax(),
                 conf.getNbAgents(), conf.getNbOrderBooks()

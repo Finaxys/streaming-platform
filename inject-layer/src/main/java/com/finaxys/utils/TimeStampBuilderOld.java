@@ -112,7 +112,7 @@ public class TimeStampBuilderOld {
             closeHoursToSeconds = closeHour.getTime();
         } catch (ParseException e) {
             throw new InjectLayerException(
-                    "cannot init TimeStampBuilder. Check configuration", e);
+                    "cannot init AtomTimeStampBuilder. Check configuration", e);
         }
 
     }

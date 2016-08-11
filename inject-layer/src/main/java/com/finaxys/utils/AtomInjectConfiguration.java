@@ -43,7 +43,7 @@ public class AtomInjectConfiguration {
     private int agentMinQuantity;
     private int agentMaxQuantity;
 
-    // TimeStampBuilder
+    // AtomTimeStampBuilder
     private String tsbDateBegin;
     private String tsbOpenHour;
     private String tsbCloseHour;
