@@ -1,8 +1,9 @@
 package com.finaxys.utils;
 
-import com.sun.istack.NotNull;
+
 import org.apache.hadoop.hbase.types.*;
 import org.apache.hadoop.hbase.util.SimplePositionedMutableByteRange;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
