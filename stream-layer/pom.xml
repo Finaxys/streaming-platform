@@ -141,11 +141,6 @@
             <artifactId>flink-connector-kafka-0.9_2.11</artifactId>
             <version>1.0.3</version>
         </dependency>
-        <dependency> <!-- Used for @NotNull annotations -->
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations-java5</artifactId>
-            <version>15.0</version>
-        </dependency>
 
     </dependencies>
 

@@ -3,7 +3,7 @@ package com.finaxys.utils;
 
 import org.apache.hadoop.hbase.types.*;
 import org.apache.hadoop.hbase.util.SimplePositionedMutableByteRange;
-import org.jetbrains.annotations.NotNull;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 
