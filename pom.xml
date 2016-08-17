@@ -39,6 +39,7 @@
     <modules>
         <module>inject-layer</module>
         <module>stream-layer</module>
+        <module>serving-layer</module>
     </modules>
 
 
