@@ -67,7 +67,7 @@
         <!-- KAFKA -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka_2.11</artifactId>
+            <artifactId>kafka_${scala.version}</artifactId>
         </dependency>
 
         <dependency>
@@ -78,7 +78,7 @@
         <!-- SPARK -->
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-core_2.11</artifactId>
+            <artifactId>spark-core_${scala.version}</artifactId>
             <version>${spark.version}</version>
             <exclusions>
                 <exclusion>
@@ -90,13 +90,13 @@
 
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming_2.11</artifactId>
+            <artifactId>spark-streaming_${scala.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming-kafka_2.11</artifactId>
+            <artifactId>spark-streaming-kafka_${scala.version}</artifactId>
             <version>${spark.streaming.kafka.version}</version>
         </dependency>
 
@@ -123,13 +123,13 @@
 
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-streaming-java_2.11</artifactId>
+            <artifactId>flink-streaming-java_${scala.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-clients_2.11</artifactId>
+            <artifactId>flink-clients_${scala.version}</artifactId>
             <version>${flink.version}</version>
         </dependency>
 
@@ -138,8 +138,8 @@
             <!-- https://mvnrepository.com/artifact/org.apache.flink/flink-connector-kafka-0.9_2.10 -->
             <!--***** Needs Kafka 0.9.x or higher to work ******-->
             <groupId>org.apache.flink</groupId>
-            <artifactId>flink-connector-kafka-0.9_2.11</artifactId>
-            <version>1.0.3</version>
+            <artifactId>flink-connector-kafka-0.9_${scala.version}</artifactId>
+            <version>${flink.version}</version>
         </dependency>
 
     </dependencies>
