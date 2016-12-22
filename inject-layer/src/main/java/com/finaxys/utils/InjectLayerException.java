@@ -1,8 +1,5 @@
 package com.finaxys.utils;
 
-/**
- * Created by finaxys on 1/6/16.
- */
 public class InjectLayerException extends RuntimeException{
 
     public InjectLayerException() {

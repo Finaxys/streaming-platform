@@ -7,7 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Deprecated
 public class TimeStampBuilderOld {
+
+    /*
 
     private static Logger LOGGER = Logger.getLogger(TimeStampBuilderOld.class);
 
@@ -41,7 +44,6 @@ public class TimeStampBuilderOld {
     public TimeStampBuilderOld() {
     }
 
-    // @TODO ajouter une verification pour que ce ne soit fait qu'une fois
     public void init() {
         ratio = (closeHoursToSeconds - openHoursToSeconds) / (nbTickMax);
         // +1 to not reach the closehour on the last tick or not +1 but begin at open hour
@@ -185,5 +187,7 @@ public class TimeStampBuilderOld {
     public long getNbMaxOrderPerTick() {
         return nbMaxOrderPerTick;
     }
+
+    */
 
 }

@@ -1,30 +1,17 @@
-package com.finaxys.atom;
+package com.finaxys.simulation;
 
-import com.finaxys.kafka.AtomKafkaInjector;
-import com.finaxys.utils.AtomInjectConfiguration;
-import com.finaxys.utils.InjectLayerException;
-import org.apache.log4j.Logger;
-import v13.Day;
-import v13.MonothreadedSimulation;
-import v13.Simulation;
-import v13.agents.ZIT;
+@Deprecated
+public class AtomGenerateOld {
+	/*
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
-public class AtomGenerate {
-
-	private static Logger LOGGER = Logger.getLogger(AtomGenerate.class);
+	private static org.apache.logging.log4j.Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger(AtomGenerateOld.class);
 
 	// Static informations
 	static private List<String> orderBooks;
 	static private List<String> agents;
 
 	private static v13.Logger logger = null;
-	private static AtomInjectConfiguration atomConf;
+	private static AtomSimulationConfiguration atomConf;
 
 	// Main configuration for Atom
 	public static void main(String args[]) throws IOException {
@@ -46,7 +33,7 @@ public class AtomGenerate {
 		List<AtomDataInjector> injectors = new ArrayList<AtomDataInjector>();
 		try {
             if (parseArgs.contains("-kafka") || atomConf.isOutKafka()) {
-                injectors.add(new AtomKafkaInjector(atomConf));
+                injectors.add(new KafkaInjector(atomConf));
             }
 
 		} catch (Exception e) {
@@ -65,7 +52,7 @@ public class AtomGenerate {
 		// sim.setLogger(new FileLogger(System.getProperty("atom.output.file",
 		// "dump")));
 
-		LOGGER.info("Setting up agents and orderbooks");
+		LOGGER.debug("Setting up agents and orderbooks");
 
 		// Create Agents and Order book to MarketMaker depending properties
 		final boolean marketmaker = atomConf.isMarketMarker();
@@ -85,32 +72,32 @@ public class AtomGenerate {
 			sim.addNewOrderBook(orderBooks.get(i));
 		}
 
-		LOGGER.info("Launching simulation");
+		LOGGER.debug("Launching simulation");
 
 		sim.run(Day.createEuroNEXT(atomConf.getTickOpening(),
                         atomConf.getTickContinuous(), atomConf.getTickClosing()),
 				atomConf.getDays());
 
-		LOGGER.info("Closing up");
+		LOGGER.debug("Closing up");
 
 		sim.market.close();
 
 		if (logger instanceof AtomLogger) {
 			try {
-				((AtomLogger) logger).close();
+				((AtomLogger) logger).closeInjectors();
 			} catch (Exception e) {
-				LOGGER.error("Could not close logger", e);
+				LOGGER.error("Could not close logger injectors", e);
 				return;
 			}
 		}
 
 		long estimatedTime = System.currentTimeMillis() - startTime;
-		LOGGER.info("Elapsed time: " + estimatedTime / 1000 + "s");
+		LOGGER.debug("Elapsed time: " + estimatedTime / 1000 + "s");
 	}
 
 	private static void getConfiguration() {
 
-		atomConf = AtomInjectConfiguration.getInstance();
+		atomConf = AtomSimulationConfiguration.getInstance();
 
 		// Get agents & orderbooks
 		agents = atomConf.getAgents();
@@ -121,4 +108,5 @@ public class AtomGenerate {
 			throw new InjectLayerException("agents or orderbooks not set");
 		}
 	}
+	*/
 }
