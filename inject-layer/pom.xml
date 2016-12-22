@@ -39,6 +39,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.finaxys</groupId>
+            <artifactId>utility-layer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- ===== ATOM ===== -->
         <dependency>
             <groupId>atom</groupId>
@@ -85,6 +91,13 @@
             <version>0.6</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
     </dependencies>
 </project>
 
