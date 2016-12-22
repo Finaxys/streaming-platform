@@ -1,6 +1,7 @@
-package com.finaxys.kafka;
+package com.finaxys.loging.injectors.kafka;
 
-import com.finaxys.utils.AtomInjectConfiguration;
+import com.finaxys.loging.injectors.KafkaInjector;
+import com.finaxys.utils.AtomSimulationConfiguration;
 import info.batey.kafka.unit.KafkaUnit;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -25,18 +26,19 @@ import v13.agents.Agent;
 import v13.agents.DumbAgent;
 
 
-public class AtomKafkaInjectorTest {
+public class KafkaInjectorTest {
+    /*
 
     // Kafka server for unit tests
     private static KafkaUnit kafkaUnit;
 
     // class under test
-    private static AtomKafkaInjector atomKafkaInjector;
+    private static KafkaInjector kafkaInjector;
 
     // class used by the class under test
-    private static AtomInjectConfiguration atomInjectConfiguration;
+    private static AtomSimulationConfiguration atomSimulationConfiguration;
 
-    // basic data to test AtomKafkaInjector methods
+    // basic data to test KafkaInjector methods
     private static String topicName;
     private static long timestamp = 12344321;
     private static OrderBook orderBookForTest;
@@ -48,17 +50,17 @@ public class AtomKafkaInjectorTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        // instanciate an AtomInjectConfiguration using test/ressources/config/config.properties
-        atomInjectConfiguration = AtomInjectConfiguration.getInstance();
+        // instanciate an AtomSimulationConfiguration using test/ressources/config/config.properties
+        atomSimulationConfiguration = AtomSimulationConfiguration.getInstance();
 
         // instanciate the class under test
-        atomKafkaInjector = new AtomKafkaInjector(atomInjectConfiguration);
+        kafkaInjector = new KafkaInjector(atomSimulationConfiguration);
 
         // set the topic name according to the config.properties file
-        topicName = atomInjectConfiguration.getKafkaTopic();
+        topicName = atomSimulationConfiguration.getKafkaTopic();
 
         // instanciate kafka server, start it and create topic
-        kafkaUnit = new KafkaUnit("localhost:9091", atomInjectConfiguration.getKafkaBoot());
+        kafkaUnit = new KafkaUnit("localhost:9091", atomSimulationConfiguration.getKafkaBoot());
         kafkaUnit.startup();
         kafkaUnit.createTopic(topicName);
 
@@ -126,8 +128,8 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendAgentTest() throws Exception {
 
-        /* method under test is
-         * public void sendAgent(long ts, Agent a, Order o, PriceRecord pr) */
+        // method under test is
+        // public void sendAgent(long ts, Agent a, Order o, PriceRecord pr)
 
         // local test data
         int numberOfMessagesSentToKafka = 2;
@@ -156,8 +158,8 @@ public class AtomKafkaInjectorTest {
         // call the method under test twice :
         //   - first with a PriceRecord not null
         //   - then with a PriceRecord set to null
-        atomKafkaInjector.sendAgent(timestamp, agentForTest, askOrderForTest, priceRecordNotNull);
-        atomKafkaInjector.sendAgent(timestamp, agentForTest, askOrderForTest, priceRecordNull);
+        kafkaInjector.sendAgent(timestamp, agentForTest, askOrderForTest, priceRecordNotNull);
+        kafkaInjector.sendAgent(timestamp, agentForTest, askOrderForTest, priceRecordNull);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -177,8 +179,8 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendPriceRecordTest() throws Exception {
 
-        /* method under test is
-         * public void sendPriceRecord(long ts, PriceRecord pr, long bestAskPrice, long bestBidPrice) */
+        // method under test is
+        //public void sendPriceRecord(long ts, PriceRecord pr, long bestAskPrice, long bestBidPrice)
 
         // local test data
         int numberOfMessagesSentToKafka = 1;
@@ -195,7 +197,7 @@ public class AtomKafkaInjectorTest {
                 .toString();
 
         // call to the method under test
-        atomKafkaInjector.sendPriceRecord(timestamp, priceRecordNotNull, bestAskPrice, bestBidPrice);
+        kafkaInjector.sendPriceRecord(timestamp, priceRecordNotNull, bestAskPrice, bestBidPrice);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -214,8 +216,8 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendOrderTest() throws Exception {
 
-        /* method under test is
-         * public void sendOrder(long ts, Order o) */
+        // method under test is
+        // public void sendOrder(long ts, Order o)
 
         // local test data
         int numberOfMessagesSentToKafka = 1;
@@ -227,7 +229,7 @@ public class AtomKafkaInjectorTest {
                 .toString();
 
         // call to the method under test
-        atomKafkaInjector.sendOrder(timestamp, askOrderForTest);
+        kafkaInjector.sendOrder(timestamp, askOrderForTest);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -246,17 +248,17 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendTickTest() throws Exception {
 
-        /* method under test is
-         * public void sendTick(long ts, Day day, Collection<OrderBook> orderbooks) */
+        // method under test is
+        // public void sendTick(long ts, Day day, Collection<OrderBook> orderbooks)
 
         // local test data
         List<OrderBook> orderBookList = new ArrayList<>();
         orderBookList.add(orderBookForTest);
         Day day = Day.createEuroNEXT(1, 100, 1);
-        /* In a instance of Day, currentPeriod is an iterator for a Period[] attribute.
-         * When creating a Day, currentPeriod is set by default to -1.
-         * In order to access currentPeriod and currentTick, we need to increment it by one,
-         *   and we call Day.nextPeriod() method to do that. */
+        // In a instance of Day, currentPeriod is an iterator for a Period[] attribute.
+        // When creating a Day, currentPeriod is set by default to -1.
+        // In order to access currentPeriod and currentTick, we need to increment it by one,
+        //   and we call Day.nextPeriod() method to do that.
         day.nextPeriod();
         List<String> messagesToTestList = new ArrayList<>();
         int numberOfMessagesSentToKafka = orderBookList.size();
@@ -279,7 +281,7 @@ public class AtomKafkaInjectorTest {
         }
 
         // call to the method under test
-        atomKafkaInjector.sendTick(timestamp, day, orderBookList);
+        kafkaInjector.sendTick(timestamp, day, orderBookList);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -300,8 +302,8 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendDayTest() throws Exception {
 
-        /* method under test is
-         * public void sendDay(long ts, int nbDays, Collection<OrderBook> orderbooks) */
+        // method under test is
+        // public void sendDay(long ts, int nbDays, Collection<OrderBook> orderbooks)
 
         // local test data
         List<OrderBook> orderBookList = Arrays.asList(orderBookForTest);
@@ -326,7 +328,7 @@ public class AtomKafkaInjectorTest {
         }
 
         // call to the method under test
-        atomKafkaInjector.sendDay(timestamp, nbDays, orderBookList);
+        kafkaInjector.sendDay(timestamp, nbDays, orderBookList);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -347,8 +349,8 @@ public class AtomKafkaInjectorTest {
     @Test
     public void sendExecTest() throws Exception {
 
-        /* method under test is
-         * public void sendExec(long ts, Order o) */
+        // method under test is
+        // public void sendExec(long ts, Order o)
 
         // local test data
         int numberOfMessagesSentToKafka = 1;
@@ -362,7 +364,7 @@ public class AtomKafkaInjectorTest {
                 .toString();
 
         // call to the method under test
-        atomKafkaInjector.sendExec(timestamp, askOrderForTest);
+        kafkaInjector.sendExec(timestamp, askOrderForTest);
 
         // read message from the topic with KafkaUnit.readMessages(...) method
         List<String> messagesList = null;
@@ -377,6 +379,7 @@ public class AtomKafkaInjectorTest {
         assertThat(messagesList.size(), is(numberOfMessagesSentToKafka));
         assertThat(messagesList.get(0), is(messageToTest));
     }
+    */
 }
 
 
