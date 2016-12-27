@@ -6,6 +6,7 @@ import utils.UtilityLayerException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -59,6 +60,10 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
     private boolean timestampHumanReadableEnabled;
     private String dateFormat;
     private String timeFormat;
+    private int outOfOrderCoefficient;
+    private int outOfOrderPercentage;
+    private boolean outOfOrderEnabled;
+    private int outOfOrderMaxDelayInSeconds;
 
     public AtomSimulationConfiguration() {
         super();
@@ -165,6 +170,14 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.timestampHumanReadableEnabled = Boolean.parseBoolean(properties.getProperty("simul.time.timestamp.human.readable", "false"));
         this.dateFormat = properties.getProperty("simul.time.date.format", "yyyy-MM-dd");
         this.timeFormat = properties.getProperty("simul.time.time.format", "HH:mm:ss");
+
+        // get parameters for out of order logs
+        this.outOfOrderEnabled = Boolean.parseBoolean(properties.getProperty("simul.time.outOfOrder.enabled", "false"));
+        this.outOfOrderCoefficient = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.coefficient", "0"));
+        this.outOfOrderPercentage = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.percentage", "0"));
+        this.outOfOrderMaxDelayInSeconds = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.maxDelayInSeconds", "0"));
+
+
 
     }
 
@@ -415,5 +428,41 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     public void setTimeFormat(String timeFormat) {
         this.timeFormat = timeFormat;
+    }
+
+    public int getOutOfOrderCoefficient() {
+        return outOfOrderCoefficient;
+    }
+
+    public void setOutOfOrderCoefficient(int outOfOrderCoefficient) {
+        this.outOfOrderCoefficient = outOfOrderCoefficient;
+    }
+
+    public int getOutOfOrderPercentage() {
+        return outOfOrderPercentage;
+    }
+
+    public void setOutOfOrderPercentage(int outOfOrderPercentage) {
+        this.outOfOrderPercentage = outOfOrderPercentage;
+    }
+
+    public boolean isOutOfOrderEnabled() {
+        return outOfOrderEnabled;
+    }
+
+    public void setOutOfOrderEnabled(boolean outOfOrderEnabled) {
+        this.outOfOrderEnabled = outOfOrderEnabled;
+    }
+
+    public int getOutOfOrderMaxDelayInSeconds() {
+        return outOfOrderMaxDelayInSeconds;
+    }
+
+    public long getOutOfOrderMaxDelayInMillies() {
+        return outOfOrderMaxDelayInSeconds * TimeUnit.SECONDS.toMillis(1);
+    }
+
+    public void setOutOfOrderMaxDelayInSeconds(int outOfOrderMaxDelay) {
+        this.outOfOrderMaxDelayInSeconds = outOfOrderMaxDelay;
     }
 }
