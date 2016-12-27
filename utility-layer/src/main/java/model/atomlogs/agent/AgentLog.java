@@ -1,12 +1,12 @@
 package model.atomlogs.agent;
 
-import model.atomlogs.BasicAtomLog;
+import model.atomlogs.AtomLog;
 import utils.UtilityLayerException;
 
 /**
  * @Author raphael on 22/12/2016.
  */
-public class AgentLog extends BasicAtomLog {
+public class AgentLog extends AtomLog {
 
     private static final int LOG_LENGTH = LogLengths.AGENT_LOG.getLength();
     private String agentName;

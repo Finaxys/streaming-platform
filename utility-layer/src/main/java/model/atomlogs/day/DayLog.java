@@ -1,12 +1,12 @@
 package model.atomlogs.day;
 
-import model.atomlogs.BasicAtomLog;
+import model.atomlogs.AtomLog;
 import utils.UtilityLayerException;
 
 /**
  * @Author raphael on 22/12/2016.
  */
-public class DayLog extends BasicAtomLog {
+public class DayLog extends AtomLog {
 
 
     private static final int LOG_LENGTH = LogLengths.DAY_LOG.getLength();

@@ -7,14 +7,14 @@ import java.io.Serializable;
 /**
  * @Author raphael on 22/12/2016.
  */
-public abstract class BasicAtomLog implements Serializable {
+public abstract class AtomLog implements Serializable {
 
     private static final int LOG_LENGTH = LogLengths.BASIC_ATOM_LOG.getLength();
 
     protected String logType;
     protected String [] logParts;
 
-    public BasicAtomLog(String [] logParts) throws UtilityLayerException {
+    public AtomLog(String [] logParts) throws UtilityLayerException {
         this.logParts = logParts;
         this.construtFromLog();
     }

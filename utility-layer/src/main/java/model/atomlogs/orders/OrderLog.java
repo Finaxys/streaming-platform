@@ -1,12 +1,12 @@
 package model.atomlogs.orders;
 
-import model.atomlogs.BasicAtomLog;
+import model.atomlogs.AtomLog;
 import utils.UtilityLayerException;
 
 /**
  * @Author raphael on 22/12/2016.
  */
-public class OrderLog extends BasicAtomLog {
+public class OrderLog extends AtomLog {
 
     private static final int LOG_LENGTH = LogLengths.ORDER_LOG.getLength();
     protected String orderBookName;

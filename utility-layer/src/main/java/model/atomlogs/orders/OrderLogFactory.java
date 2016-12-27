@@ -1,6 +1,6 @@
 package model.atomlogs.orders;
 
-import model.atomlogs.BasicAtomLog;
+import model.atomlogs.AtomLog;
 import utils.UtilityLayerException;
 
 /**
@@ -10,7 +10,7 @@ public class OrderLogFactory {
 
 
     public static OrderLog createOrderLog(String[] logParts) throws UtilityLayerException {
-        if (logParts.length < BasicAtomLog.LogLengths.ORDER_LOG.getLength())
+        if (logParts.length < AtomLog.LogLengths.ORDER_LOG.getLength())
             throw new UtilityLayerException("Impossible to construct OrderLog : log is too short");
 
         return getOrderLog(logParts);

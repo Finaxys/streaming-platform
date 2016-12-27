@@ -1,14 +1,12 @@
 package model.atomlogs.tick;
 
-import model.atomlogs.BasicAtomLog;
+import model.atomlogs.AtomLog;
 import utils.UtilityLayerException;
-
-import java.io.Serializable;
 
 /**
  * @Author raphael on 22/12/2016.
  */
-public class TickLog extends BasicAtomLog {
+public class TickLog extends AtomLog {
 
 
     private static final int LOG_LENGTH = LogLengths.TICK_LOG.getLength();
