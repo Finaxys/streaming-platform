@@ -31,7 +31,7 @@ public class AtomLogger extends v13.Logger {
     private static Logger LOGGER = LogManager.getLogger(AtomLogger.class);
 
     private List<AtomDataInjector> injectors;
-    private AtomTimeStampBuilder tsb;
+    protected AtomTimeStampBuilder tsb;
     private AtomBasicLogBuilder atomBasicLogBuilder;
     private AtomSimulationConfiguration conf;
 
@@ -117,9 +117,7 @@ public class AtomLogger extends v13.Logger {
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
         String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.order(o));
-        for (AtomDataInjector injector : injectors) {
-            injector.send(log);
-        }
+        sendLog(log, timestampForCurrentTick);
     }
 
 
@@ -137,9 +135,7 @@ public class AtomLogger extends v13.Logger {
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
         String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.exec(o));
-        for (AtomDataInjector injector : injectors) {
-            injector.send(log);
-        }
+        sendLog(log, timestampForCurrentTick);
     }
 
     /**
@@ -157,9 +153,7 @@ public class AtomLogger extends v13.Logger {
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
         String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.agent(a, o, pr));
-        for (AtomDataInjector injector : injectors) {
-            injector.send(log);
-        }
+        sendLog(log, timestampForCurrentTick);
     }
 
 
@@ -181,9 +175,7 @@ public class AtomLogger extends v13.Logger {
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
         String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.price(pr, bestAskPrice, bestBidPrice));
-        for (AtomDataInjector injector : injectors) {
-            injector.send(log);
-        }
+        sendLog(log, timestampForCurrentTick);
     }
 
     /**
@@ -205,8 +197,7 @@ public class AtomLogger extends v13.Logger {
         for (OrderBook ob : orderbooks)
             logList.add(addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.tick(day, ob)));
 
-        for (AtomDataInjector injector : injectors)
-            injector.send(logList);
+        sendLogs(logList, timestampForCurrentTick);
 
         logSimulationProgression();
 
@@ -231,8 +222,7 @@ public class AtomLogger extends v13.Logger {
         for (OrderBook ob : orderbooks)
             logList.add(addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.day(numOfDay, ob)));
 
-        for (AtomDataInjector injector : injectors)
-            injector.send(logList);
+        sendLogs(logList, timestampForCurrentTick);
 
         tsb.incrementCurrentDay();
     }
@@ -246,6 +236,15 @@ public class AtomLogger extends v13.Logger {
         boolean everyTenPercent = (progressionPercentage % 10) == 0;
         if ( everyTenPercent )
             LOGGER.debug("Day " + tsb.getCurrentDay() +" - Tick " + tsb.getCurrentTick() + " over " + tsb.getNbTicksIntraday() + "");
+    }
+
+    protected void sendLog(String log, long timestamp) {
+        for (AtomDataInjector injector : injectors)
+            injector.send(log);
+    }
+    protected void sendLogs(List<String> logs, long timestamp) {
+        for (AtomDataInjector injector : injectors)
+            injector.send(logs);
     }
 
 }
