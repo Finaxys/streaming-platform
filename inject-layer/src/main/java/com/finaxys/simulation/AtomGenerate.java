@@ -1,6 +1,7 @@
 package com.finaxys.simulation;
 
 import com.finaxys.loging.AtomLogger;
+import com.finaxys.loging.AtomLoggerWithDelay;
 import com.finaxys.loging.injectors.AtomDataInjector;
 import com.finaxys.loging.injectors.FileInjector;
 import com.finaxys.loging.injectors.KafkaInjector;
@@ -110,9 +111,16 @@ public class AtomGenerate {
 		if (injectors.isEmpty())
 			throw new InjectLayerException("No output define");
 
-		LOGGER.debug("Creating custom logger");
-		return new AtomLogger(atomConf, injectors.toArray(new AtomDataInjector[injectors.size()]));
+		if (atomConf.isOutOfOrderEnabled()) {
+			LOGGER.debug("Creating out of order custom logger");
+			return new AtomLoggerWithDelay(atomConf, injectors.toArray(new AtomDataInjector[injectors.size()]));
+		}
+		else {
+			LOGGER.debug("Creating classic custom logger");
+			return new AtomLogger(atomConf, injectors.toArray(new AtomDataInjector[injectors.size()]));
+		}
 	}
+
 
 	private static void getConfiguration() {
 		// ATOM Conf is required
