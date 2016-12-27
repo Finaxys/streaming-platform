@@ -136,7 +136,7 @@ public class AtomGenerate {
 		int marketmakerQuantity = marketmaker ? atomConf.getMarketMakerQuantity() : 0;
 		for (int i = 0; i < orderBooks.size(); i++) {
 			if (marketmaker) {
-				sim.addNewMarketMaker(orderBooks.get(i) + "" + ((i % marketmakerQuantity) + 1)); // FIXME comprendre cette ligne
+				sim.addNewMarketMaker(orderBooks.get(i) + "" + ((i % marketmakerQuantity) + 1));
 			}
 			sim.addNewOrderBook(orderBooks.get(i));
 		}
