@@ -14,13 +14,18 @@ import utils.UtilityLayerException;
 public class AtomLogFactory {
 
     // FIXME gerer les timestamps long/dateTime
-    private static final String LOG_SEPARATOR = ";";
+    public static final String ATOM_LOG_SEPARATOR = ";";
 
     public static AtomLog createAtomLog(String log) throws UtilityLayerException {
 
         if (log == null || log.equals(""))
             throw new UtilityLayerException("Impossible to construct AtomLog from empty log");
-        String[] logParts = log.split(LOG_SEPARATOR);
+        String[] logParts = log.split(ATOM_LOG_SEPARATOR);
+
+        return createAtomLog(logParts);
+    }
+
+    public static AtomLog createAtomLog(String[] logParts) throws UtilityLayerException {
 
         if (logParts.length == 0)
             throw new UtilityLayerException("Impossible to construct AtomLog from empty log");
