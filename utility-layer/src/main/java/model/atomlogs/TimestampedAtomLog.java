@@ -42,16 +42,12 @@ public class TimestampedAtomLog implements Serializable {
         String[] logParts = log.split(AtomLogFactory.ATOM_LOG_SEPARATOR);
         this.timeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.TIMESTAMP.getIndex()]);
 
-        int startIndex;
-        if (withDateTime) {
-            startIndex = TimestampedAtomLogIndexes.DATETIME.getIndex() + 1;
-            this.dateTime = logParts[TimestampedAtomLogIndexes.DATETIME.getIndex()];
-
-        }
-        else {
-            startIndex = TimestampedAtomLogIndexes.TIMESTAMP.getIndex() + 1;
-            this.dateTime = "";
-        }
+        int startIndex = withDateTime
+                ? TimestampedAtomLogIndexes.DATETIME.getIndex() + 1
+                : TimestampedAtomLogIndexes.TIMESTAMP.getIndex() + 1;
+        this.dateTime = withDateTime
+                ? logParts[TimestampedAtomLogIndexes.DATETIME.getIndex()]
+                : "";
         this.atomLog = AtomLogFactory.createAtomLog(Arrays.copyOfRange(logParts, startIndex, logParts.length));
     }
 
