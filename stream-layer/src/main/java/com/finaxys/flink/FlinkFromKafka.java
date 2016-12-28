@@ -1,4 +1,4 @@
-package com.finaxys.streaming.flink;
+package com.finaxys.flink;
 
 import com.finaxys.utils.StreamConfiguration;
 import org.apache.flink.api.common.functions.FlatMapFunction;

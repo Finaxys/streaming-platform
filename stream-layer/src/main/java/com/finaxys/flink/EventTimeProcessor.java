@@ -1,4 +1,4 @@
-package com.finaxys.streaming.flink;
+package com.finaxys.flink;
 
 import configuration.CommandLineArgumentsParser;
 import configuration.KafkaConfiguration;
