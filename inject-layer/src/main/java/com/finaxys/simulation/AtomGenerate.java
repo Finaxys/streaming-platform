@@ -5,7 +5,7 @@ import com.finaxys.loging.AtomLoggerWithDelay;
 import com.finaxys.loging.injectors.AtomDataInjector;
 import com.finaxys.loging.injectors.FileInjector;
 import com.finaxys.loging.injectors.KafkaInjector;
-import com.finaxys.utils.AtomSimulationConfiguration;
+import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.InjectLayerException;
 import configuration.CommandLineArgumentsParser;
 import configuration.KafkaConfiguration;

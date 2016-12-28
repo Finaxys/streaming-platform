@@ -1,7 +1,4 @@
-package com.finaxys.utils;
-
-import configuration.GeneralConfiguration;
-import utils.UtilityLayerException;
+package configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import utils.UtilityLayerException;
 
 /**
  * Main configuration class that holds all properties for the ATOM simulation.
@@ -69,12 +67,12 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         super();
     }
 
-    public AtomSimulationConfiguration(String pathToConfFile) throws UtilityLayerException, InjectLayerException {
+    public AtomSimulationConfiguration(String pathToConfFile) throws UtilityLayerException {
         super(pathToConfFile);
     }
 
     @Override
-    protected void setAttributesFromProperties() throws InjectLayerException {
+    protected void setAttributesFromProperties() throws UtilityLayerException {
         LOGGER.debug("Setting up configuration attributes from properties");
         getAgentsAndOrderBooksParameters();
         getMarketMakerParameters();
@@ -86,7 +84,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
     }
 
 
-    private void getAgentsAndOrderBooksParameters() throws InjectLayerException {
+    private void getAgentsAndOrderBooksParameters() throws UtilityLayerException {
         LOGGER.debug("Setting up Agents and OrderBooks parameters");
         agentsParam = properties.getProperty("atom.agents", "");
         assert agentsParam != null;
@@ -123,7 +121,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
         if (agents.isEmpty() || orderBooks.isEmpty()) {
             LOGGER.error("Agents/Orderbooks not set");
-            throw new InjectLayerException("agents/orderbooks not set");
+            throw new UtilityLayerException("agents/orderbooks not set");
         }
 
         nbAgents = agents.size();

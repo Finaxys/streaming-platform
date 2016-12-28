@@ -1,7 +1,7 @@
 package com.finaxys.loging;
 
 import com.finaxys.loging.injectors.AtomDataInjector;
-import com.finaxys.utils.AtomSimulationConfiguration;
+import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.AtomTimeStampBuilder;
 import v13.*;
 import v13.agents.Agent;

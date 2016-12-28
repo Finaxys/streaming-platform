@@ -1,7 +1,7 @@
 package com.finaxys.loging.injectors;
 
 
-import com.finaxys.utils.AtomSimulationConfiguration;
+import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.InjectLayerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
