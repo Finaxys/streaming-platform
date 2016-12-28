@@ -1,6 +1,7 @@
 package model.atomlogs;
 
 import utils.UtilityLayerException;
+import static model.atomlogs.AtomLogFactory.ATOM_LOG_SEPARATOR;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -66,6 +67,16 @@ public class TimestampedAtomLog implements Serializable {
 
     public boolean isWithDateTime() {
         return withDateTime;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(timeStamp).append(ATOM_LOG_SEPARATOR);
+        if (withDateTime)
+            sb.append(dateTime).append(ATOM_LOG_SEPARATOR);
+        sb.append(atomLog.toString());
+        return sb.toString();
     }
 
     enum TimestampedAtomLogIndexes {
