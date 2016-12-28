@@ -1,0 +1,41 @@
+package com.finaxys.serialization;
+
+import model.atomlogs.TimestampedAtomLog;
+import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.streaming.util.serialization.DeserializationSchema;
+import org.apache.flink.streaming.util.serialization.SerializationSchema;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+
+/**
+ * @Author raphael on 28/12/2016.
+ */
+public class TimestampedAtomLogSchema implements DeserializationSchema<TimestampedAtomLog>, SerializationSchema<TimestampedAtomLog> {
+
+    private boolean withDateTime;
+    public TimestampedAtomLogSchema(boolean withDateTime) {
+        this.withDateTime = withDateTime;
+    }
+
+    @Override
+    public TimestampedAtomLog deserialize(byte[] messsage) throws IOException {
+        String stringMessage = new String(messsage);
+        return new TimestampedAtomLog(stringMessage, withDateTime);
+    }
+
+    @Override
+    public boolean isEndOfStream(TimestampedAtomLog timestampedAtomLog) {
+        return false;
+    }
+
+    @Override
+    public TypeInformation<TimestampedAtomLog> getProducedType() {
+        return TypeInformation.of(TimestampedAtomLog.class);
+    }
+
+    @Override
+    public byte[] serialize(TimestampedAtomLog timestampedAtomLog) {
+        return Bytes.toBytes(timestampedAtomLog.toString());
+    }
+}
