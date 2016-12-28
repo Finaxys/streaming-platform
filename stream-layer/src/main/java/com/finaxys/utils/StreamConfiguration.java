@@ -1,6 +1,8 @@
 package com.finaxys.utils;
 
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -11,7 +13,7 @@ import java.util.Properties;
 public class StreamConfiguration {
 
 
-    private static org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(StreamConfiguration.class);
+    private static Logger LOGGER = LogManager.getLogger(StreamConfiguration.class);
 
     private byte[] cfName;
     private String tableName ;

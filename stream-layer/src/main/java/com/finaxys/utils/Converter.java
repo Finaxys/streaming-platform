@@ -2,8 +2,8 @@ package com.finaxys.utils;
 
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class Converter implements Serializable {
     /**
      *
      */
-    private final static Logger LOGGER = LoggerFactory.getLogger(Converter.class);
+    private final static Logger LOGGER = LogManager.getLogger(Converter.class);
     private static final long serialVersionUID = 3142828016264704546L;
     private  Map<byte[], byte[]> cfmap;
     private static  HBaseDataTypeEncoder encoder = new HBaseDataTypeEncoder() ;
