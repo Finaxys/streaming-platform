@@ -4,7 +4,8 @@ package com.finaxys.connect.elasticsearch;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Properties;
  */
 public class ElasticsearchSinkConnector extends SinkConnector {
 
-    private static Logger LOGGER = Logger.getLogger(ElasticsearchSinkConnector.class);
+    private static Logger LOGGER = LogManager.getLogger(ElasticsearchSinkConnector.class);
 
     public static final String ELASTIC_HOST = "elastic.host";
     public static final String INDEX_PREFIX = "index.prefix";
