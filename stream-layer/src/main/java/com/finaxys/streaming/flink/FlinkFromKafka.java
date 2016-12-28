@@ -1,7 +1,6 @@
 package com.finaxys.streaming.flink;
 
 import com.finaxys.utils.StreamConfiguration;
-import com.finaxys.utils.TraceType;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
@@ -22,6 +21,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class FlinkFromKafka {
+
+    /*
 
     private static Logger LOGGER = LogManager.getLogger(FlinkFromKafka.class);
 
@@ -48,9 +49,9 @@ public class FlinkFromKafka {
 
 
 
-        /* ---------- Consume data from Kafak ---------- */
+        // ---------- Consume data from Kafak ----------
 
-        /*
+        //
          * Kafka Consumer
          * Flink’s Kafka consumer is called FlinkKafkaConsumer08 (or 09 for Kafka 0.9.0.x versions).
          * It provides access to one or more Kafka topics.
@@ -64,12 +65,12 @@ public class FlinkFromKafka {
          *          - “zookeeper.connect” (comma separated list of Zookeeper servers)
          *              (only required for Kafka 0.8)
          *          - “group.id” the id of the consumer group
-         */
+
 
         // DataStream with trace type as a String
         DataStream<Tuple2<String, String>> simulLogs = env.addSource(
-                /* use of FlinkKafkaConsumer08 because of the flink-connector-kafka
-                 * version (0.8) */
+                // use of FlinkKafkaConsumer08 because of the flink-connector-kafka
+                 * version (0.8)
                 new FlinkKafkaConsumer09<Tuple2<String, String>>(
                         kafkaTopic,                 // Topic to read from
                         new SimpleTuple2Schema(),   // Deserializer
@@ -86,7 +87,7 @@ public class FlinkFromKafka {
 
 
 
-        /* ---------- Simple data transformation on the DataStream ---------- */
+        // ---------- Simple data transformation on the DataStream ----------
 
         // count the number of traces depending on the trace type
         DataStream<Tuple2<TraceType,Integer>> countDifferentTraces =  simulLogsWithTraceEnum
@@ -190,6 +191,8 @@ public class FlinkFromKafka {
             return (element.f0 + ";" + element.f1).getBytes();
         }
     }
+
+    */
 
 
 }
