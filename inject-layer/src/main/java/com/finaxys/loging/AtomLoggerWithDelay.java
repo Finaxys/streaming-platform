@@ -44,7 +44,7 @@ public class AtomLoggerWithDelay extends AtomLogger {
         if (outOfOrderDelay > (conf.getOutOfOrderMaxDelayInMillies())) {
             this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
         }
-        if (outOfOrderDelay < super.tsb.getNbMillisPerTick())
+        if (outOfOrderDelay <= super.tsb.getNbMillisPerTick())
             throw new InjectLayerException("Wrong parameters for a simulation with out of order logs : the maximum delay is shorter than one single tick");
 
         LOGGER.debug("Out of order delay = " + outOfOrderDelay + " milliseconds see .AtomLoggerWithDelay.java");
