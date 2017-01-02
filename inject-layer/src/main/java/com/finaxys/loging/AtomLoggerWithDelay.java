@@ -78,25 +78,13 @@ public class AtomLoggerWithDelay extends AtomLogger {
 
         if (isTimeToSendOutOfOrderLogs()) {
             Collections.shuffle(outOfOrderLogs);
-            super.sendLogs(outOfOrderLogs, timestamp);
+            for (String aLog : outOfOrderLogs)
+                super.sendLog(aLog, timestamp);
             this.outOfOrderLogs.clear();
             this.outOfOrderMark = timestamp;
         }
 
     }
-
-    /**
-     * Method that log a list of logs
-     * @see AtomLoggerWithDelay#sendLog(String, long)
-     * @param logs the list of logs
-     * @param timestamp the "event time" timestamp of the log
-     */
-    @Override
-    protected void sendLogs(List<String> logs, long timestamp) {
-        for (String log : logs)
-            this.sendLog(log, timestamp);
-    }
-
 
     /**
      * Method used to determine whether or not a log must be delayed

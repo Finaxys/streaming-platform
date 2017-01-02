@@ -94,17 +94,30 @@ public class AtomLogger extends v13.Logger {
      * @param logWithoutEventTime the log without the timestamp
      * @return the atom log with the timestamp inside
      */
-    private String addTimeToLog(long timestamp, String dateTime, String logWithoutEventTime) {
+    private String addEventTimeToLog(long eventTime, String dateTime, String logWithoutEventTime) {
         StringBuilder sb = new StringBuilder();
 
         if (conf.isTimestampEnabled())
-            sb.append(timestamp).append(";");
+            sb.append(eventTime).append(";");
 
         if (conf.isTimestampHumanReadableEnabled())
             sb.append(dateTime).append(";");
 
         sb.append(logWithoutEventTime);
         return sb.toString();
+    }
+
+    /**
+     * Append the processing time at the beginning of the atom log
+     *
+     * @param logWithoutProcessingTime the log without the timestamp
+     * @return the atom log with the processing time timestamp
+     */
+    private String addProcessingTimeToLog(long processingTime, String logWithoutProcessingTime) {
+        return new StringBuilder()
+                .append(processingTime).append(";")
+                .append(logWithoutProcessingTime)
+                .toString();
     }
 
     /**
@@ -118,7 +131,7 @@ public class AtomLogger extends v13.Logger {
         tsb.computeTimestampForCurrentTick();
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
-        String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.order(o));
+        String log = addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.order(o));
         sendLog(log, timestampForCurrentTick);
     }
 
@@ -136,7 +149,7 @@ public class AtomLogger extends v13.Logger {
         tsb.computeTimestampForCurrentTick();
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
-        String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.exec(o));
+        String log = addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.exec(o));
         sendLog(log, timestampForCurrentTick);
     }
 
@@ -154,7 +167,7 @@ public class AtomLogger extends v13.Logger {
         tsb.computeTimestampForCurrentTick();
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
-        String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.agent(a, o, pr));
+        String log = addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.agent(a, o, pr));
         sendLog(log, timestampForCurrentTick);
     }
 
@@ -176,7 +189,7 @@ public class AtomLogger extends v13.Logger {
         tsb.computeTimestampForCurrentTick();
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
         String dateTime = tsb.getDateTimeForCurrentTick();
-        String log = addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.price(pr, bestAskPrice, bestBidPrice));
+        String log = addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.price(pr, bestAskPrice, bestBidPrice));
         sendLog(log, timestampForCurrentTick);
     }
 
@@ -197,9 +210,10 @@ public class AtomLogger extends v13.Logger {
         String dateTime = tsb.getDateTimeForCurrentTick();
 
         for (OrderBook ob : orderbooks)
-            logList.add(addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.tick(day, ob)));
+            logList.add(addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.tick(day, ob)));
 
-        sendLogs(logList, timestampForCurrentTick);
+        for (String log : logList)
+            sendLog(log, timestampForCurrentTick);
 
         logSimulationProgression();
 
@@ -223,9 +237,10 @@ public class AtomLogger extends v13.Logger {
         String dateTime = tsb.getDateTimeForCurrentTick();
 
         for (OrderBook ob : orderbooks)
-            logList.add(addTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.day(numOfDay, ob)));
+            logList.add(addEventTimeToLog(timestampForCurrentTick, dateTime, atomBasicLogBuilder.day(numOfDay, ob)));
 
-        sendLogs(logList, timestampForCurrentTick);
+        for (String log : logList)
+            sendLog(log, timestampForCurrentTick);
 
         tsb.incrementCurrentDay();
         this.isEndOfDay = false;
@@ -244,11 +259,7 @@ public class AtomLogger extends v13.Logger {
 
     protected void sendLog(String log, long timestamp) {
         for (AtomDataInjector injector : injectors)
-            injector.send(log);
-    }
-    protected void sendLogs(List<String> logs, long timestamp) {
-        for (AtomDataInjector injector : injectors)
-            injector.send(logs);
+            injector.send(addProcessingTimeToLog(timestamp,log));
     }
 
 }
