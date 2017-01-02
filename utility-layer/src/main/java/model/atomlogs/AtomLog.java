@@ -39,27 +39,27 @@ public abstract class AtomLog implements Serializable {
     }
 
     public boolean isOrderLog() {
-        return this.logType.toUpperCase().equals(LogTypes.ORDER.getCode());
+        return this.logType.equals(LogTypes.ORDER.getCode());
     }
 
     public boolean isExecLog() {
-        return this.logType.toUpperCase().equals(LogTypes.EXEC.getCode());
+        return this.logType.equals(LogTypes.EXEC.getCode());
     }
 
     public boolean isAgentLog() {
-        return this.logType.toUpperCase().equals(LogTypes.AGENT.getCode());
+        return this.logType.equals(LogTypes.AGENT.getCode());
     }
 
     public boolean isPriceLog() {
-        return this.logType.toUpperCase().equals(LogTypes.PRICE.getCode());
+        return this.logType.equals(LogTypes.PRICE.getCode());
     }
 
     public boolean isTickLog() {
-        return this.logType.toUpperCase().equals(LogTypes.TICK.getCode());
+        return this.logType.equals(LogTypes.TICK.getCode());
     }
 
     public boolean isDayLog() {
-        return this.logType.toUpperCase().equals(LogTypes.DAY.getCode());
+        return this.logType.equals(LogTypes.DAY.getCode());
     }
 
     protected enum BasicAtomLogIndexes {
@@ -86,13 +86,13 @@ public abstract class AtomLog implements Serializable {
         public int getLength() {return length;}
     }
 
-    protected enum LogTypes {
-        ORDER("ORDER"),
-        EXEC("EXEC"),
-        AGENT("AGENT"),
-        PRICE("PRICE"),
-        TICK("TICK"),
-        DAY("DAY");
+    public enum LogTypes {
+        ORDER("Order"),
+        EXEC("Exec"),
+        AGENT("Agent"),
+        PRICE("Price"),
+        TICK("Tick"),
+        DAY("Day");
         String code;
         LogTypes(String code) {this.code = code;}
         public String getCode() {return code;}

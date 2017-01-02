@@ -34,7 +34,7 @@ public class AtomLogFactory {
     }
 
     private static AtomLog getBasicAtomLog(String[] logParts) {
-        String logType = logParts[AtomLog.BasicAtomLogIndexes.LOG_TYPE.getIndex()].toUpperCase();
+        String logType = logParts[AtomLog.BasicAtomLogIndexes.LOG_TYPE.getIndex()];
 
         if (logType.equals(AtomLog.LogTypes.ORDER.getCode()))
             return OrderLogFactory.createOrderLog(logParts);
