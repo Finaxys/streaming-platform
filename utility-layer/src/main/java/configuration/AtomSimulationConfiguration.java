@@ -81,6 +81,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         getTimeParameters();
         getOutputsParameters();
         LOGGER.debug("All configuration attributes have been set from properties");
+        LOGGER.debug(this.toString());
     }
 
 
@@ -462,5 +463,46 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     public void setOutOfOrderMaxDelayInSeconds(int outOfOrderMaxDelay) {
         this.outOfOrderMaxDelayInSeconds = outOfOrderMaxDelay;
+    }
+
+
+    @Override
+    public String toString() {
+        return "AtomSimulationConfiguration {" + "\n" +
+                "   - agentsParam='" + agentsParam + '\'' + "\n" +
+                "   - agents=" + agents + "\n" +
+                "   - orderBooksParam='" + orderBooksParam + '\'' + "\n" +
+                "   - orderBooks=" + orderBooks + "\n" +
+                "   - orderBooksRandom=" + orderBooksRandom + "\n" +
+                "   - agentsRandom=" + agentsRandom + "\n" +
+                "   - tickOpening=" + tickOpening + "\n" +
+                "   - tickContinuous=" + tickContinuous + "\n" +
+                "   - tickClosing=" + tickClosing + "\n" +
+                "   - days=" + days + "\n" +
+                "   - marketMarker=" + marketMarker + "\n" +
+                "   - marketMakerQuantity=" + marketMakerQuantity + "\n" +
+                "   - outKafka=" + outKafka + "\n" +
+                "   - outFile=" + outFile + "\n" +
+                "   - pathToOutputFile='" + pathToOutputFile + '\'' + "\n" +
+                "   - agentCash=" + agentCash + "\n" +
+                "   - agentMinPrice=" + agentMinPrice + "\n" +
+                "   - agentMaxPrice=" + agentMaxPrice + "\n" +
+                "   - agentMinQuantity=" + agentMinQuantity + "\n" +
+                "   - agentMaxQuantity=" + agentMaxQuantity + "\n" +
+                "   - tsbTimeZone='" + tsbTimeZone + '\'' + "\n" +
+                "   - tsbDateBegin='" + tsbDateBegin + '\'' + "\n" +
+                "   - tsbOpenHour='" + tsbOpenHour + '\'' + "\n" +
+                "   - tsbCloseHour='" + tsbCloseHour + '\'' + "\n" +
+                "   - nbAgents=" + nbAgents + "\n" +
+                "   - nbOrderBooks=" + nbOrderBooks + "\n" +
+                "   - timestampEnabled=" + timestampEnabled + "\n" +
+                "   - timestampHumanReadableEnabled=" + timestampHumanReadableEnabled + "\n" +
+                "   - dateFormat='" + dateFormat + '\'' + "\n" +
+                "   - timeFormat='" + timeFormat + '\'' + "\n" +
+                "   - outOfOrderCoefficient=" + outOfOrderCoefficient + "\n" +
+                "   - outOfOrderPercentage=" + outOfOrderPercentage + "\n" +
+                "   - outOfOrderEnabled=" + outOfOrderEnabled + "\n" +
+                "   - outOfOrderMaxDelayInSeconds=" + outOfOrderMaxDelayInSeconds + "\n" +
+                '}';
     }
 }
