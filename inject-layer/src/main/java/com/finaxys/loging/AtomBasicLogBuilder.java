@@ -11,9 +11,6 @@ import v13.agents.Agent;
  * Class that construct logs similar to the logs ATOM build by default
  *
  * Differences between ATOM logs and AtomBasicLogBuilder logs
- *      - Exec log
- *          - ATOM version      "Exec";agentSenderName-orderExtId
- *          - Modified version  "Exec";agentSenderName;orderExtId
  *      - Day log (";" at the end in ATOM version)
  *          - ATOM version      "Day";numDay;obName;firstFixedPrice;lowestPrice;highestPrice;lastFixedPrice;nbTotalFixedPrice;
  *          - Modified version  "Day";numDay;obName;firstFixedPrice;lowestPrice;highestPrice;lastFixedPrice;nbTotalFixedPrice
@@ -68,7 +65,7 @@ public class AtomBasicLogBuilder {
      * Constructs an Exec log
      *
      * Semantic of Exec log:
-     *      - "Exec";agentSenderName;orderExtId
+     *      - "Exec";agentSenderName-orderExtId
      *
      * Log fields meaning:
      *      - Exec: The log type (here "Exec")
@@ -80,7 +77,7 @@ public class AtomBasicLogBuilder {
     public String exec(Order o) {
         return new StringBuilder()
                 .append("Exec;")
-                .append(o.sender.name).append(";")
+                .append(o.sender.name).append("-")
                 .append(o.extId)
                 .toString();
     }
