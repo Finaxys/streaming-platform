@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -76,6 +77,7 @@ public class AtomLoggerWithDelay extends AtomLogger {
         }
 
         if (isTimeToSendOutOfOrderLogs()) {
+            Collections.shuffle(outOfOrderLogs);
             super.sendLogs(outOfOrderLogs, timestamp);
             this.outOfOrderLogs.clear();
             this.outOfOrderMark = timestamp;
@@ -110,6 +112,7 @@ public class AtomLoggerWithDelay extends AtomLogger {
      * @return true if it's time to send delayed logs, false otherwise
      */
     private boolean isTimeToSendOutOfOrderLogs() {
-        return actualLogTime >= ( outOfOrderMark + outOfOrderDelay );
+        return actualLogTime >= outOfOrderMark + outOfOrderDelay
+                || super.isEndOfDay;
     }
 }

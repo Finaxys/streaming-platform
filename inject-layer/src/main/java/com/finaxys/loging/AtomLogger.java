@@ -34,6 +34,7 @@ public class AtomLogger extends v13.Logger {
     protected AtomTimeStampBuilder tsb;
     private AtomBasicLogBuilder atomBasicLogBuilder;
     private AtomSimulationConfiguration conf;
+    protected boolean isEndOfDay = false;
 
 
     /**
@@ -58,6 +59,7 @@ public class AtomLogger extends v13.Logger {
         LOGGER.debug("Initializing TimeStampBuilder");
         tsb = new AtomTimeStampBuilder(conf);
         tsb.setTimestampForPreOpening();
+        LOGGER.debug(tsb.toString());
         LOGGER.debug("TimeStampBuilder initialized");
     }
 
@@ -214,6 +216,7 @@ public class AtomLogger extends v13.Logger {
      */
     @Override
     public void day(int numOfDay, java.util.Collection<OrderBook> orderbooks) {
+        this.isEndOfDay = true;
         List<String> logList = new ArrayList<>();
         tsb.computeTimestampForCurrentTick();
         long timestampForCurrentTick = tsb.getTimestampForCurrentTick();
@@ -225,6 +228,7 @@ public class AtomLogger extends v13.Logger {
         sendLogs(logList, timestampForCurrentTick);
 
         tsb.incrementCurrentDay();
+        this.isEndOfDay = false;
     }
 
 
