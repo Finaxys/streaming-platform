@@ -1,7 +1,6 @@
 package model.atomlogs;
 
 import utils.UtilityLayerException;
-import static model.atomlogs.AtomLogFactory.ATOM_LOG_SEPARATOR;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -15,8 +14,9 @@ import java.util.Arrays;
 public class TimestampedAtomLog implements Serializable {
 
     private AtomLog atomLog;
-    private long timeStamp;
-    private String dateTime;
+    private long processingTimeTimeStamp;
+    private long eventTimeTimeStamp;
+    private String eventTimeDateTime;
     boolean withDateTime;
 
 
@@ -41,13 +41,14 @@ public class TimestampedAtomLog implements Serializable {
         if (log == null || log.equals(""))
             throw new UtilityLayerException("Impossible to construct AtomLog from empty log");
         String[] logParts = log.split(AtomLogFactory.ATOM_LOG_SEPARATOR);
-        this.timeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.TIMESTAMP.getIndex()]);
+        this.processingTimeTimeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.PROCESSING_TIME_TIMESTAMP.getIndex()]);
+        this.eventTimeTimeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.EVENT_TIME_TIMESTAMP.getIndex()]);
 
         int startIndex = withDateTime
-                ? TimestampedAtomLogIndexes.DATETIME.getIndex() + 1
-                : TimestampedAtomLogIndexes.TIMESTAMP.getIndex() + 1;
-        this.dateTime = withDateTime
-                ? logParts[TimestampedAtomLogIndexes.DATETIME.getIndex()]
+                ? TimestampedAtomLogIndexes.EVENT_TIME_DATETIME.getIndex() + 1
+                : TimestampedAtomLogIndexes.EVENT_TIME_TIMESTAMP.getIndex() + 1;
+        this.eventTimeDateTime = withDateTime
+                ? logParts[TimestampedAtomLogIndexes.EVENT_TIME_DATETIME.getIndex()]
                 : "";
         this.atomLog = AtomLogFactory.createAtomLog(Arrays.copyOfRange(logParts, startIndex, logParts.length));
     }
@@ -57,12 +58,16 @@ public class TimestampedAtomLog implements Serializable {
         return atomLog;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getProcessingTimeTimeStamp() {
+        return processingTimeTimeStamp;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public long getEventTimeTimeStamp() {
+        return eventTimeTimeStamp;
+    }
+
+    public String getEventTimeDateTime() {
+        return eventTimeDateTime;
     }
 
     public boolean isWithDateTime() {
@@ -72,16 +77,18 @@ public class TimestampedAtomLog implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(timeStamp).append(ATOM_LOG_SEPARATOR);
+        sb.append(processingTimeTimeStamp).append(AtomLogFactory.ATOM_LOG_SEPARATOR);
+        sb.append(eventTimeTimeStamp).append(AtomLogFactory.ATOM_LOG_SEPARATOR);
         if (withDateTime)
-            sb.append(dateTime).append(ATOM_LOG_SEPARATOR);
+            sb.append(eventTimeDateTime).append(AtomLogFactory.ATOM_LOG_SEPARATOR);
         sb.append(atomLog.toString());
         return sb.toString();
     }
 
     enum TimestampedAtomLogIndexes {
-        TIMESTAMP(0),
-        DATETIME(1);
+        PROCESSING_TIME_TIMESTAMP(0),
+        EVENT_TIME_TIMESTAMP(1),
+        EVENT_TIME_DATETIME(2);
         int index;
         TimestampedAtomLogIndexes(int i) {this.index = i;}
         public int getIndex() {return index;}
