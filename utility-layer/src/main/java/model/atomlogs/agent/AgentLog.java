@@ -1,6 +1,7 @@
 package model.atomlogs.agent;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -60,5 +61,16 @@ public class AgentLog extends AtomLog {
         int index;
         AgentLogIndexes(int i) {this.index = i;}
         public int getIndex() {return index;}
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(agentName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(cash).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderBookName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(nbInvest).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(lastFixedPrice).toString();
     }
 }
