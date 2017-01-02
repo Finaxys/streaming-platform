@@ -10,8 +10,7 @@ import utils.UtilityLayerException;
 public class ExecLog extends AtomLog {
 
     private static final int LOG_LENGTH = LogLengths.EXEC_LOG.getLength();
-    private String agentSenderName;
-    private String orderId;
+    private String agentSenderNameAndOrderId;
 
     public ExecLog(String[] logParts) throws UtilityLayerException {
         super(logParts);
@@ -21,21 +20,15 @@ public class ExecLog extends AtomLog {
     protected void construtFromLog() throws UtilityLayerException  {
         super.construtFromLog();
         checkLogComplete(LOG_LENGTH);
-        this.agentSenderName = logParts[ExecLogIndexes.AGENT_SENDER_NAME.getIndex()];
-        this.orderId = logParts[ExecLogIndexes.ORDER_ID.getIndex()];
+        this.agentSenderNameAndOrderId = logParts[ExecLogIndexes.AGENT_SENDER_NAME_AND_ORDER_ID.getIndex()];
     }
 
-    public String getAgentSenderName() {
-        return agentSenderName;
-    }
-
-    public String getOrderId() {
-        return orderId;
+    public String getAgentSenderNameAndOrderId() {
+        return agentSenderNameAndOrderId;
     }
 
     private enum ExecLogIndexes {
-        AGENT_SENDER_NAME(1),
-        ORDER_ID(2);
+        AGENT_SENDER_NAME_AND_ORDER_ID(1);
         int index;
         ExecLogIndexes(int i) {this.index = i;}
         public int getIndex() {return index;}
@@ -45,8 +38,7 @@ public class ExecLog extends AtomLog {
     public String toString() {
         return new StringBuilder()
                 .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
-                .append(agentSenderName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
-                .append(orderId)
+                .append(agentSenderNameAndOrderId)
                 .toString();
     }
 }

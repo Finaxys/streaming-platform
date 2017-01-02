@@ -76,7 +76,7 @@ public abstract class AtomLog implements Serializable {
         ICEBERG_ORDER_LOG(10),
         LIMIT_ORDER_LOG(9),
         MARKET_ORDER_LOG(8),
-        EXEC_LOG(3),
+        EXEC_LOG(2),
         AGENT_LOG(6),
         PRICE_LOG(9),
         TICK_LOG(6),
