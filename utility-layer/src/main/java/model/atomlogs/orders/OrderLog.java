@@ -1,6 +1,7 @@
 package model.atomlogs.orders;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -87,10 +88,10 @@ public class OrderLog extends AtomLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(orderBookName).append(";")
-                .append(agentSenderName).append(";")
-                .append(orderId).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderBookName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(agentSenderName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderId).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(orderType)
                 .toString();
     }

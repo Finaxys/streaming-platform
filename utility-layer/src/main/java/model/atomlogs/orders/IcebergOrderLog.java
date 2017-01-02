@@ -1,5 +1,6 @@
 package model.atomlogs.orders;
 
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -69,11 +70,11 @@ public class IcebergOrderLog extends OrderLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(direction).append(";")
-                .append(price).append(";")
-                .append(part).append(";")
-                .append(initialQuantity).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(direction).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(price).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(part).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(initialQuantity).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(validity)
                 .toString();
     }

@@ -1,6 +1,7 @@
 package model.atomlogs.price;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -85,14 +86,14 @@ public class PriceLog extends AtomLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(orderBookName).append(";")
-                .append(price).append(";")
-                .append(executedQuty).append(";")
-                .append(direction).append(";")
-                .append(orderSourceID).append(";")
-                .append(orderMatchedID).append(";")
-                .append(bestAskPrice).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderBookName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(price).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(executedQuty).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(direction).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderSourceID).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderMatchedID).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(bestAskPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(bestBidPrice)
                 .toString();
     }

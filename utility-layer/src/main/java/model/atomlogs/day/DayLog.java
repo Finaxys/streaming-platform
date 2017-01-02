@@ -1,6 +1,7 @@
 package model.atomlogs.day;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -79,13 +80,13 @@ public class DayLog extends AtomLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(numDay).append(";")
-                .append(orderBookName).append(";")
-                .append(firstFixedPrice).append(";")
-                .append(lowestPrice).append(";")
-                .append(highestPrice).append(";")
-                .append(lastFixedPrice).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(numDay).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderBookName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(firstFixedPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(lowestPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(highestPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(lastFixedPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(nbTotalFixedPrice)
                 .toString();
     }

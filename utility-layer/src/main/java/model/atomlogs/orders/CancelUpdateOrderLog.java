@@ -1,5 +1,6 @@
 package model.atomlogs.orders;
 
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -37,7 +38,7 @@ public class CancelUpdateOrderLog extends OrderLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(orderIdToActOn)
                 .toString();
     }

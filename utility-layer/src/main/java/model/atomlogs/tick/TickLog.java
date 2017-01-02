@@ -1,6 +1,7 @@
 package model.atomlogs.tick;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -65,11 +66,11 @@ public class TickLog extends AtomLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(numTick).append(";")
-                .append(orderBookName).append(";")
-                .append(bestAskPrice).append(";")
-                .append(bestBidPrice).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(numTick).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(orderBookName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(bestAskPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(bestBidPrice).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(lastPrice)
                 .toString();
     }

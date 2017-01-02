@@ -1,6 +1,7 @@
 package model.atomlogs.exec;
 
 import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import utils.UtilityLayerException;
 
 /**
@@ -43,8 +44,8 @@ public class ExecLog extends AtomLog {
     @Override
     public String toString() {
         return new StringBuilder()
-                .append(super.toString()).append(";")
-                .append(agentSenderName).append(";")
+                .append(super.toString()).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                .append(agentSenderName).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
                 .append(orderId)
                 .toString();
     }
