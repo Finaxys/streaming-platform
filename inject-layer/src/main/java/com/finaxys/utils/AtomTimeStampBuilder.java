@@ -272,4 +272,31 @@ public class AtomTimeStampBuilder {
             this.currentTick = 1;
         }
     }
+
+    @Override
+    public String toString() {
+        return "AtomTimeStampBuilder{" + "\n" +
+                "nbAgents=" + nbAgents + "\n" +
+                ", nbOrderBooks=" + nbOrderBooks + "\n" +
+                ", nbDays=" + nbDays + "\n" +
+                ", nbTicksIntraday=" + nbTicksIntraday + "\n" +
+                ", nbTicksOpeningPeriod=" + nbTicksOpeningPeriod + "\n" +
+                ", nbTicksClosingPeriod=" + nbTicksClosingPeriod + "\n" +
+                ", firstTickIntraday=" + firstTickIntraday + "\n" +
+                ", lastTickIntraday=" + lastTickIntraday + "\n" +
+                ", dateBeginInMillis=" + dateBeginInMillis + "\n" +
+                ", marketOpenHourInMillis=" + marketOpenHourInMillis + "\n" +
+                ", marketCloseHourInMillis=" + marketCloseHourInMillis + "\n" +
+                ", currentTick=" + currentTick + "\n" +
+                ", currentDay=" + currentDay + "\n" +
+                ", nbMillisPerTick=" + nbMillisPerTick + "\n" +
+                ", nbMaxOrdersPerTick=" + nbMaxOrdersPerTick + "\n" +
+                ", nbMillisPerOrder=" + nbMillisPerOrder + "\n" +
+                ", dateFormatter=" + dateFormatter + "\n" +
+                ", timeFormatter=" + timeFormatter + "\n" +
+                ", dateTimeFormatter=" + dateTimeFormatter + "\n" +
+                ", eventTimeTimestamp=" + eventTimeTimestamp + "\n" +
+                ", dateTimeCurrentTick='" + dateTimeCurrentTick + '\'' + "\n" +
+                '}';
+    }
 }
