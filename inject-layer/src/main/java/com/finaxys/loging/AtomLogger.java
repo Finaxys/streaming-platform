@@ -3,6 +3,8 @@ package com.finaxys.loging;
 import com.finaxys.loging.injectors.AtomDataInjector;
 import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.AtomTimeStampBuilder;
+import model.atomlogs.AtomLog;
+import model.atomlogs.AtomLogFactory;
 import v13.*;
 import v13.agents.Agent;
 import org.apache.logging.log4j.Logger;
@@ -114,10 +116,14 @@ public class AtomLogger extends v13.Logger {
      * @return the atom log with the processing time timestamp
      */
     private String addProcessingTimeToLog(long processingTime, String logWithoutProcessingTime) {
-        return new StringBuilder()
-                .append(processingTime).append(";")
-                .append(logWithoutProcessingTime)
-                .toString();
+        if (conf.isTimestampEnabled())
+            return new StringBuilder()
+                    .append(processingTime).append(AtomLogFactory.ATOM_LOG_SEPARATOR)
+                    .append(logWithoutProcessingTime)
+                    .toString();
+        else
+            return logWithoutProcessingTime;
+
     }
 
     /**
