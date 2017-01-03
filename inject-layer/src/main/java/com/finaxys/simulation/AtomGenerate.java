@@ -12,9 +12,7 @@ import configuration.KafkaConfiguration;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.commons.cli.*;
-import v13.Day;
-import v13.MonothreadedSimulation;
-import v13.Simulation;
+import v13.*;
 import v13.agents.ZIT;
 
 import java.io.IOException;
@@ -29,6 +27,7 @@ public class AtomGenerate {
 	// Command Line arguments names
 	private static final String ATOM_CONF = "atomConf";
 	private static final String KAFKA_CONF = "kafkaConf";
+	private static final String REPLAY_FROM_FILE = "replayFromFile";
 
 	// Configuration related attributes
 	private static AtomSimulationConfiguration atomConf;
@@ -36,7 +35,7 @@ public class AtomGenerate {
 	private static CommandLine commandLine;
 
 	// Simulation attributes
-	private static  Simulation sim;
+	private static Simulation sim;
 	private static List<String> orderBooks;
 	private static List<String> agents;
 	private static v13.Logger logger = null;
@@ -56,21 +55,23 @@ public class AtomGenerate {
 
 		// Loading properties from configuration files
 		LOGGER.debug("Loading all configurations");
-		getConfiguration();
+		setUpSimulationConfigurations();
+		setUpKafkaConfigurations();
 
 		try {
-			// Create the custom simulation logger with outputs defined in the configuration
-			LOGGER.debug("Adding wanted injectors and creating custom logger");
-			logger = instantiateLoggerWithInjectors();
-			LOGGER.debug("Attaching custom logger to the simulation");
-			sim.setLogger(logger);
+			setUpSimulationLogger();
 
 			// Set Agents and Orderbooks
 			setAgents();
 			setOrderbooks();
 
-			// Launch simulation
-			launchSimulation();
+			boolean isReplaySimulation = commandLine.hasOption(REPLAY_FROM_FILE);
+			if (isReplaySimulation) {
+				replaySimulation();
+			}
+			else {
+				launchSimulation();
+			}
 		} finally {
 			// Close simulation
 			closeSimulation();
@@ -78,6 +79,14 @@ public class AtomGenerate {
 
 		long estimatedTime = System.currentTimeMillis() - startTime;
 		LOGGER.debug("Elapsed time: " + estimatedTime / 1000 + "s");
+	}
+
+	private static void replaySimulation() throws IOException {
+		String replayFromFile = commandLine.getOptionValue(REPLAY_FROM_FILE);
+		LOGGER.debug("Replaying simulation from " + replayFromFile);
+		Replay replay = new AtomReplay(replayFromFile, atomConf);
+		replay.sim = sim; // we use our custom logger within the replay simulation
+		replay.go();
 	}
 
 	private static void closeSimulation() {
@@ -94,6 +103,14 @@ public class AtomGenerate {
 				Day.createEuroNEXT(atomConf.getTickOpening(), atomConf.getTickContinuous(), atomConf.getTickClosing()),
 				atomConf.getDays()
 		);
+	}
+
+	private static void setUpSimulationLogger() {
+		// Create the custom simulation logger with outputs defined in the configuration
+		LOGGER.debug("Adding wanted injectors and creating custom logger");
+		logger = instantiateLoggerWithInjectors();
+		LOGGER.debug("Attaching custom logger to the simulation");
+		sim.setLogger(logger);
 	}
 
 	private static v13.Logger instantiateLoggerWithInjectors() {
@@ -122,10 +139,11 @@ public class AtomGenerate {
 	}
 
 
-	private static void getConfiguration() {
+	private static void setUpSimulationConfigurations() {
 		// ATOM Conf is required
 		atomConf = new AtomSimulationConfiguration(commandLine.getOptionValue(ATOM_CONF));
-
+	}
+	private static void setUpKafkaConfigurations() {
 		// KafkaConf is not required
 		kafkaConf = atomConf.isOutKafka()
 				? new KafkaConfiguration(commandLine.getOptionValue(KAFKA_CONF))
@@ -170,6 +188,9 @@ public class AtomGenerate {
 		Option kafkaConfPath = Option.builder()
 				.argName(KAFKA_CONF).longOpt(KAFKA_CONF).desc("Path to the file containing the Kafka parameters")
 				.hasArg().required(false).build();
-		return CommandLineArgumentsParser.createCommandLine(args, atomConfPath, kafkaConfPath);
+		Option replayFromFile = Option.builder()
+				.argName(REPLAY_FROM_FILE).longOpt(REPLAY_FROM_FILE).desc("Path to the file containing the simulation to replay")
+				.hasArg().required(false).build();
+		return CommandLineArgumentsParser.createCommandLine(args, atomConfPath, kafkaConfPath, replayFromFile);
 	}
 }
