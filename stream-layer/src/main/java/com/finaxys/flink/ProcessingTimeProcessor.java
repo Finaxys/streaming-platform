@@ -6,47 +6,33 @@ import configuration.AtomSimulationConfiguration;
 import configuration.CommandLineArgumentsParser;
 import configuration.KafkaConfiguration;
 import model.atomlogs.AtomLog;
-import model.atomlogs.AtomLogFactory;
 import model.atomlogs.TimestampedAtomLog;
-import model.atomlogs.orders.LimitOrderLog;
-import model.atomlogs.orders.OrderLog;
 import model.atomlogs.price.PriceLog;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
-import org.apache.flink.api.common.functions.*;
-import org.apache.flink.api.common.io.FileInputFormat;
-import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.functions.FoldFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks;
-import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
-import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.triggers.Trigger;
-import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
-import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.util.Collector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @Author raphael on 28/12/2016.
  */
-public class EventTimeProcessor {
+public class ProcessingTimeProcessor {
 
 
-    private static Logger LOGGER = LogManager.getLogger(EventTimeProcessor.class);
+    private static Logger LOGGER = LogManager.getLogger(ProcessingTimeProcessor.class);
 
     private static final String ATOM_CONF = "atomConf";
     private static final String KAFKA_CONF = "kafkaConf";
@@ -63,15 +49,6 @@ public class EventTimeProcessor {
         kafkaConf = new KafkaConfiguration(commandLine.getOptionValue(KAFKA_CONF));
         atomConf = new AtomSimulationConfiguration(commandLine.getOptionValue(ATOM_CONF));
 
-        DataStream<TimestampedAtomLog> stream = env.addSource(
-            new FlinkKafkaConsumer010<>(
-                    kafkaConf.getKafkaTopic(),
-                    new TimestampedAtomLogSchema(atomConf.isTimestampHumanReadableEnabled()),
-                    kafkaConf.getKafkaProperties()
-            )
-        );
-
-        String right = "/Users/raphael/Desktop/atom/atom-simul-right-save.out";
         String wrong = "/Users/raphael/Desktop/atom/atom-simul-wrong.out";
 
         DataStream<TimestampedAtomLog> streamFile = env.readTextFile(wrong)
@@ -83,18 +60,18 @@ public class EventTimeProcessor {
                 });
 
 
+
         streamFile
                 .filter(timestampedAtomLog -> timestampedAtomLog.getAtomLog().getLogType().equals(AtomLog.LogTypes.PRICE.getCode()))
-                .assignTimestampsAndWatermarks(new BoundedTimestampAndWatermarkExtractor(atomConf.getOutOfOrderMaxDelayInMillies()))
+                .assignTimestampsAndWatermarks(new BoundedTimestampAndWatermarkExtractor(3000))
                 .map(new MapFunction<TimestampedAtomLog, Tuple2<Long, Long>>() {
                     @Override
                     public Tuple2<Long, Long> map(TimestampedAtomLog in) throws Exception {
-                        return new Tuple2<Long, Long>(in.getEventTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
+                        return new Tuple2<Long, Long>(in.getProcessingTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
                     }
                 })
                 .keyBy(0)
-                .timeWindow(Time.seconds(atomConf.getOutOfOrderMaxDelayInSeconds()))
-                .allowedLateness(Time.seconds(atomConf.getOutOfOrderMaxDelayInSeconds()*2))
+                .timeWindow(Time.milliseconds(3000))
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L), new FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>>() {
                     @Override
                     public Tuple3<Long, Double, Long> fold(Tuple3<Long, Double, Long> previousMean, Tuple2<Long, Long> currentValue) throws Exception {
