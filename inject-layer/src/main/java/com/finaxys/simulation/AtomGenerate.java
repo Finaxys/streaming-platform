@@ -19,10 +19,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * USAGE:
+ * Run this class with the following arguments:
+ * 		--atomConf: [REQUIRED] file for ATOM simulation configuration
+ * 		--kafkaConf: [OPTIONAL] file for KAFKA configuration if you are using Kafka as an output
+ * 		--replayFromFile: [OPTIONAL] file from which the simulation will be replayed if you choose
+ * 						   to replay an existing simulation
+ */
 public class AtomGenerate {
 
 	private static Logger LOGGER = LogManager.getLogger(AtomGenerate.class);
+	private static final String USAGE = "Run this class with the following arguments:\n" +
+            "\t\t--atomConf: [REQUIRED] file for ATOM simulation configuration\n" +
+            "\t\t--kafkaConf: [OPTIONAL] file for KAFKA configuration if you are using Kafka as an output\n" +
+            "\t\t--replayFromFile: [OPTIONAL] file from which the simulation will be replayed if you choose to replay an existing simulation";
 
 	// Command Line arguments names
 	private static final String ATOM_CONF = "atomConf";
@@ -42,7 +53,7 @@ public class AtomGenerate {
 
 
 	// Main configuration for Atom
-	public static void main(String args[]) throws IOException, ParseException {
+	public static void main(String args[]) throws IOException {
 		// Used to calculate how much time the simulation takes
 		long startTime = System.currentTimeMillis();
 
@@ -51,7 +62,15 @@ public class AtomGenerate {
 		sim = new MonothreadedSimulation();
 
 		// Loading arguments from command line
-		commandLine = createCommandLine(args);
+        LOGGER.debug("Loading command line arguments");
+        try {
+            commandLine = createCommandLine(args);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+            throw new InjectLayerException(USAGE);
+        }
+
 
 		// Loading properties from configuration files
 		LOGGER.debug("Loading all configurations");
