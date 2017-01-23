@@ -73,6 +73,7 @@
         <flink.snapshot.version>1.2-SNAPSHOT</flink.snapshot.version> <!-- https://mvnrepository.com/artifact/org.apache.flink -->
         <curator.test.version>3.2.0</curator.test.version>
         <scala.version>2.11</scala.version>
+        <elasticsearch.version>2.3.5</elasticsearch.version> <!-- Flink connector for elasticsearch is for 2.x versions, not higher ones -->
 
         <!-- maven plugin versions -->
         <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>

@@ -166,6 +166,18 @@
             <artifactId>flink-connector-kafka-0.10_${scala.version}</artifactId>
             <version>${flink.snapshot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-connector-elasticsearch2_${scala.version}</artifactId>
+            <version>${flink.snapshot.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
