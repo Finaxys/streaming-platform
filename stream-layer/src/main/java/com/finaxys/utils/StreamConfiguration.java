@@ -1,6 +1,5 @@
 package com.finaxys.utils;
 
-import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,7 +57,7 @@ public class StreamConfiguration {
         // Loading properties in local variables
             this.tableName = System.getProperty("hbase.table", "trace");
             this.sparkTableName = System.getProperty("hbase.table.spark.result", "result");
-            this.cfName = Bytes.toBytes(System.getProperty("hbase.cf", "cf"));
+            this.cfName = System.getProperty("hbase.cf", "cf").getBytes();
             assert cfName != null;
 
             this.hbaseConfHbase = System.getProperty("hbase.conf.hbase");

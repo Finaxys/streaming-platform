@@ -4,7 +4,6 @@ import model.atomlogs.TimestampedAtomLog;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.util.serialization.DeserializationSchema;
 import org.apache.flink.streaming.util.serialization.SerializationSchema;
-import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 
@@ -36,6 +35,6 @@ public class TimestampedAtomLogSchema implements DeserializationSchema<Timestamp
 
     @Override
     public byte[] serialize(TimestampedAtomLog timestampedAtomLog) {
-        return Bytes.toBytes(timestampedAtomLog.toString());
+        return timestampedAtomLog.toString().getBytes();
     }
 }
