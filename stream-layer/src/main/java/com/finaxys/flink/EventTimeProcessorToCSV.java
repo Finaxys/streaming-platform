@@ -6,47 +6,31 @@ import configuration.AtomSimulationConfiguration;
 import configuration.CommandLineArgumentsParser;
 import configuration.KafkaConfiguration;
 import model.atomlogs.AtomLog;
-import model.atomlogs.AtomLogFactory;
 import model.atomlogs.TimestampedAtomLog;
-import model.atomlogs.orders.LimitOrderLog;
-import model.atomlogs.orders.OrderLog;
 import model.atomlogs.price.PriceLog;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.ParseException;
 import org.apache.flink.api.common.functions.*;
-import org.apache.flink.api.common.io.FileInputFormat;
-import org.apache.flink.api.java.functions.KeySelector;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks;
-import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
-import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.triggers.Trigger;
-import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
-import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.util.Collector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @Author raphael on 28/12/2016.
  */
-public class EventTimeProcessor {
+public class EventTimeProcessorToCSV {
 
 
-    private static Logger LOGGER = LogManager.getLogger(EventTimeProcessor.class);
+    private static Logger LOGGER = LogManager.getLogger(EventTimeProcessorToCSV.class);
 
     private static final String ATOM_CONF = "atomConf";
     private static final String KAFKA_CONF = "kafkaConf";
