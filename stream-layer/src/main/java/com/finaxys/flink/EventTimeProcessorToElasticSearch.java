@@ -77,6 +77,27 @@ public class EventTimeProcessorToElasticSearch {
             )
         );
 
+
+        ElasticsearchSink<Tuple3<Long, Double, Long>> elasticSink = new ElasticsearchSink<>(elasticConfigs, transports, new ElasticsearchSinkFunction<Tuple3<Long, Double, Long>>() {
+
+            public IndexRequest createIndexRequest(Tuple3<Long, Double, Long> element) {
+                Map<String, String> values = new HashMap<>();
+                values.put("@timestamp", element.f0.toString());
+                values.put("price", element.f1.toString());
+
+                return Requests
+                        .indexRequest()
+                        .index("test-on-prices")
+                        .type("price_log")
+                        .source(values);
+            }
+
+            @Override
+            public void process(Tuple3<Long, Double, Long> element, RuntimeContext runtimeContext, RequestIndexer requestIndexer) {
+                requestIndexer.add(createIndexRequest(element));
+            }
+        });
+
         String right = "/Users/raphael/Desktop/atom/atom-simul-right-save.out";
         String wrong = "/Users/raphael/Desktop/atom/atom-simul-wrong.out";
 
@@ -110,24 +131,8 @@ public class EventTimeProcessorToElasticSearch {
                         return new Tuple3<>(currentValue.f0, mean, previousMean.f2+1);
                     }
                 })
-                .addSink(new ElasticsearchSink<>(elasticConfigs, transports, new ElasticsearchSinkFunction<Tuple3<Long, Double, Long>>() {
-
-                    public IndexRequest createIndexRequest(Tuple3<Long, Double, Long> element) {
-                        Map<String, String> esJson = new HashMap<>();
-                        esJson.put("@timestamp", element.f0.toString());
-                        esJson.put("price_mean", element.f1.toString());
-
-                        return Requests
-                                .indexRequest()
-                                .index("test-on-prices")
-                                .source(esJson);
-                    }
-
-                    @Override
-                    public void process(Tuple3<Long, Double, Long> element, RuntimeContext runtimeContext, RequestIndexer requestIndexer) {
-                        requestIndexer.add(createIndexRequest(element));
-                    }
-                }));
+//                .print();
+                .addSink(elasticSink);
 
         env.execute();
     }
