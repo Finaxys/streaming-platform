@@ -14,8 +14,20 @@ import java.util.Collections;
  * @Author raphael on 02/01/2017.
  *
  * Class used to replay a previous ATOM simulation from existing logs.
- * DO NOT WORK when the simulation have pre-opening and closing ticks.
- * FIXME : Voir avec ATOM pourquoi
+ * It will reproduce the exact logs from the input file at the exception of
+ * Tick and Day logs. But it will keep track of time.
+ *
+ * AtomReplay class uses the same AtomLogger that AtomGenerate. This means that
+ * if the "out of order" option is enabled, AtomReplay will replay the simulation
+ * and add delay to random messages.
+ * If the "out of order" option is disabled, however, then AtomReplay will give
+ * the exact same output then the simulation source.
+ *
+ *
+ * Assumption, not sure : AtomReplay only cares about Exec. So it will not replay
+ * the Orders that did not match into an Exec
+ *
+ * FIXME : DO NOT WORK when the simulation have pre-opening and closing ticks (see with ATOM developers)
  */
 public class AtomReplay extends Replay {
 
