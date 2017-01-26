@@ -13,8 +13,11 @@ import java.util.Properties;
 public class KafkaConfiguration extends GeneralConfiguration {
 
     private static Logger LOGGER = LogManager.getLogger(KafkaConfiguration.class);
-    private static final String KAFKA_PREFIXE = "kafka.";
 
+    // The KAFKA_PREFIX is used to get properties from configuration files
+    private static final String KAFKA_PREFIX = "kafka.";
+
+    // The following string codes are used to create a classic Kafka properties object (see KafkaConfiguration::getKafkaProperties() method)
     private static final String TOPIC = "topic";
     private static final String BOOTSTRAP_SERVERS = "bootstrap.servers";
     private static final String ZOOKEEPER_QUORUM = "zookeeper.quorum";
@@ -29,17 +32,24 @@ public class KafkaConfiguration extends GeneralConfiguration {
         super();
     }
 
-
     public KafkaConfiguration(String confPath) {
         super(confPath);
+    }
+
+    public KafkaConfiguration(Properties properties) {
+        super(properties);
     }
 
     @Override
     protected void setAttributesFromProperties() {
         LOGGER.debug("Setting up configuration attributes from properties");
-        this.kafkaTopic = properties.getProperty(KAFKA_PREFIXE + TOPIC);
-        this.kafkaBootstrapServers = properties.getProperty(KAFKA_PREFIXE + BOOTSTRAP_SERVERS);
-        this.kafkaZookeeperQuorum = properties.getProperty(KAFKA_PREFIXE + ZOOKEEPER_QUORUM);
+        // Add custom prefix if any and add "kafka." prefix
+        String globalKeyPrefix = this.hasPrefix
+                ? this.prefix + KAFKA_PREFIX
+                : KAFKA_PREFIX;
+        this.kafkaTopic = properties.getProperty(globalKeyPrefix + TOPIC);
+        this.kafkaBootstrapServers = properties.getProperty(globalKeyPrefix + BOOTSTRAP_SERVERS);
+        this.kafkaZookeeperQuorum = properties.getProperty(globalKeyPrefix + ZOOKEEPER_QUORUM);
         LOGGER.debug("All configuration attributes have been set from properties");
     }
 
@@ -69,16 +79,25 @@ public class KafkaConfiguration extends GeneralConfiguration {
 
     public Properties getKafkaProperties() {
         Properties p = new Properties();
-        p.setProperty(BOOTSTRAP_SERVERS, properties.getProperty(KAFKA_PREFIXE + BOOTSTRAP_SERVERS));
-        p.setProperty(ZOOKEEPER_QUORUM, properties.getProperty(KAFKA_PREFIXE + ZOOKEEPER_QUORUM));
+        p.setProperty(BOOTSTRAP_SERVERS, kafkaBootstrapServers);
+        p.setProperty(ZOOKEEPER_QUORUM, kafkaZookeeperQuorum);
         return p;
     }
 
-    public Properties getKafkaPropertiesWithGroupID(String groupId) {
+    public Properties getKafkaPropertiesWithCustomGroupID(String groupId) {
         Properties p = new Properties();
-        p.setProperty(BOOTSTRAP_SERVERS, properties.getProperty(KAFKA_PREFIXE + BOOTSTRAP_SERVERS));
-        p.setProperty(ZOOKEEPER_QUORUM, properties.getProperty(KAFKA_PREFIXE + ZOOKEEPER_QUORUM));
+        p.setProperty(BOOTSTRAP_SERVERS, kafkaBootstrapServers);
+        p.setProperty(ZOOKEEPER_QUORUM, kafkaZookeeperQuorum);
         p.setProperty(GROUP_ID, groupId);
         return p;
+    }
+
+    @Override
+    public String toString() {
+        return "KafkaConfiguration{" + '\n' +
+                "\t" + "kafkaTopic='" + kafkaTopic + '\'' + '\n' +
+                "\t" + "kafkaBootstrapServers='" + kafkaBootstrapServers + '\'' + '\n' +
+                "\t" + "kafkaZookeeperQuorum='" + kafkaZookeeperQuorum + '\'' + '\n' +
+                '}';
     }
 }
