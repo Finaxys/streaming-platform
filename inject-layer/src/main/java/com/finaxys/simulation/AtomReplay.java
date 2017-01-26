@@ -17,15 +17,15 @@ import java.util.Collections;
  * It will reproduce the exact logs from the input file at the exception of
  * Tick and Day logs. But it will keep track of time.
  *
- * AtomReplay class uses the same AtomLogger that AtomGenerate. This means that
- * if the "out of order" option is enabled, AtomReplay will replay the simulation
- * and add delay to random messages.
+ * AtomReplay class is used in the AtomGenerate class when the replay option
+ * is activated. This means that if the "out of order" option is enabled,
+ * AtomReplay will replay the simulation and add delay to random messages.
  * If the "out of order" option is disabled, however, then AtomReplay will give
  * the exact same output then the simulation source.
  *
  *
  * Assumption, not sure : AtomReplay only cares about Exec. So it will not replay
- * the Orders that did not match into an Exec
+ * the Orders that did not matched and produced an Exec log.
  *
  * FIXME : DO NOT WORK when the simulation have pre-opening and closing ticks (see with ATOM developers)
  */
