@@ -10,10 +10,10 @@ import java.io.IOException;
 /**
  * @Author raphael on 28/12/2016.
  */
-public class TimestampedAtomLogSchema implements DeserializationSchema<TimestampedAtomLog>, SerializationSchema<TimestampedAtomLog> {
+public class TimestampedAtomLogFlinkSchema implements DeserializationSchema<TimestampedAtomLog>, SerializationSchema<TimestampedAtomLog> {
 
     private boolean withDateTime;
-    public TimestampedAtomLogSchema(boolean withDateTime) {
+    public TimestampedAtomLogFlinkSchema(boolean withDateTime) {
         this.withDateTime = withDateTime;
     }
 
