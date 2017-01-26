@@ -17,6 +17,8 @@ public abstract class GeneralConfiguration {
 
     private static final Logger LOGGER = LogManager.getLogger(GeneralConfiguration.class);
     protected Properties properties;
+    protected boolean hasPrefix = false;
+    protected String prefix;
 
 
     /**
@@ -41,6 +43,17 @@ public abstract class GeneralConfiguration {
         setAttributesFromProperties();
     }
 
+    /**
+     * Create a GeneralConfiguration object with properties already loaded in a
+     * Properties object. Then set the configuration attributes by calling the
+     * abstract method setAttributesFromProperties()
+     * @param properties the object containing the configurations
+     */
+    public GeneralConfiguration(Properties properties) {
+        this.properties = properties;
+        setAttributesFromProperties();
+    }
+
 
     /**
      * Load the properties file configuration into the Properties attribute
@@ -58,10 +71,23 @@ public abstract class GeneralConfiguration {
     }
 
     /**
+     * Method that add a prefix to all keys defined in class.
+     * The configuration class will now look for keys looking like
+     * "aCustomPrefix.regular.key" instead of "regular.key"
+     * @param prefix the custom prefix to add to the configuration class
+     */
+    public void setPrefixToConfigKeys(String prefix) {
+        this.hasPrefix = true;
+        this.prefix = prefix;
+    }
+
+    /**
      * Set local class attributes with the values contained in the configuration file.
      *
      * Method is abstract and must be redefined in sub-classes
      */
     abstract protected void setAttributesFromProperties();
+
+
 
 }
