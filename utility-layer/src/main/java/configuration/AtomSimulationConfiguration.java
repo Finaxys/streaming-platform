@@ -468,41 +468,41 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     @Override
     public String toString() {
-        return "AtomSimulationConfiguration {" + "\n" +
-                "   - agentsParam='" + agentsParam + '\'' + "\n" +
-                "   - agents=" + agents + "\n" +
-                "   - orderBooksParam='" + orderBooksParam + '\'' + "\n" +
-                "   - orderBooks=" + orderBooks + "\n" +
-                "   - orderBooksRandom=" + orderBooksRandom + "\n" +
-                "   - agentsRandom=" + agentsRandom + "\n" +
-                "   - tickOpening=" + tickOpening + "\n" +
-                "   - tickContinuous=" + tickContinuous + "\n" +
-                "   - tickClosing=" + tickClosing + "\n" +
-                "   - days=" + days + "\n" +
-                "   - marketMarker=" + marketMarker + "\n" +
-                "   - marketMakerQuantity=" + marketMakerQuantity + "\n" +
-                "   - outKafka=" + outKafka + "\n" +
-                "   - outFile=" + outFile + "\n" +
-                "   - pathToOutputFile='" + pathToOutputFile + '\'' + "\n" +
-                "   - agentCash=" + agentCash + "\n" +
-                "   - agentMinPrice=" + agentMinPrice + "\n" +
-                "   - agentMaxPrice=" + agentMaxPrice + "\n" +
-                "   - agentMinQuantity=" + agentMinQuantity + "\n" +
-                "   - agentMaxQuantity=" + agentMaxQuantity + "\n" +
-                "   - tsbTimeZone='" + tsbTimeZone + '\'' + "\n" +
-                "   - tsbDateBegin='" + tsbDateBegin + '\'' + "\n" +
-                "   - tsbOpenHour='" + tsbOpenHour + '\'' + "\n" +
-                "   - tsbCloseHour='" + tsbCloseHour + '\'' + "\n" +
-                "   - nbAgents=" + nbAgents + "\n" +
-                "   - nbOrderBooks=" + nbOrderBooks + "\n" +
-                "   - timestampEnabled=" + timestampEnabled + "\n" +
-                "   - timestampHumanReadableEnabled=" + timestampHumanReadableEnabled + "\n" +
-                "   - dateFormat='" + dateFormat + '\'' + "\n" +
-                "   - timeFormat='" + timeFormat + '\'' + "\n" +
-                "   - outOfOrderCoefficient=" + outOfOrderCoefficient + "\n" +
-                "   - outOfOrderPercentage=" + outOfOrderPercentage + "\n" +
-                "   - outOfOrderEnabled=" + outOfOrderEnabled + "\n" +
-                "   - outOfOrderMaxDelayInSeconds=" + outOfOrderMaxDelayInSeconds + "\n" +
+        return "AtomSimulationConfiguration{" + '\n' +
+                "\t" + "agentsParam='" + agentsParam + '\'' + '\n' +
+                "\t" + "agents=" + agents + '\n' +
+                "\t" + "orderBooksParam='" + orderBooksParam + '\'' + '\n' +
+                "\t" + "orderBooks=" + orderBooks + '\n' +
+                "\t" + "orderBooksRandom=" + orderBooksRandom + '\n' +
+                "\t" + "agentsRandom=" + agentsRandom + '\n' +
+                "\t" + "tickOpening=" + tickOpening + '\n' +
+                "\t" + "tickContinuous=" + tickContinuous + '\n' +
+                "\t" + "tickClosing=" + tickClosing + '\n' +
+                "\t" + "days=" + days + '\n' +
+                "\t" + "marketMarker=" + marketMarker + '\n' +
+                "\t" + "marketMakerQuantity=" + marketMakerQuantity + '\n' +
+                "\t" + "outKafka=" + outKafka + '\n' +
+                "\t" + "outFile=" + outFile + '\n' +
+                "\t" + "pathToOutputFile='" + pathToOutputFile + '\'' + '\n' +
+                "\t" + "agentCash=" + agentCash + '\n' +
+                "\t" + "agentMinPrice=" + agentMinPrice + '\n' +
+                "\t" + "agentMaxPrice=" + agentMaxPrice + '\n' +
+                "\t" + "agentMinQuantity=" + agentMinQuantity + '\n' +
+                "\t" + "agentMaxQuantity=" + agentMaxQuantity + '\n' +
+                "\t" + "tsbTimeZone='" + tsbTimeZone + '\'' + '\n' +
+                "\t" + "tsbDateBegin='" + tsbDateBegin + '\'' + '\n' +
+                "\t" + "tsbOpenHour='" + tsbOpenHour + '\'' + '\n' +
+                "\t" + "tsbCloseHour='" + tsbCloseHour + '\'' + '\n' +
+                "\t" + "nbAgents=" + nbAgents + '\n' +
+                "\t" + "nbOrderBooks=" + nbOrderBooks + '\n' +
+                "\t" + "timestampEnabled=" + timestampEnabled + '\n' +
+                "\t" + "timestampHumanReadableEnabled=" + timestampHumanReadableEnabled + '\n' +
+                "\t" + "dateFormat='" + dateFormat + '\'' + '\n' +
+                "\t" + "timeFormat='" + timeFormat + '\'' + '\n' +
+                "\t" + "outOfOrderCoefficient=" + outOfOrderCoefficient + '\n' +
+                "\t" + "outOfOrderPercentage=" + outOfOrderPercentage + '\n' +
+                "\t" + "outOfOrderEnabled=" + outOfOrderEnabled + '\n' +
+                "\t" + "outOfOrderMaxDelayInSeconds=" + outOfOrderMaxDelayInSeconds + '\n' +
                 '}';
     }
 }
