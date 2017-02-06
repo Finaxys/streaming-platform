@@ -40,6 +40,10 @@ public class KafkaConfiguration extends GeneralConfiguration {
         super(properties);
     }
 
+    public KafkaConfiguration(Properties properties, String prefix) {
+        super(properties, prefix);
+    }
+
     @Override
     protected void setAttributesFromProperties() {
         LOGGER.debug("Setting up configuration attributes from properties");

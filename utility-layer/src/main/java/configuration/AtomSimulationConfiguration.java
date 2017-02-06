@@ -3,6 +3,7 @@ package configuration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
@@ -69,6 +70,14 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     public AtomSimulationConfiguration(String pathToConfFile) throws UtilityLayerException {
         super(pathToConfFile);
+    }
+
+    public AtomSimulationConfiguration(Properties properties) {
+        super(properties);
+    }
+
+    public AtomSimulationConfiguration(Properties properties, String prefix) {
+        super(properties, prefix);
     }
 
     @Override

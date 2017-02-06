@@ -3,7 +3,8 @@ package configuration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Properties;
+import java.net.InetSocketAddress;
+import java.util.*;
 
 /**
  * @Author raphael on 26/01/2017.
@@ -28,7 +29,7 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
     private String bulkFlushMaxActions;
     private String clusterName;
     private String hostAdress;
-    private String hostPort;
+    private Integer hostPort;
     private String index;
 
     public ElasticsearchConfiguration() {
@@ -43,6 +44,10 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
         super(properties);
     }
 
+    public ElasticsearchConfiguration(Properties properties, String prefix) {
+        super(properties, prefix);
+    }
+
     @Override
     protected void setAttributesFromProperties() {
         LOGGER.debug("Setting up configuration attributes from properties");
@@ -53,7 +58,7 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
         this.bulkFlushMaxActions = properties.getProperty(globalKeyPrefix + BULK_FLUSH_MAX_ACTIONS);
         this.clusterName = properties.getProperty(globalKeyPrefix + CLUSTER_NAME);
         this.hostAdress = properties.getProperty(globalKeyPrefix + HOST_ADRESS);
-        this.hostPort = properties.getProperty(globalKeyPrefix + HOST_PORT);
+        this.hostPort = Integer.parseInt(properties.getProperty(globalKeyPrefix + HOST_PORT));
         this.index = properties.getProperty(globalKeyPrefix + INDEX);
         LOGGER.debug("All configuration attributes have been set from properties");
     }
@@ -83,11 +88,11 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
         this.hostAdress = hostAdress;
     }
 
-    public String getHostPort() {
+    public Integer getHostPort() {
         return hostPort;
     }
 
-    public void setHostPort(String hostPort) {
+    public void setHostPort(Integer hostPort) {
         this.hostPort = hostPort;
     }
 
@@ -109,5 +114,18 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
                 "\t" + "hostPort='" + hostPort + '\'' + '\n' +
                 "\t" + "index='" + index + '\'' + '\n' +
                 '}';
+    }
+
+    public Map<String, String> getUserConfig() {
+        Map<String, String> userConfig = new HashMap<>();
+        userConfig.put(BULK_FLUSH_MAX_ACTIONS, this.getBulkFlushMaxActions());
+        userConfig.put(CLUSTER_NAME, this.getClusterName());
+        return userConfig;
+    }
+
+    public List<InetSocketAddress> getTransportAdress() {
+        List<InetSocketAddress> transports = new ArrayList<>();
+        transports.add(new InetSocketAddress(this.getHostAdress(), this.getHostPort()));
+        return transports;
     }
 }

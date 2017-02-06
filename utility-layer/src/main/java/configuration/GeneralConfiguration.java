@@ -6,6 +6,7 @@ import utils.UtilityLayerException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Properties;
  *
  * Class used to load properties from a given file (full path)
  */
-public abstract class GeneralConfiguration {
+public abstract class GeneralConfiguration implements Serializable {
 
     private static final Logger LOGGER = LogManager.getLogger(GeneralConfiguration.class);
     protected Properties properties;
@@ -54,6 +55,18 @@ public abstract class GeneralConfiguration {
         setAttributesFromProperties();
     }
 
+    /**
+     * Create a GeneralConfiguration object with properties already loaded in a
+     * Properties object. Then set the configuration attributes by calling the
+     * abstract method setAttributesFromProperties()
+     * @param properties the object containing the configurations
+     */
+    public GeneralConfiguration(Properties properties, String prefix) {
+        this.properties = properties;
+        setPrefixToConfigKeys(prefix);
+        setAttributesFromProperties();
+    }
+
 
     /**
      * Load the properties file configuration into the Properties attribute
@@ -89,5 +102,7 @@ public abstract class GeneralConfiguration {
     abstract protected void setAttributesFromProperties();
 
 
-
+    public Properties getAllProperties() {
+        return properties;
+    }
 }
