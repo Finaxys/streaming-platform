@@ -25,12 +25,14 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
     private static final String HOST_ADRESS = "host.adress";
     private static final String HOST_PORT = "host.port";
     private static final String INDEX = "index";
+    private static final String DISCRIMINANT = "discriminant";
 
     private String bulkFlushMaxActions;
     private String clusterName;
     private String hostAdress;
     private Integer hostPort;
     private String index;
+    private String discriminant;
 
     public ElasticsearchConfiguration() {
         super();
@@ -60,6 +62,7 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
         this.hostAdress = properties.getProperty(globalKeyPrefix + HOST_ADRESS);
         this.hostPort = Integer.parseInt(properties.getProperty(globalKeyPrefix + HOST_PORT));
         this.index = properties.getProperty(globalKeyPrefix + INDEX);
+        this.discriminant = properties.getProperty(globalKeyPrefix + DISCRIMINANT);
         LOGGER.debug("All configuration attributes have been set from properties");
     }
 
@@ -104,6 +107,13 @@ public class ElasticsearchConfiguration extends GeneralConfiguration {
         this.index = index;
     }
 
+    public String getDiscriminant() {
+        return discriminant;
+    }
+
+    public void setDiscriminant(String discriminant) {
+        this.discriminant = discriminant;
+    }
 
     @Override
     public String toString() {

@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import org.joda.time.DateTime;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import utils.UtilityLayerException;
+
 
 /**
  * Main configuration class that holds all properties for the ATOM simulation.
@@ -50,6 +52,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     // AtomTimeStampBuilder
     private String tsbTimeZone;
+    private boolean tsbDateBeginIsNow;
     private String tsbDateBegin;
     private String tsbOpenHour;
     private String tsbCloseHour;
@@ -165,7 +168,19 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.days = Integer.parseInt(properties.getProperty("simul.days", "1"));
         this.tsbTimeZone = properties.getProperty("simul.time.timezone");
         assert tsbTimeZone != null;
-        this.tsbDateBegin = properties.getProperty("simul.time.startdate");
+        this.tsbDateBeginIsNow = Boolean.parseBoolean(properties.getProperty("simul.time.startdate.now"));
+        if (this.tsbDateBeginIsNow) {
+            // Format is yyyy-MM-dd
+            DateTime now = new DateTime();
+            this.tsbDateBegin = new StringBuilder()
+                    .append(now.getYear()).append("-")
+                    .append(now.getMonthOfYear()).append("-")
+                    .append(now.getDayOfMonth())
+                    .toString();
+        }
+        else {
+            this.tsbDateBegin = properties.getProperty("simul.time.startdate");
+        }
         assert tsbDateBegin != null;
 
         //take the hours
@@ -474,6 +489,13 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.outOfOrderMaxDelayInSeconds = outOfOrderMaxDelay;
     }
 
+    public boolean isTsbDateBeginIsNow() {
+        return tsbDateBeginIsNow;
+    }
+
+    public void setTsbDateBeginIsNow(boolean tsbDateBeginIsNow) {
+        this.tsbDateBeginIsNow = tsbDateBeginIsNow;
+    }
 
     @Override
     public String toString() {
@@ -499,6 +521,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
                 "\t" + "agentMinQuantity=" + agentMinQuantity + '\n' +
                 "\t" + "agentMaxQuantity=" + agentMaxQuantity + '\n' +
                 "\t" + "tsbTimeZone='" + tsbTimeZone + '\'' + '\n' +
+                "\t" + "tsbDateBeginIsNow=" + tsbDateBeginIsNow + '\n' +
                 "\t" + "tsbDateBegin='" + tsbDateBegin + '\'' + '\n' +
                 "\t" + "tsbOpenHour='" + tsbOpenHour + '\'' + '\n' +
                 "\t" + "tsbCloseHour='" + tsbCloseHour + '\'' + '\n' +
