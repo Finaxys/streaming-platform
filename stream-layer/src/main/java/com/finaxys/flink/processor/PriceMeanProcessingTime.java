@@ -1,7 +1,8 @@
 package com.finaxys.flink.processor;
 
+import com.finaxys.flink.sink.ElasticSink;
 import com.finaxys.flink.source.KafkaSource;
-import com.finaxys.flink.time.BoundedTimestampAndWatermarkExtractor;
+import com.finaxys.flink.time.ProcessingTimeWatermarkExtractor;
 import com.finaxys.serialization.TimestampedAtomLogFlinkSchema;
 import com.finaxys.utils.StreamLayerException;
 import configuration.AtomSimulationConfiguration;
@@ -26,7 +27,6 @@ import org.apache.flink.streaming.connectors.elasticsearch2.RequestIndexer;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.finaxys.flink.sink.ElasticSink;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.Requests;
 
@@ -37,12 +37,12 @@ import java.util.Map;
 /**
  * @Author raphael on 26/01/2017.
  */
-public class TestPriceMeanEventTime extends DefaultStreamProcessor {
-    private static Logger LOGGER = LogManager.getLogger(TestPriceMeanEventTime.class);
+public class PriceMeanProcessingTime extends DefaultStreamProcessor {
+    private static Logger LOGGER = LogManager.getLogger(PriceMeanProcessingTime.class);
 
-    public TestPriceMeanEventTime(AtomSimulationConfiguration atomConfig,
-                                  StreamingApplicationConfiguration appConfig,
-                                  StreamExecutionEnvironment environment) {
+    public PriceMeanProcessingTime(AtomSimulationConfiguration atomConfig,
+                                   StreamingApplicationConfiguration appConfig,
+                                   StreamExecutionEnvironment environment) {
         super(atomConfig, appConfig, environment);
     }
 
@@ -87,16 +87,15 @@ public class TestPriceMeanEventTime extends DefaultStreamProcessor {
 
         return ((DataStream<TimestampedAtomLog>)source)
                 .filter(timestampedAtomLog -> timestampedAtomLog.getAtomLog().getLogType().equals(AtomLog.LogTypes.PRICE.getCode()))
-                .assignTimestampsAndWatermarks(new BoundedTimestampAndWatermarkExtractor(atomConf.getOutOfOrderMaxDelayInMillies()))
+                .assignTimestampsAndWatermarks(new ProcessingTimeWatermarkExtractor())
                 .map(new MapFunction<TimestampedAtomLog, Tuple2<Long, Long>>() {
                     @Override
                     public Tuple2<Long, Long> map(TimestampedAtomLog in) throws Exception {
-                        return new Tuple2<Long, Long>(in.getEventTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
+                        return new Tuple2<Long, Long>(in.getProcessingTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
                     }
                 })
                 .keyBy(0)
                 .timeWindow(Time.seconds(atomConf.getOutOfOrderMaxDelayInSeconds()))
-                .allowedLateness(Time.seconds(atomConf.getOutOfOrderMaxDelayInSeconds()*2))
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L), new FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>>() {
                     @Override
                     public Tuple3<Long, Double, Long> fold(Tuple3<Long, Double, Long> previousMean, Tuple2<Long, Long> currentValue) throws Exception {
@@ -118,6 +117,7 @@ public class TestPriceMeanEventTime extends DefaultStreamProcessor {
                 Map<String, String> values = new HashMap<>();
                 values.put("@timestamp", element.f0.toString());
                 values.put("price", element.f1.toString());
+                values.put("timeType", elasticConfig.getDiscriminant());
 
                 return Requests
                         .indexRequest()

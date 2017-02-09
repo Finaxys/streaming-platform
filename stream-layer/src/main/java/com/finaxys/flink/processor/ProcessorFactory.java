@@ -11,7 +11,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class ProcessorFactory {
 
-    private static final String PRICE_MEAN_EVENT_TIME_PROCESSOR = "TestPriceMeanEventTime";
+    private static final String PRICE_MEAN_EVENT_TIME_PROCESSOR = "PriceMeanEventTime";
+    private static final String PRICE_MEAN_PROCESSING_TIME_PROCESSOR = "PriceMeanProcessingTime";
+    private static final String PRICE_MEAN_REFERENCE = "PriceMeanReference";
 
     public static DefaultStreamProcessor createProcessor(AtomSimulationConfiguration atomConf,
                                                          StreamingApplicationConfiguration appConf,
@@ -19,7 +21,11 @@ public class ProcessorFactory {
 
         switch (appConf.getProcessorName()) {
             case PRICE_MEAN_EVENT_TIME_PROCESSOR:
-                return new TestPriceMeanEventTime(atomConf, appConf, env);
+                return new PriceMeanEventTime(atomConf, appConf, env);
+            case PRICE_MEAN_PROCESSING_TIME_PROCESSOR:
+                return new PriceMeanProcessingTime(atomConf, appConf, env);
+            case PRICE_MEAN_REFERENCE:
+                return new PriceMeanReference(atomConf, appConf, env);
             default:
                 throw new StreamLayerException("Unable to find appropriate processor for the given name '"+appConf.getProcessorName()+"'");
         }
