@@ -1,9 +1,11 @@
 package model.atomlogs;
 
+import org.apache.logging.log4j.LogManager;
 import utils.UtilityLayerException;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 
 /**
@@ -12,6 +14,9 @@ import java.util.Arrays;
  * Class that compose an AtomLog and two fields for the timestamp (long and dateTime format)
  */
 public class TimestampedAtomLog implements Serializable {
+
+    private static org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(TimestampedAtomLog.class);
+    private static final Pattern dateTimePattern = Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}");
 
     private AtomLog atomLog;
     private long processingTimeTimeStamp;
@@ -24,10 +29,8 @@ public class TimestampedAtomLog implements Serializable {
      * Construct a TimestampedAtomLog with the timestamp and with the date time if the log has
      * one, without it otherwise.
      * @param log the entire log
-     * @param withDateTime true if the log comes with a date time in addition to the long timestamp
      */
-    public TimestampedAtomLog(String log, boolean withDateTime) {
-        this.withDateTime = withDateTime;
+    public TimestampedAtomLog(String log) {
         this.constructTimestampedLog(log);
     }
 
@@ -44,6 +47,7 @@ public class TimestampedAtomLog implements Serializable {
         this.processingTimeTimeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.PROCESSING_TIME_TIMESTAMP.getIndex()]);
         this.eventTimeTimeStamp = Long.parseLong(logParts[TimestampedAtomLogIndexes.EVENT_TIME_TIMESTAMP.getIndex()]);
 
+        withDateTime = dateTimePattern.matcher(logParts[TimestampedAtomLogIndexes.EVENT_TIME_DATETIME.getIndex()]).find();
         int startIndex = withDateTime
                 ? TimestampedAtomLogIndexes.EVENT_TIME_DATETIME.getIndex() + 1
                 : TimestampedAtomLogIndexes.EVENT_TIME_TIMESTAMP.getIndex() + 1;
