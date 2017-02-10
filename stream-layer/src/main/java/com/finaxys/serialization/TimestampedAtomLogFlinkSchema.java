@@ -12,15 +12,12 @@ import java.io.IOException;
  */
 public class TimestampedAtomLogFlinkSchema implements DeserializationSchema<TimestampedAtomLog>, SerializationSchema<TimestampedAtomLog> {
 
-    private boolean withDateTime;
-    public TimestampedAtomLogFlinkSchema(boolean withDateTime) {
-        this.withDateTime = withDateTime;
-    }
+    public TimestampedAtomLogFlinkSchema() {}
 
     @Override
     public TimestampedAtomLog deserialize(byte[] messsage) throws IOException {
         String stringMessage = new String(messsage);
-        return new TimestampedAtomLog(stringMessage, withDateTime);
+        return new TimestampedAtomLog(stringMessage);
     }
 
     @Override

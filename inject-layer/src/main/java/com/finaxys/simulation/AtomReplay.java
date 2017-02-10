@@ -46,7 +46,7 @@ public class AtomReplay extends Replay {
 
         // Instantiate an AtomLog or a TimestampAtomLog depending on the simulation configuration
         AtomLog atomLog = atomConf.isTimestampEnabled()
-                ? new TimestampedAtomLog(line, atomConf.isTimestampHumanReadableEnabled()).getAtomLog()
+                ? new TimestampedAtomLog(line).getAtomLog()
                 : AtomLogFactory.createAtomLog(line);
 
         // Reproduce super.handleOneLine() with the difference that tick and day logs are
