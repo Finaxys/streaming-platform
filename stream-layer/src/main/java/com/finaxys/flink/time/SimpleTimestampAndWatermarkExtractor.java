@@ -7,12 +7,12 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 /**
  * @Author raphael on 28/12/2016.
  */
-public class ProcessingTimeWatermarkExtractor implements AssignerWithPeriodicWatermarks<TimestampedAtomLog> {
+public class SimpleTimestampAndWatermarkExtractor implements AssignerWithPeriodicWatermarks<TimestampedAtomLog> {
 
 
     private long currentMaxTimestamp;
 
-    public ProcessingTimeWatermarkExtractor() {}
+    public SimpleTimestampAndWatermarkExtractor() {}
 
     @Override
     public long extractTimestamp(TimestampedAtomLog element, long previousElementTimestamp) {

@@ -7,13 +7,13 @@ import org.apache.flink.streaming.api.watermark.Watermark;
 /**
  * @Author raphael on 28/12/2016.
  */
-public class EventTimeWatermarkExtractor implements AssignerWithPeriodicWatermarks<TimestampedAtomLog> {
+public class BoundedTimestampAndWatermarkExtractor implements AssignerWithPeriodicWatermarks<TimestampedAtomLog> {
 
     private long maxOutOfOrderness;
 
     private long currentMaxTimestamp;
 
-    public EventTimeWatermarkExtractor(long maxOutOfOrderness) {
+    public BoundedTimestampAndWatermarkExtractor(long maxOutOfOrderness) {
         this.maxOutOfOrderness = maxOutOfOrderness;
     }
 
