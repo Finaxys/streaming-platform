@@ -62,7 +62,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
     private boolean timestampHumanReadableEnabled;
     private String dateFormat;
     private String timeFormat;
-    private int outOfOrderCoefficient;
     private int outOfOrderPercentage;
     private boolean outOfOrderEnabled;
     private int outOfOrderMaxDelayInSeconds;
@@ -196,7 +195,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
         // get parameters for out of order logs
         this.outOfOrderEnabled = Boolean.parseBoolean(properties.getProperty("simul.time.outOfOrder.enabled", "false"));
-        this.outOfOrderCoefficient = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.coefficient", "0"));
         this.outOfOrderPercentage = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.percentage", "0"));
         this.outOfOrderMaxDelayInSeconds = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.maxDelayInSeconds", "0"));
 
@@ -453,14 +451,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.timeFormat = timeFormat;
     }
 
-    public int getOutOfOrderCoefficient() {
-        return outOfOrderCoefficient;
-    }
-
-    public void setOutOfOrderCoefficient(int outOfOrderCoefficient) {
-        this.outOfOrderCoefficient = outOfOrderCoefficient;
-    }
-
     public int getOutOfOrderPercentage() {
         return outOfOrderPercentage;
     }
@@ -531,7 +521,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
                 "\t" + "timestampHumanReadableEnabled=" + timestampHumanReadableEnabled + '\n' +
                 "\t" + "dateFormat='" + dateFormat + '\'' + '\n' +
                 "\t" + "timeFormat='" + timeFormat + '\'' + '\n' +
-                "\t" + "outOfOrderCoefficient=" + outOfOrderCoefficient + '\n' +
                 "\t" + "outOfOrderPercentage=" + outOfOrderPercentage + '\n' +
                 "\t" + "outOfOrderEnabled=" + outOfOrderEnabled + '\n' +
                 "\t" + "outOfOrderMaxDelayInSeconds=" + outOfOrderMaxDelayInSeconds + '\n' +
