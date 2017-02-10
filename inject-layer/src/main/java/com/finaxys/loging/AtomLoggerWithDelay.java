@@ -3,6 +3,7 @@ package com.finaxys.loging;
 import com.finaxys.loging.injectors.AtomDataInjector;
 import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.InjectLayerException;
+import configuration.DelaySimulationConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,23 +36,18 @@ public class AtomLoggerWithDelay extends AtomLogger {
     public AtomLoggerWithDelay(AtomSimulationConfiguration conf, AtomDataInjector... injectors) {
         super(conf, injectors);
         outOfOrderLogs = new ArrayList<>();
-        this.outOfOrderPercentage = conf.getOutOfOrderPercentage();
-        this.outOfOrderMark = null;
-        computeOutOfOrderDelay(conf);
     }
 
-    private void computeOutOfOrderDelay(AtomSimulationConfiguration conf) {
-//        this.outOfOrderDelay = super.tsb.getNbMillisPerTick() * conf.getOutOfOrderCoefficient();
+    public void setUpOutOfOrderDelay(DelaySimulationConfiguration conf) {
+        this.outOfOrderPercentage = conf.getOutOfOrderPercentage();
+        this.outOfOrderMark = null;
         this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
-//        if (outOfOrderDelay > (conf.getOutOfOrderMaxDelayInMillies())) {
-//            this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
-//        }
         if (outOfOrderDelay <= super.tsb.getNbMillisPerTick())
             throw new InjectLayerException("Wrong parameters for a simulation with out of order logs : " +
                     "the maximum delay" + " (" + outOfOrderDelay/1000 + "s) " +
                     "is shorter than the duration of one single tick" + " (" + super.tsb.getNbMillisPerTick()/1000 + "s)");
 
-        LOGGER.debug("Out of order delay = " + outOfOrderDelay + " milliseconds see .AtomLoggerWithDelay.java");
+        LOGGER.debug("Out of order delay = " + outOfOrderDelay + " milliseconds");
     }
 
 
