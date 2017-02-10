@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import org.joda.time.DateTime;
 import org.apache.logging.log4j.Logger;
@@ -36,14 +35,8 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
     private boolean marketMarker;
     private int marketMakerQuantity;
 
-    // Outputs
-    private boolean outKafka;
-    private boolean outFile;
-    private String pathToOutputFile;
 
     // App data
-
-
     private int agentCash;
     private int agentMinPrice;
     private int agentMaxPrice;
@@ -62,9 +55,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
     private boolean timestampHumanReadableEnabled;
     private String dateFormat;
     private String timeFormat;
-    private int outOfOrderPercentage;
-    private boolean outOfOrderEnabled;
-    private int outOfOrderMaxDelayInSeconds;
 
     public AtomSimulationConfiguration() {
         super();
@@ -90,7 +80,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         getNbTicksParameters();
         getPriceAndQuantityParameters();
         getTimeParameters();
-        getOutputsParameters();
         LOGGER.debug("All configuration attributes have been set from properties");
         LOGGER.debug(this.toString());
     }
@@ -192,23 +181,7 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.timestampHumanReadableEnabled = Boolean.parseBoolean(properties.getProperty("simul.time.timestamp.human.readable", "false"));
         this.dateFormat = properties.getProperty("simul.time.date.format", "yyyy-MM-dd");
         this.timeFormat = properties.getProperty("simul.time.time.format", "HH:mm:ss");
-
-        // get parameters for out of order logs
-        this.outOfOrderEnabled = Boolean.parseBoolean(properties.getProperty("simul.time.outOfOrder.enabled", "false"));
-        this.outOfOrderPercentage = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.percentage", "0"));
-        this.outOfOrderMaxDelayInSeconds = Integer.parseInt(properties.getProperty("simul.time.outOfOrder.maxDelayInSeconds", "0"));
-
-
-
     }
-
-    private void getOutputsParameters() {
-        LOGGER.debug("Setting up output parameters");
-        this.outKafka = Boolean.parseBoolean(properties.getProperty("simul.output.kafka", "false"));
-        this.outFile = Boolean.parseBoolean(properties.getProperty("simul.output.file", "false"));
-        this.pathToOutputFile = properties.getProperty("simul.output.file.path", "");
-    }
-
 
     public List<String> getAgents() {
         return agents;
@@ -232,10 +205,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     public int getTickContinuous() {
         return tickContinuous;
-    }
-
-    public boolean isOutKafka() {
-        return outKafka;
     }
 
     public String getAgentsParam() {
@@ -306,22 +275,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         return tsbTimeZone;
     }
 
-    public boolean isOutFile() {
-        return outFile;
-    }
-
-    public void setOutFile(boolean outFile) {
-        this.outFile = outFile;
-    }
-
-    public String getPathToOutputFile() {
-        return pathToOutputFile;
-    }
-
-    public void setPathToOutputFile(String pathToOutputFile) {
-        this.pathToOutputFile = pathToOutputFile;
-    }
-
     public void setAgentsParam(String agentsParam) {
         this.agentsParam = agentsParam;
     }
@@ -368,10 +321,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
 
     public void setMarketMakerQuantity(int marketMakerQuantity) {
         this.marketMakerQuantity = marketMakerQuantity;
-    }
-
-    public void setOutKafka(boolean outKafka) {
-        this.outKafka = outKafka;
     }
 
     public void setAgentCash(int agentCash) {
@@ -451,34 +400,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
         this.timeFormat = timeFormat;
     }
 
-    public int getOutOfOrderPercentage() {
-        return outOfOrderPercentage;
-    }
-
-    public void setOutOfOrderPercentage(int outOfOrderPercentage) {
-        this.outOfOrderPercentage = outOfOrderPercentage;
-    }
-
-    public boolean isOutOfOrderEnabled() {
-        return outOfOrderEnabled;
-    }
-
-    public void setOutOfOrderEnabled(boolean outOfOrderEnabled) {
-        this.outOfOrderEnabled = outOfOrderEnabled;
-    }
-
-    public int getOutOfOrderMaxDelayInSeconds() {
-        return outOfOrderMaxDelayInSeconds;
-    }
-
-    public long getOutOfOrderMaxDelayInMillies() {
-        return outOfOrderMaxDelayInSeconds * TimeUnit.SECONDS.toMillis(1);
-    }
-
-    public void setOutOfOrderMaxDelayInSeconds(int outOfOrderMaxDelay) {
-        this.outOfOrderMaxDelayInSeconds = outOfOrderMaxDelay;
-    }
-
     public boolean isTsbDateBeginIsNow() {
         return tsbDateBeginIsNow;
     }
@@ -502,9 +423,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
                 "\t" + "days=" + days + '\n' +
                 "\t" + "marketMarker=" + marketMarker + '\n' +
                 "\t" + "marketMakerQuantity=" + marketMakerQuantity + '\n' +
-                "\t" + "outKafka=" + outKafka + '\n' +
-                "\t" + "outFile=" + outFile + '\n' +
-                "\t" + "pathToOutputFile='" + pathToOutputFile + '\'' + '\n' +
                 "\t" + "agentCash=" + agentCash + '\n' +
                 "\t" + "agentMinPrice=" + agentMinPrice + '\n' +
                 "\t" + "agentMaxPrice=" + agentMaxPrice + '\n' +
@@ -521,9 +439,6 @@ public class AtomSimulationConfiguration extends GeneralConfiguration {
                 "\t" + "timestampHumanReadableEnabled=" + timestampHumanReadableEnabled + '\n' +
                 "\t" + "dateFormat='" + dateFormat + '\'' + '\n' +
                 "\t" + "timeFormat='" + timeFormat + '\'' + '\n' +
-                "\t" + "outOfOrderPercentage=" + outOfOrderPercentage + '\n' +
-                "\t" + "outOfOrderEnabled=" + outOfOrderEnabled + '\n' +
-                "\t" + "outOfOrderMaxDelayInSeconds=" + outOfOrderMaxDelayInSeconds + '\n' +
                 '}';
     }
 }
