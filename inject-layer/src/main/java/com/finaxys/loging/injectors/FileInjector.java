@@ -1,8 +1,8 @@
 package com.finaxys.loging.injectors;
 
 
-import configuration.AtomSimulationConfiguration;
 import com.finaxys.utils.InjectLayerException;
+import configuration.OutputSimulationConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +20,7 @@ public class FileInjector extends AtomDataInjector {
 
     private static Logger LOGGER = LogManager.getLogger(FileInjector.class);
 
-    private final AtomSimulationConfiguration atomConf;
+    private final OutputSimulationConfiguration outputConf;
 
     FileSystem fileSystem = FileSystems.getDefault();
     Writer fileWriter = null;
@@ -29,14 +29,14 @@ public class FileInjector extends AtomDataInjector {
 
 
 
-    public FileInjector(AtomSimulationConfiguration atomConf) {
-        this.atomConf = atomConf;
+    public FileInjector(OutputSimulationConfiguration outputConf) {
+        this.outputConf = outputConf;
     }
 
     @Override
     public void createOutput() throws InjectLayerException {
 
-        String filePath = atomConf.getPathToOutputFile();
+        String filePath = outputConf.getPathToOutputFile();
         Path path = fileSystem.getPath(filePath);
 
         // create directories if they don't exists
