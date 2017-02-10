@@ -5,10 +5,8 @@ import com.finaxys.loging.AtomLoggerWithDelay;
 import com.finaxys.loging.injectors.AtomDataInjector;
 import com.finaxys.loging.injectors.FileInjector;
 import com.finaxys.loging.injectors.KafkaInjector;
-import configuration.AtomSimulationConfiguration;
+import configuration.*;
 import com.finaxys.utils.InjectLayerException;
-import configuration.CommandLineArgumentsParser;
-import configuration.KafkaConfiguration;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.commons.cli.*;
@@ -23,6 +21,8 @@ import java.util.List;
  * USAGE:
  * Run this class with the following arguments:
  * 		--atomConf: [REQUIRED] file for ATOM simulation configuration
+ * 	    --outputConf: [REQUIRED] file for Output configurations (file, kafka, others, ...)
+ * 	    --delayConf: [OPTIONAL] file for delay configurations if there is delay added to the simulation
  * 		--kafkaConf: [OPTIONAL] file for KAFKA configuration if you are using Kafka as an output
  * 		--replayFromFile: [OPTIONAL] file from which the simulation will be replayed if you choose
  * 						   to replay an existing simulation
@@ -32,17 +32,23 @@ public class AtomGenerate {
 	private static Logger LOGGER = LogManager.getLogger(AtomGenerate.class);
 	private static final String USAGE = "Run this class with the following arguments:\n" +
             "\t\t--atomConf: [REQUIRED] file for ATOM simulation configuration\n" +
-            "\t\t--kafkaConf: [OPTIONAL] file for KAFKA configuration if you are using Kafka as an output\n" +
+			"\t\t--outputConf: [REQUIRED] file for Output configurations (file, kafka, others, ...)\n" +
+			"\t\t--delayConf: [OPTIONAL] file for delay configurations if there is delay added to the simulation\n" +
+			"\t\t--kafkaConf: [OPTIONAL] file for KAFKA configuration if you are using Kafka as an output\n" +
             "\t\t--replayFromFile: [OPTIONAL] file from which the simulation will be replayed if you choose to replay an existing simulation";
 
 	// Command Line arguments names
 	private static final String ATOM_CONF = "atomConf";
 	private static final String KAFKA_CONF = "kafkaConf";
+	private static final String DELAY_CONF = "delayConf";
+	private static final String OUTPUT_CONF = "outputConf";
 	private static final String REPLAY_FROM_FILE = "replayFromFile";
 
 	// Configuration related attributes
 	private static AtomSimulationConfiguration atomConf;
 	private static KafkaConfiguration kafkaConf;
+	private static OutputSimulationConfiguration outputConf;
+	private static DelaySimulationConfiguration delayConf;
 	private static CommandLine commandLine;
 
 	// Simulation attributes
@@ -75,6 +81,8 @@ public class AtomGenerate {
 		// Loading properties from configuration files
 		LOGGER.debug("Loading all configurations");
 		setUpSimulationConfigurations();
+		setUpOutputConfigurations();
+		setUpDelayConfigurations();
 		setUpKafkaConfigurations();
 
 		try {
@@ -135,21 +143,23 @@ public class AtomGenerate {
 	private static v13.Logger instantiateLoggerWithInjectors() {
 		List<AtomDataInjector> injectors = new ArrayList<>();
 
-		if (atomConf.isOutKafka()) {
+		if (outputConf.isOutKafka()) {
 			injectors.add(new KafkaInjector(kafkaConf));
 			LOGGER.debug("KafkaInjector added");
 		}
-		if (atomConf.isOutFile()) {
-			injectors.add(new FileInjector(atomConf));
+		if (outputConf.isOutFile()) {
+			injectors.add(new FileInjector(outputConf));
 			LOGGER.debug("FileInjector added");
 		}
 
 		if (injectors.isEmpty())
 			throw new InjectLayerException("No output define");
 
-		if (atomConf.isOutOfOrderEnabled()) {
+		if (commandLine.hasOption(DELAY_CONF)) {
 			LOGGER.debug("Creating out of order custom logger");
-			return new AtomLoggerWithDelay(atomConf, injectors.toArray(new AtomDataInjector[injectors.size()]));
+			AtomLoggerWithDelay atomLoggerWithDelay = new AtomLoggerWithDelay(atomConf, injectors.toArray(new AtomDataInjector[injectors.size()]));
+			atomLoggerWithDelay.setUpOutOfOrderDelay(delayConf);
+			return atomLoggerWithDelay;
 		}
 		else {
 			LOGGER.debug("Creating classic custom logger");
@@ -162,9 +172,29 @@ public class AtomGenerate {
 		// ATOM Conf is required
 		atomConf = new AtomSimulationConfiguration(commandLine.getOptionValue(ATOM_CONF));
 	}
+
+	private static void setUpOutputConfigurations() {
+		// Output conf is required
+		outputConf = new OutputSimulationConfiguration(commandLine.getOptionValue(OUTPUT_CONF));
+	}
+
+	private static void setUpDelayConfigurations() {
+		// Output conf is required
+		if (commandLine.hasOption(DELAY_CONF)) {
+			LOGGER.debug("Creating Delay configuration");
+			delayConf = new DelaySimulationConfiguration(commandLine.getOptionValue(DELAY_CONF));
+		}
+		else {
+			LOGGER.debug("No delay is added to the simulation");
+			delayConf = null;
+		}
+	}
+
 	private static void setUpKafkaConfigurations() {
 		// KafkaConf is not required
-		kafkaConf = atomConf.isOutKafka()
+		if (outputConf == null)
+			throw new InjectLayerException("Output configuration must be set");
+		kafkaConf = outputConf.isOutKafka()
 				? new KafkaConfiguration(commandLine.getOptionValue(KAFKA_CONF))
 				: null;
 	}
@@ -203,13 +233,19 @@ public class AtomGenerate {
 	private static CommandLine createCommandLine(String[] args) throws ParseException {
 		Option atomConfPath = Option.builder()
 				.argName(ATOM_CONF).longOpt(ATOM_CONF).desc("Path to the file containing the ATOM simulation parameters")
-				.hasArg().required().build();
+				.hasArg().required(true).build();
+		Option outputConfPath = Option.builder()
+				.argName(OUTPUT_CONF).longOpt(OUTPUT_CONF).desc("Path to the file containing the output parameters")
+				.hasArg().required(true).build();
+		Option delayConfPath = Option.builder()
+				.argName(DELAY_CONF).longOpt(DELAY_CONF).desc("Path to the file containing the delay parameters")
+				.hasArg().required(false).build();
 		Option kafkaConfPath = Option.builder()
 				.argName(KAFKA_CONF).longOpt(KAFKA_CONF).desc("Path to the file containing the Kafka parameters")
 				.hasArg().required(false).build();
 		Option replayFromFile = Option.builder()
 				.argName(REPLAY_FROM_FILE).longOpt(REPLAY_FROM_FILE).desc("Path to the file containing the simulation to replay")
 				.hasArg().required(false).build();
-		return CommandLineArgumentsParser.createCommandLine(args, atomConfPath, kafkaConfPath, replayFromFile);
+		return CommandLineArgumentsParser.createCommandLine(args, atomConfPath, outputConfPath, delayConfPath, kafkaConfPath, replayFromFile);
 	}
 }
