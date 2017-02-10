@@ -1,8 +1,8 @@
 package com.finaxys.flink;
 
 import com.finaxys.flink.processor.ProcessorFactory;
-import configuration.AtomSimulationConfiguration;
 import configuration.CommandLineArgumentsParser;
+import configuration.DelaySimulationConfiguration;
 import configuration.StreamingApplicationConfiguration;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -14,22 +14,23 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
  */
 public class StreamingApplication {
 
-    private static final String ATOM_CONF = "atomConf";
+    private static final String DELAY_CONF = "delayConf";
     private static final String APP_CONF = "appConf";
 
     private static CommandLine commandLine;
-    private static AtomSimulationConfiguration atomConf;
+    private static DelaySimulationConfiguration delayConf;
     private static StreamingApplicationConfiguration appConf;
 
 
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+//        env.setParallelism(1);
 
         commandLine = createCommandLine(args);
-        atomConf = new AtomSimulationConfiguration(commandLine.getOptionValue(ATOM_CONF));
+        delayConf = new DelaySimulationConfiguration(commandLine.getOptionValue(DELAY_CONF));
         appConf= new StreamingApplicationConfiguration(commandLine.getOptionValue(APP_CONF));
 
-        ProcessorFactory.createProcessor(atomConf, appConf, env)
+        ProcessorFactory.createProcessor(delayConf, appConf, env)
                 .getSource()
                 .processData()
                 .sendToSink();
@@ -40,7 +41,7 @@ public class StreamingApplication {
 
     private static CommandLine createCommandLine(String[] args) throws ParseException {
         Option atomConfPath = Option.builder()
-                .argName(ATOM_CONF).longOpt(ATOM_CONF).desc("Path to the file containing the ATOM simulation parameters")
+                .argName(DELAY_CONF).longOpt(DELAY_CONF).desc("Path to the file containing the ATOM simulation parameters")
                 .hasArg().required(true).build();
         Option appConfPath = Option.builder()
                 .argName(APP_CONF).longOpt(APP_CONF).desc("Path to the file containing the application parameters")

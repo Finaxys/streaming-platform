@@ -1,7 +1,10 @@
 package com.finaxys.flink.processor;
 
-import configuration.AtomSimulationConfiguration;
+import com.finaxys.flink.sink.FileSink;
+import configuration.DelaySimulationConfiguration;
+import configuration.FileSinkConfiguration;
 import configuration.StreamingApplicationConfiguration;
+import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
@@ -16,7 +19,7 @@ public abstract class DefaultStreamProcessor implements Serializable {
 
 
 
-    protected static AtomSimulationConfiguration atomConf;
+    protected static DelaySimulationConfiguration delayConf;
     protected static StreamingApplicationConfiguration appConf;
     protected static StreamExecutionEnvironment env;
 
@@ -24,10 +27,10 @@ public abstract class DefaultStreamProcessor implements Serializable {
     protected static DataStream processedData;
 
 
-    public DefaultStreamProcessor(AtomSimulationConfiguration atomConfig,
+    public DefaultStreamProcessor(DelaySimulationConfiguration delayConfig,
                                   StreamingApplicationConfiguration appConfig,
                                   StreamExecutionEnvironment environment) {
-        atomConf = atomConfig;
+        delayConf = delayConfig;
         appConf = appConfig;
         env = environment;
     }
@@ -45,7 +48,14 @@ public abstract class DefaultStreamProcessor implements Serializable {
     }
 
     public void sendToSink() {
-        processedData.addSink(createSink());
+//        processedData.print();
+        if (appConf.getSinkType().equals(FileSink.FILE_SINK_KEY)) {
+            FileSinkConfiguration fileConf = new FileSinkConfiguration(appConf.getAllProperties(), StreamingApplicationConfiguration.SINK_PREFIX);
+            processedData.writeAsText(fileConf.getFullPath(), FileSystem.WriteMode.OVERWRITE);
+        }
+        else {
+            processedData.addSink(createSink());
+        }
     }
 
     protected abstract DataStream instantiateSource();

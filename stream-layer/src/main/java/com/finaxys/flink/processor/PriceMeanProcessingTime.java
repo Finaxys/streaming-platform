@@ -2,13 +2,10 @@ package com.finaxys.flink.processor;
 
 import com.finaxys.flink.sink.ElasticSink;
 import com.finaxys.flink.source.KafkaSource;
-import com.finaxys.flink.time.ProcessingTimeWatermarkExtractor;
+import com.finaxys.flink.time.SimpleTimestampAndWatermarkExtractor;
 import com.finaxys.serialization.TimestampedAtomLogFlinkSchema;
 import com.finaxys.utils.StreamLayerException;
-import configuration.AtomSimulationConfiguration;
-import configuration.ElasticsearchConfiguration;
-import configuration.KafkaConfiguration;
-import configuration.StreamingApplicationConfiguration;
+import configuration.*;
 import model.atomlogs.AtomLog;
 import model.atomlogs.TimestampedAtomLog;
 import model.atomlogs.price.PriceLog;
@@ -40,10 +37,10 @@ import java.util.Map;
 public class PriceMeanProcessingTime extends DefaultStreamProcessor {
     private static Logger LOGGER = LogManager.getLogger(PriceMeanProcessingTime.class);
 
-    public PriceMeanProcessingTime(AtomSimulationConfiguration atomConfig,
+    public PriceMeanProcessingTime(DelaySimulationConfiguration delayConfig,
                                    StreamingApplicationConfiguration appConfig,
                                    StreamExecutionEnvironment environment) {
-        super(atomConfig, appConfig, environment);
+        super(delayConfig, appConfig, environment);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class PriceMeanProcessingTime extends DefaultStreamProcessor {
                 KafkaConfiguration kafkaConf = new KafkaConfiguration(appConf.getAllProperties(), StreamingApplicationConfiguration.SOURCE_PREFIX);
                 return env.addSource(new FlinkKafkaConsumer010<TimestampedAtomLog>(
                             kafkaConf.getKafkaTopic(),
-                            new TimestampedAtomLogFlinkSchema(atomConf.isTimestampHumanReadableEnabled()),
+                            new TimestampedAtomLogFlinkSchema(),
                             kafkaConf.getKafkaProperties()
                         )
                 );
@@ -87,7 +84,7 @@ public class PriceMeanProcessingTime extends DefaultStreamProcessor {
 
         return ((DataStream<TimestampedAtomLog>)source)
                 .filter(timestampedAtomLog -> timestampedAtomLog.getAtomLog().getLogType().equals(AtomLog.LogTypes.PRICE.getCode()))
-                .assignTimestampsAndWatermarks(new ProcessingTimeWatermarkExtractor())
+                .assignTimestampsAndWatermarks(new SimpleTimestampAndWatermarkExtractor())
                 .map(new MapFunction<TimestampedAtomLog, Tuple2<Long, Long>>() {
                     @Override
                     public Tuple2<Long, Long> map(TimestampedAtomLog in) throws Exception {
@@ -95,7 +92,7 @@ public class PriceMeanProcessingTime extends DefaultStreamProcessor {
                     }
                 })
                 .keyBy(0)
-                .timeWindow(Time.seconds(atomConf.getOutOfOrderMaxDelayInSeconds()))
+                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()/2))
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L), new FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>>() {
                     @Override
                     public Tuple3<Long, Double, Long> fold(Tuple3<Long, Double, Long> previousMean, Tuple2<Long, Long> currentValue) throws Exception {
