@@ -275,28 +275,28 @@ public class AtomTimeStampBuilder {
 
     @Override
     public String toString() {
-        return "AtomTimeStampBuilder{" + "\n" +
-                "nbAgents=" + nbAgents + "\n" +
-                ", nbOrderBooks=" + nbOrderBooks + "\n" +
-                ", nbDays=" + nbDays + "\n" +
-                ", nbTicksIntraday=" + nbTicksIntraday + "\n" +
-                ", nbTicksOpeningPeriod=" + nbTicksOpeningPeriod + "\n" +
-                ", nbTicksClosingPeriod=" + nbTicksClosingPeriod + "\n" +
-                ", firstTickIntraday=" + firstTickIntraday + "\n" +
-                ", lastTickIntraday=" + lastTickIntraday + "\n" +
-                ", dateBeginInMillis=" + dateBeginInMillis + "\n" +
-                ", marketOpenHourInMillis=" + marketOpenHourInMillis + "\n" +
-                ", marketCloseHourInMillis=" + marketCloseHourInMillis + "\n" +
-                ", currentTick=" + currentTick + "\n" +
-                ", currentDay=" + currentDay + "\n" +
-                ", nbMillisPerTick=" + nbMillisPerTick + "\n" +
-                ", nbMaxOrdersPerTick=" + nbMaxOrdersPerTick + "\n" +
-                ", nbMillisPerOrder=" + nbMillisPerOrder + "\n" +
-                ", dateFormatter=" + dateFormatter + "\n" +
-                ", timeFormatter=" + timeFormatter + "\n" +
-                ", dateTimeFormatter=" + dateTimeFormatter + "\n" +
-                ", eventTimeTimestamp=" + eventTimeTimestamp + "\n" +
-                ", dateTimeCurrentTick='" + dateTimeCurrentTick + '\'' + "\n" +
+        return "AtomTimeStampBuilder{" + '\n' +
+                "\t" + "nbAgents=" + nbAgents + '\n' +
+                "\t" + "nbOrderBooks=" + nbOrderBooks + '\n' +
+                "\t" + "nbDays=" + nbDays + '\n' +
+                "\t" + "nbTicksIntraday=" + nbTicksIntraday + '\n' +
+                "\t" + "nbTicksOpeningPeriod=" + nbTicksOpeningPeriod + '\n' +
+                "\t" + "nbTicksClosingPeriod=" + nbTicksClosingPeriod + '\n' +
+                "\t" + "firstTickIntraday=" + firstTickIntraday + '\n' +
+                "\t" + "lastTickIntraday=" + lastTickIntraday + '\n' +
+                "\t" + "dateBeginInMillis=" + dateBeginInMillis + '\n' +
+                "\t" + "marketOpenHourInMillis=" + marketOpenHourInMillis + '\n' +
+                "\t" + "marketCloseHourInMillis=" + marketCloseHourInMillis + '\n' +
+                "\t" + "currentTick=" + currentTick + '\n' +
+                "\t" + "currentDay=" + currentDay + '\n' +
+                "\t" + "nbMillisPerTick=" + nbMillisPerTick + '\n' +
+                "\t" + "nbMaxOrdersPerTick=" + nbMaxOrdersPerTick + '\n' +
+                "\t" + "nbMillisPerOrder=" + nbMillisPerOrder + '\n' +
+                "\t" + "dateFormatter=" + dateFormatter + '\n' +
+                "\t" + "timeFormatter=" + timeFormatter + '\n' +
+                "\t" + "dateTimeFormatter=" + dateTimeFormatter + '\n' +
+                "\t" + "eventTimeTimestamp=" + eventTimeTimestamp + '\n' +
+                "\t" + "dateTimeCurrentTick='" + dateTimeCurrentTick + '\'' + '\n' +
                 '}';
     }
 }
