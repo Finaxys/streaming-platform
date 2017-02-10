@@ -41,12 +41,15 @@ public class AtomLoggerWithDelay extends AtomLogger {
     }
 
     private void computeOutOfOrderDelay(AtomSimulationConfiguration conf) {
-        this.outOfOrderDelay = super.tsb.getNbMillisPerTick() * conf.getOutOfOrderCoefficient();
-        if (outOfOrderDelay > (conf.getOutOfOrderMaxDelayInMillies())) {
-            this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
-        }
+//        this.outOfOrderDelay = super.tsb.getNbMillisPerTick() * conf.getOutOfOrderCoefficient();
+        this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
+//        if (outOfOrderDelay > (conf.getOutOfOrderMaxDelayInMillies())) {
+//            this.outOfOrderDelay = conf.getOutOfOrderMaxDelayInMillies();
+//        }
         if (outOfOrderDelay <= super.tsb.getNbMillisPerTick())
-            throw new InjectLayerException("Wrong parameters for a simulation with out of order logs : the maximum delay is shorter than one single tick");
+            throw new InjectLayerException("Wrong parameters for a simulation with out of order logs : " +
+                    "the maximum delay" + " (" + outOfOrderDelay/1000 + "s) " +
+                    "is shorter than the duration of one single tick" + " (" + super.tsb.getNbMillisPerTick()/1000 + "s)");
 
         LOGGER.debug("Out of order delay = " + outOfOrderDelay + " milliseconds see .AtomLoggerWithDelay.java");
     }
