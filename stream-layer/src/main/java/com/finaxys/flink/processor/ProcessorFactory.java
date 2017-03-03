@@ -1,5 +1,8 @@
 package com.finaxys.flink.processor;
 
+import com.finaxys.flink.processor.meanprice.PriceMeanEventTime;
+import com.finaxys.flink.processor.meanprice.PriceMeanProcessingTime;
+import com.finaxys.flink.processor.meanprice.PriceMeanReference;
 import com.finaxys.utils.StreamLayerException;
 import configuration.DelaySimulationConfiguration;
 import configuration.StreamingApplicationConfiguration;
