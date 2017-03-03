@@ -92,7 +92,5 @@ public class AgentPositionReference extends DefaultAgentPositionProcessor {
     protected void setType() {
         this.type = "agent_position";
     }
-    // TODO ajouter type dans Elastic index
-
 
 }

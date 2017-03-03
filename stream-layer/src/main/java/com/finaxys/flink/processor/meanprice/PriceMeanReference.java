@@ -57,7 +57,7 @@ public class PriceMeanReference extends DefaultMeanPriceProcessor {
             return new MapFunction<TimestampedAtomLog, Tuple2<Long, Long>>() {
                 @Override
                 public Tuple2<Long, Long> map(TimestampedAtomLog in) throws Exception {
-                    return new Tuple2<Long, Long>(in.getEventTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice()); //TODO changed processing time to event time, check result correct
+                    return new Tuple2<Long, Long>(in.getEventTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
                 }
             };
         }
@@ -66,7 +66,7 @@ public class PriceMeanReference extends DefaultMeanPriceProcessor {
             return new MapFunction<TimestampedAtomLog, Tuple2<Long, Long>>() {
                 @Override
                 public Tuple2<Long, Long> map(TimestampedAtomLog in) throws Exception {
-                    return new Tuple2<Long, Long>(in.getProcessingTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice()); //TODO changed processing time to event time, check result correct
+                    return new Tuple2<Long, Long>(in.getProcessingTimeTimeStamp(), PriceLog.class.cast(in.getAtomLog()).getPrice());
                 }
             };
         }
