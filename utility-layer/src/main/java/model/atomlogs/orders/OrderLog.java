@@ -74,7 +74,7 @@ public class OrderLog extends AtomLog {
         public int getIndex() {return index;}
     }
 
-    protected enum OrderTypes {
+    public enum OrderTypes {
         CANCEL_ORDER("C"),
         ICEBERG_ORDER("I"),
         LIMIT_ORDER("L"),
@@ -82,6 +82,14 @@ public class OrderLog extends AtomLog {
         UPDATE_ORDER("U");
         String code;
         OrderTypes(String code) {this.code = code;}
+        public String getCode() {return code;}
+    }
+
+    public enum OrderDirections {
+        SELLING("A"),
+        BUYING("B");
+        String code;
+        OrderDirections(String code) {this.code = code;}
         public String getCode() {return code;}
     }
 
