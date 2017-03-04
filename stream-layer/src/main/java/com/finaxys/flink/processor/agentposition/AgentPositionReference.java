@@ -48,44 +48,21 @@ public class AgentPositionReference extends DefaultAgentPositionProcessor {
                 .assignTimestampsAndWatermarks(new SimpleTimestampAndWatermarkExtractor())
                 .filter(new AtomLogFilter(AtomLog.LogTypes.ORDER.getCode()))
                 .filter(new AtomOrderLogFilter(OrderLog.OrderTypes.LIMIT_ORDER.getCode()));
-//                .map(new AtomOrderLogTransformer<OrderLog>());
 
+        KeyedStream<TimestampedAtomLog, Tuple3<Long, String, String>> agentAndOrderBookKeyedLogs = orderLogs
+                .keyBy(CustomKeySelector.keyByEventTimeAgentAndOrderbook());
 
-        KeyedStream<TimestampedAtomLog, Tuple3<Long, String, String>> timeAgentAndOrderBookKeyedLogs = orderLogs
-                .keyBy(new KeySelector<TimestampedAtomLog, Tuple3<Long, String, String>>() {
-                    @Override
-                    public Tuple3<Long, String, String> getKey(TimestampedAtomLog log) throws Exception {
-                        LimitOrderLog limitOrderLog = LimitOrderLog.class.cast(log.getAtomLog());
-                        return new Tuple3<>(log.getEventTimeTimeStamp(), limitOrderLog.getAgentSenderName(), limitOrderLog.getOrderBookName());
-                    }
-                });
+        WindowedStream<TimestampedAtomLog, Tuple3<Long, String, String>, TimeWindow> timedAndKeyedOrderLogs = agentAndOrderBookKeyedLogs
+                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()));
 
-        WindowedStream<TimestampedAtomLog, Tuple3<Long, String, String>, TimeWindow> timedAndKeyedOrderLogs =
-                timeAgentAndOrderBookKeyedLogs.timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()));
-
-
-        SingleOutputStreamOperator<Tuple4<Long, String, String, Double>> agentPosition = timedAndKeyedOrderLogs.fold(new Tuple4<Long, String, String, Double>(0L, "", "", 0d),
-                new FoldFunction<TimestampedAtomLog, Tuple4<Long, String, String, Double>>() {
-                    @Override
-                    public Tuple4<Long, String, String, Double> fold(Tuple4<Long, String, String, Double> acc, TimestampedAtomLog orderLog) throws Exception {
-                        LimitOrderLog limitOrderLog = LimitOrderLog.class.cast(orderLog.getAtomLog());
-
-                        double nominalPosition = limitOrderLog.getQuantity() * limitOrderLog.getPrice();
-                        if (limitOrderLog.getDirection().equals(OrderLog.OrderDirections.SELLING.getCode()))
-                            nominalPosition = -nominalPosition;
-
-                        return new Tuple4<>(orderLog.getEventTimeTimeStamp(),
-                                limitOrderLog.getAgentSenderName(),
-                                limitOrderLog.getOrderBookName(),
-                                new Double(acc.f2 + nominalPosition)
-                        );
-                    }
-                });
-
+        SingleOutputStreamOperator<Tuple4<Long, String, String, Double>> agentPosition = timedAndKeyedOrderLogs
+                .fold(
+                        new Tuple4<Long, String, String, Double>(0L, "", "", 0d),
+                        new CalculateAgentPosition()
+                );
 
         return agentPosition;
     }
-
 
 
     @Override
@@ -93,4 +70,41 @@ public class AgentPositionReference extends DefaultAgentPositionProcessor {
         this.type = "agent_position";
     }
 
+    protected static class CustomKeySelector {
+        public static KeySelector<TimestampedAtomLog, Tuple3<Long, String, String>> keyByEventTimeAgentAndOrderbook() {
+            return new KeySelector<TimestampedAtomLog, Tuple3<Long, String, String>>() {
+                @Override
+                public Tuple3<Long, String, String> getKey(TimestampedAtomLog log) throws Exception {
+                    LimitOrderLog limitOrderLog = LimitOrderLog.class.cast(log.getAtomLog());
+                    return new Tuple3<>(log.getEventTimeTimeStamp(), limitOrderLog.getAgentSenderName(), limitOrderLog.getOrderBookName());
+                }
+            };
+        }
+        public static KeySelector<TimestampedAtomLog, Tuple3<Long, String, String>> keyByProcessingTimeAgentAndOrderbook() {
+            return new KeySelector<TimestampedAtomLog, Tuple3<Long, String, String>>() {
+                @Override
+                public Tuple3<Long, String, String> getKey(TimestampedAtomLog log) throws Exception {
+                    LimitOrderLog limitOrderLog = LimitOrderLog.class.cast(log.getAtomLog());
+                    return new Tuple3<>(log.getProcessingTimeTimeStamp(), limitOrderLog.getAgentSenderName(), limitOrderLog.getOrderBookName());
+                }
+            };
+        }
+    }
+
+    protected static class CalculateAgentPosition implements FoldFunction<TimestampedAtomLog, Tuple4<Long, String, String, Double>> {
+        @Override
+        public Tuple4<Long, String, String, Double> fold(Tuple4<Long, String, String, Double> acc, TimestampedAtomLog orderLog) throws Exception {
+            LimitOrderLog limitOrderLog = LimitOrderLog.class.cast(orderLog.getAtomLog());
+
+            double nominalPosition = limitOrderLog.getQuantity() * limitOrderLog.getPrice();
+            if (limitOrderLog.getDirection().equals(OrderLog.OrderDirections.SELLING.getCode()))
+                nominalPosition = -nominalPosition;
+
+            return new Tuple4<>(orderLog.getEventTimeTimeStamp(),
+                    limitOrderLog.getAgentSenderName(),
+                    limitOrderLog.getOrderBookName(),
+                    acc.f3 + nominalPosition
+            );
+        }
+    }
 }
