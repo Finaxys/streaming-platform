@@ -43,7 +43,7 @@ public class PriceMeanReference extends DefaultMeanPriceProcessor {
                 .keyBy(0)
                 .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()))
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L),
-                        CalculatePriceMean.fold());
+                        new CalculatePriceMean());
     }
 
 
@@ -73,17 +73,13 @@ public class PriceMeanReference extends DefaultMeanPriceProcessor {
         }
     }
 
-    protected static class CalculatePriceMean {
-        public static FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>> fold() {
-            return new FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>>() {
-                @Override
-                public Tuple3<Long, Double, Long> fold(Tuple3<Long, Double, Long> previousMean, Tuple2<Long, Long> currentValue) throws Exception {
+    protected static class CalculatePriceMean implements FoldFunction<Tuple2<Long, Long>, Tuple3<Long, Double, Long>> {
+        @Override
+        public Tuple3<Long, Double, Long> fold(Tuple3<Long, Double, Long> previousMean, Tuple2<Long, Long> currentValue) throws Exception {
 
-                    Double mean = ( (previousMean.f1 * previousMean.f2) + currentValue.f1 ) / (previousMean.f2 + 1);
+            Double mean = ( (previousMean.f1 * previousMean.f2) + currentValue.f1 ) / (previousMean.f2 + 1);
 
-                    return new Tuple3<>(currentValue.f0, mean, previousMean.f2+1);
-                }
-            };
+            return new Tuple3<>(currentValue.f0, mean, previousMean.f2+1);
         }
     }
 }

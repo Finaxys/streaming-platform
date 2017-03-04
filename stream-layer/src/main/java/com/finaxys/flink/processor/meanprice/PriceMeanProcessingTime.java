@@ -1,16 +1,11 @@
 package com.finaxys.flink.processor.meanprice;
 
 import com.finaxys.flink.function.AtomLogFilter;
-import com.finaxys.flink.processor.DefaultKafkaToElasticProcessor;
 import com.finaxys.flink.time.SimpleTimestampAndWatermarkExtractor;
 import configuration.DelaySimulationConfiguration;
 import configuration.StreamingApplicationConfiguration;
 import model.atomlogs.AtomLog;
 import model.atomlogs.TimestampedAtomLog;
-import model.atomlogs.price.PriceLog;
-import org.apache.flink.api.common.functions.FoldFunction;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -43,9 +38,9 @@ public class PriceMeanProcessingTime extends DefaultMeanPriceProcessor {
                 .assignTimestampsAndWatermarks(new SimpleTimestampAndWatermarkExtractor())
                 .map(PriceMeanReference.ExtractTimeStampAndPrice.processingTime())
                 .keyBy(0)
-                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()/2))
+                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()/2)) //TODO check without /2
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L),
-                        PriceMeanReference.CalculatePriceMean.fold());
+                        new PriceMeanReference.CalculatePriceMean());
     }
 
 
