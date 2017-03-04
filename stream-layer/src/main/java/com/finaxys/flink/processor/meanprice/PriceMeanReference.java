@@ -42,7 +42,8 @@ public class PriceMeanReference extends DefaultMeanPriceProcessor {
                 .map(ExtractTimeStampAndPrice.evenTime())
                 .keyBy(0)
                 .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()))
-                .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L), CalculatePriceMean.fold());
+                .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L),
+                        CalculatePriceMean.fold());
     }
 
 
