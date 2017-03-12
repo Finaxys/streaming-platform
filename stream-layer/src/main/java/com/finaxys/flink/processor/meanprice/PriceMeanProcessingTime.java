@@ -38,7 +38,7 @@ public class PriceMeanProcessingTime extends DefaultMeanPriceProcessor {
                 .assignTimestampsAndWatermarks(new SimpleTimestampAndWatermarkExtractor())
                 .map(PriceMeanReference.ExtractTimeStampAndPrice.processingTime())
                 .keyBy(0)
-                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()/2)) //TODO check without /2
+                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()))
                 .fold(new Tuple3<Long, Double, Long>(0L, 0D, 0L),
                         new PriceMeanReference.CalculatePriceMean());
     }

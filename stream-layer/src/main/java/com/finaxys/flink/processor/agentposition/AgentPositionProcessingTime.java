@@ -50,7 +50,7 @@ public class AgentPositionProcessingTime extends DefaultAgentPositionProcessor {
                 .keyBy(AgentPositionReference.CustomKeySelector.keyByProcessingTimeAgentAndOrderbook());
 
         WindowedStream<TimestampedAtomLog, Tuple3<Long, String, String>, TimeWindow> timedAndKeyedOrderLogs = agentAndOrderBookKeyedLogs
-                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()/2)); //TODO check without /2
+                .timeWindow(Time.seconds(delayConf.getOutOfOrderMaxDelayInSeconds()));
 
         SingleOutputStreamOperator<Tuple4<Long, String, String, Double>> agentPosition = timedAndKeyedOrderLogs
                 .fold(
