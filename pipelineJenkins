@@ -1,0 +1,31 @@
+node {
+    git branch: 'master', url: 'git@github.com:Finaxys/streaming-platform.git'
+    GIT_COMMIT = sh(returnStdout: true,script: "git log -n 1 --pretty=format:'%h'")
+
+    stage ('Compile') {
+        sh 'mvn compile'
+    }
+    
+    stage ('Test') {
+        sh 'mvn test'
+    }
+    
+    stage ('Package') {
+        sh 'mvn package'
+        sh 'echo ${WORKSPACE}'
+    }
+
+    stage('Archival') {
+        archiveArtifacts 'target/*.jar'
+        sh 'rm -rf /home/artifacts/'+GIT_COMMIT
+        sh 'mkdir /home/artifacts/'+GIT_COMMIT
+        sh 'cp ${WORKSPACE}/target/FinanceFlinkProject*.war /home/artifacts/'+GIT_COMMIT
+        sh 'cp ${WORKSPACE}/target/FinanceFlinkProject*.war /home/snapshots'
+        sh 'mv ${WORKSPACE}/target/FinanceFlinkProject*SNAPSHOT.jar  ${WORKSPACE}/target/FinanceFlinkProject_dev.jar'
+    }
+
+    stage('Deploy') {
+        sh './var/lib/jenkins/flink-1.4.2/bin/flink run ${WORKSPACE}/target/FinanceFlinkProject_dev.jar'
+        cleanWs()
+    }
+}
