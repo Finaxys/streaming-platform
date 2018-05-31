@@ -32,6 +32,23 @@
             <organization>Finaxys</organization>
             <organizationUrl>http://www.finaxys.com/</organizationUrl>
         </developer>
+
+	<developer>
+            <id>kbenaissa</id>
+            <name>Mohamed Khalil Ben Aissa</name>
+            <email>kbenaissa@finaxys.com</email>
+            <organization>Finaxys</organization>
+            <organizationUrl>http://www.finaxys.com/</organizationUrl>
+        </developer>
+
+	<developer>
+            <id>dnguyen</id>
+            <name>Denise Nguyen</name>
+            <email>dnguyen@finaxys.com</email>
+            <organization>Finaxys</organization>
+            <organizationUrl>http://www.finaxys.com/</organizationUrl>
+        </developer>
+
     </developers>
 
     <repositories>
@@ -102,8 +119,9 @@
     </dependencyManagement>
 
     <modules>
-        <module>inject-layer</module>
-    <module>stream-layer</module>
+      <module>inject-layer</module>
+      <module>stream-layer</module>
+      <module>stream-layer2</module>
   </modules>
 
 </project>
