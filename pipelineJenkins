@@ -3,29 +3,30 @@ node {
     GIT_COMMIT = sh(returnStdout: true,script: "git log -n 1 --pretty=format:'%h'")
 
     stage ('Compile') {
-        sh 'mvn compile'
+        sh 'mvn compile -pl inject-layer,stream-layer2'
     }
     
     stage ('Test') {
-        sh 'mvn test'
+        sh 'mvn test -pl inject-layer,stream-layer2'
     }
     
     stage ('Package') {
-        sh 'mvn package'
-        sh 'echo ${WORKSPACE}'
+       sh 'mvn package -pl inject-layer,stream-layer2'
+       sh 'echo ${WORKSPACE}'
     }
 
     stage('Archival') {
-        archiveArtifacts 'target/*.jar'
+        archiveArtifacts 'stream-layer2/target/*.jar'
         sh 'rm -rf /home/artifacts/'+GIT_COMMIT
         sh 'mkdir /home/artifacts/'+GIT_COMMIT
-        sh 'cp ${WORKSPACE}/target/FinanceFlinkProject*.war /home/artifacts/'+GIT_COMMIT
-        sh 'cp ${WORKSPACE}/target/FinanceFlinkProject*.war /home/snapshots'
-        sh 'mv ${WORKSPACE}/target/FinanceFlinkProject*SNAPSHOT.jar  ${WORKSPACE}/target/FinanceFlinkProject_dev.jar'
+        sh 'cp ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject*.jar /home/artifacts/'+GIT_COMMIT
+        sh 'cp ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject*.jar /home/snapshots'
+	sh 'rm -f ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject_dev.jar'
+        sh 'mv ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject*.jar  ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject_dev.jar'
     }
 
     stage('Deploy') {
-        sh './var/lib/jenkins/flink-1.4.2/bin/flink run ${WORKSPACE}/target/FinanceFlinkProject_dev.jar'
+        sh '/var/lib/jenkins/flink-1.4.2/bin/flink run ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject_dev.jar'
         cleanWs()
     }
 }

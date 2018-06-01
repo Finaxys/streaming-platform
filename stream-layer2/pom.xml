@@ -151,7 +151,7 @@ under the License.
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.apache.flink.quickstart.StreamingJob</mainClass>
+                                    <mainClass>com.finaxys.flink.flink.AgentConsumer</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
