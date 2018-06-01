@@ -1,7 +1,9 @@
 package com.finaxys.flink.flink;
 
 import com.finaxys.flink.Utils.KafkaUtils;
+import com.finaxys.flink.model.MinMaxPrice;
 import com.finaxys.flink.model.Price;
+import com.finaxys.flink.schema.MinMaxPriceSchema;
 import com.finaxys.flink.schema.PriceSchema;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
@@ -11,7 +13,10 @@ import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
 import java.util.Properties;
 
@@ -37,7 +42,16 @@ public class PriceConsumer {
                 return new Tuple2<>(t1.getField(0), new Tuple2<>(min, max));
             }
         });
-        bestPrices.print();
+
+        DataStream<MinMaxPrice> minMaxPriceDs = bestPrices.map(new MapFunction<Tuple2<String, Tuple2<Integer, Integer>>, MinMaxPrice>() {
+            @Override
+            public MinMaxPrice map(Tuple2<String, Tuple2<Integer, Integer>> stringTuple2Tuple2) throws Exception {
+                Tuple2<Integer, Integer> tuple1 = stringTuple2Tuple2.getField(1);
+                return new MinMaxPrice(stringTuple2Tuple2.getField(0), tuple1.getField(0), tuple1.getField(1));
+            }
+        });
+        minMaxPriceDs.addSink(new FlinkKafkaProducer011<MinMaxPrice>("localhost:9092","ResultMinMaxPrice", new MinMaxPriceSchema()));
+        minMaxPriceDs.print();
         env.execute();
     }
 }
