@@ -3,3 +3,5 @@
 data-sources-layer/atom-generator/target/*
 **/target/*
 stream-layer2/.idea/workspace.xml
+stream-layer2/dependency-reduced-pom.xml
+

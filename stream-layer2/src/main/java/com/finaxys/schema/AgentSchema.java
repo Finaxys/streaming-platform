@@ -1,7 +1,6 @@
-package com.finaxys.flink.schema;
+package com.finaxys.schema;
 
-import com.finaxys.flink.model.Agent;
-import com.finaxys.flink.model.Price;
+import com.finaxys.model.Agent;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;

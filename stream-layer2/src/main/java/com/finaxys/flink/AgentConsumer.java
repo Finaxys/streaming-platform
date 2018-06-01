@@ -1,11 +1,10 @@
-package com.finaxys.flink.flink;
+package com.finaxys.flink;
 
-import com.finaxys.flink.Utils.KafkaUtils;
-import com.finaxys.flink.model.Agent;
-import com.finaxys.flink.model.CashByAgent;
-import com.finaxys.flink.model.Price;
-import com.finaxys.flink.schema.AgentSchema;
-import com.finaxys.flink.schema.CashByAgentSchema;
+import com.finaxys.Utils.KafkaUtils;
+import com.finaxys.model.Agent;
+import com.finaxys.model.CashByAgent;
+import com.finaxys.schema.AgentSchema;
+import com.finaxys.schema.CashByAgentSchema;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -16,8 +15,6 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
-
-import javax.xml.crypto.Data;
 
 public class AgentConsumer {
 

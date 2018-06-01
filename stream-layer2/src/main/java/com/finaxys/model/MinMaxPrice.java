@@ -1,6 +1,4 @@
-package com.finaxys.flink.model;
-
-import org.apache.flink.table.expressions.In;
+package com.finaxys.model;
 
 public class MinMaxPrice {
     private String obName ; //MSFT;

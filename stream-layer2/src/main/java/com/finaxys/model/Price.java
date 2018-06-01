@@ -1,4 +1,4 @@
-package com.finaxys.flink.model;
+package com.finaxys.model;
 
 
 

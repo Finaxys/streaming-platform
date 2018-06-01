@@ -1,24 +1,17 @@
-package com.finaxys.flink.flink;
+package com.finaxys.flink;
 
-import com.finaxys.flink.Utils.KafkaUtils;
-import com.finaxys.flink.model.MinMaxPrice;
-import com.finaxys.flink.model.Price;
-import com.finaxys.flink.schema.MinMaxPriceSchema;
-import com.finaxys.flink.schema.PriceSchema;
-import org.apache.flink.api.common.functions.FilterFunction;
+import com.finaxys.Utils.KafkaUtils;
+import com.finaxys.model.MinMaxPrice;
+import com.finaxys.model.Price;
+import com.finaxys.schema.MinMaxPriceSchema;
+import com.finaxys.schema.PriceSchema;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.api.java.tuple.Tuple;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
-import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
-
-import java.util.Properties;
 
 public class PriceConsumer {
 

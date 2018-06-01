@@ -1,4 +1,4 @@
-package com.finaxys.flink.Utils;
+package com.finaxys.Utils;
 
 import java.util.Properties;
 

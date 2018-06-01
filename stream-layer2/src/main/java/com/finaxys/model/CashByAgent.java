@@ -1,6 +1,4 @@
-package com.finaxys.flink.model;
-
-import javax.security.auth.callback.CallbackHandler;
+package com.finaxys.model;
 
 public class CashByAgent {
 
