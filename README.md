@@ -1,5 +1,6 @@
 # Streaming platform
 
+
 How to ingest million of transactions every day and produce accurate reporting in near real-time? This is the challenge that we face nowadays in Financial industry. 
 
 Front-Office, Risk Management and Compliance used to be separate systems with different workload: online interaction and real-time analytics in intraday on a side, batch and consolidated reporting on the other.
