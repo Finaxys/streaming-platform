@@ -1,14 +1,14 @@
-package com.finaxys.flink;
+package com.finaxys.flink.processor;
 
-import com.finaxys.Utils.KafkaUtils;
+import com.finaxys.streamintegrator.Utils.KafkaUtils;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.CheckpointConfig;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-/* import org.apache.flink.streaming.connectors.fs.bucketing.BucketingSink;
-import org.apache.flink.streaming.connectors.fs.bucketing.DateTimeBucketer; */
+/* import org.apache.processor.streaming.connectors.fs.bucketing.BucketingSink;
+import org.apache.processor.streaming.connectors.fs.bucketing.DateTimeBucketer; */
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 
 public class DataTransfer {
@@ -39,7 +39,7 @@ public class DataTransfer {
             // Init the stream
             DataStream<String> stream = env
                     .addSource(new FlinkKafkaConsumer010<String>(
-                            "flink-test",
+                            "processor-test",
                             new SimpleStringSchema(),
                             KafkaUtils.getProperties()));
 

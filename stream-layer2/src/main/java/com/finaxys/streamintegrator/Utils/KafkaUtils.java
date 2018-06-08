@@ -1,4 +1,4 @@
-package com.finaxys.Utils;
+package com.finaxys.streamintegrator.Utils;
 
 import java.util.Properties;
 
@@ -7,6 +7,7 @@ public class KafkaUtils {
     static Properties properties = new Properties();
     static String brokerList = "172.20.0.3:9092";
     static String zookeeper = "172.20.0.2:2181";
+    static String topicAtom = "TopicSAAS";
 
     public static Properties getProperties() {
         if (properties == null)
@@ -31,4 +32,8 @@ public class KafkaUtils {
         return zookeeper;
     }
 
+
+    public static String getTopicAtom() {
+        return topicAtom;
+    }
 }

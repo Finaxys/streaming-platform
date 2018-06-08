@@ -1,6 +1,6 @@
-package com.finaxys.flink;
+package com.finaxys.flink.processor;
 
-import com.finaxys.Utils.KafkaUtils;
+import com.finaxys.streamintegrator.Utils.KafkaUtils;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;

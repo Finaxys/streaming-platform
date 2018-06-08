@@ -1,4 +1,4 @@
-package com.finaxys.flink;
+package com.finaxys.flink.processor;
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.ValueState;

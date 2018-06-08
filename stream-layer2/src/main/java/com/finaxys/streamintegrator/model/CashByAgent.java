@@ -1,4 +1,4 @@
-package com.finaxys.model;
+package com.finaxys.streamintegrator.model;
 
 public class CashByAgent {
 

@@ -1,6 +1,6 @@
-package com.finaxys.schema;
+package com.finaxys.streamintegrator.schema;
 
-import com.finaxys.model.Agent;
+import com.finaxys.streamintegrator.model.Agent;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.serialization.SerializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
