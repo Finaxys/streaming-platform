@@ -84,4 +84,20 @@ public class Agent {
             );
         else return null ;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Agent other = (Agent) obj;
+        return this.name.equals(other.getName()) && this.cash.equals(other.getCash()) &&  this.obName.equals(other.getObName()) &&  this.nbInvest.equals(other.getNbInvest()) &&   this.lastFixedPrice.equals(other.getLastFixedPrice());
+    }
+
 }

@@ -105,9 +105,31 @@ public class Price implements  Serializable{
                     split[5],
                     split[6],
                     Math.abs(Integer.parseInt(split[7])),
-                    Math.abs(Integer.parseInt(split[2]))
+                    Math.abs(Integer.parseInt(split[8]))
             );
         else return null ;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Price other = (Price) obj;
+        return  this.obName.equals(other.getObName())
+                && this.price == other.getPrice()
+                && this.executedQuty == other.getExecutedQuty()
+                && this.dir.equals(other.getDir())
+                && this.askOrderID.equals(other.getAskOrderID())
+                && this.bidOrderI.equals(other.getBidOrderI())
+                && this.bestAskPrice == other.getBestAskPrice()
+                && this.bestBidPrice == other.getBestBidPrice();
     }
 
 }
