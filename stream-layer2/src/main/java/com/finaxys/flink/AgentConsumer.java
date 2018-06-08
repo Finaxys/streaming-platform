@@ -39,7 +39,7 @@ public class AgentConsumer {
                         return new CashByAgent(name,cash);
                     }
                 });
-        modelStream.addSink(new FlinkKafkaProducer011<CashByAgent>("localhost:9092","ResultCashByAgents", new CashByAgentSchema()));
+            modelStream.addSink(new FlinkKafkaProducer011<CashByAgent>(KafkaUtils.getBrokerList(),"ResultCashByAgents", new CashByAgentSchema()));
         modelStream.print();
         env.execute();
     }

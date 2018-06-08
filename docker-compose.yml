@@ -1,0 +1,30 @@
+version: '2'
+services:
+  kafka:
+    image: "wurstmeister/kafka"
+    ports:
+      - "9092:9092"
+    hostname: kafka
+    links:
+      - zookeeper
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_PORT=9092
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    hostname: zookeeper
+
+  flink:
+    build: ./stream-layer2
+    volumes:
+      - /opt/volumes/m2/:/usr/share/maven/ref/repository
+      - /opt/volumes/m2r/:/root/.m2
+    links:
+      - kafka
+    ports:
+      - "8081:8081"
+    command: /bin/bash -c "cd /docker/flink/flink-1.4.2 && ./bin/start-local.sh && ./bin/flink run /docker/proj/target/FinanceFlinkProject-0.1.jar"

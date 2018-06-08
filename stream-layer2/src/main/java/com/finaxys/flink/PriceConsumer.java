@@ -43,7 +43,7 @@ public class PriceConsumer {
                 return new MinMaxPrice(stringTuple2Tuple2.getField(0), tuple1.getField(0), tuple1.getField(1));
             }
         });
-        minMaxPriceDs.addSink(new FlinkKafkaProducer011<MinMaxPrice>("localhost:9092","ResultMinMaxPrice", new MinMaxPriceSchema()));
+        minMaxPriceDs.addSink(new FlinkKafkaProducer011<MinMaxPrice>(KafkaUtils.getBrokerList(),"ResultMinMaxPrice", new MinMaxPriceSchema()));
         minMaxPriceDs.print();
         env.execute();
     }
