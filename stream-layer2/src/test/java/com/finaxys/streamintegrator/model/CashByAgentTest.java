@@ -8,7 +8,7 @@ public class CashByAgentTest {
 
 
     @Test
-    public void toStringKafkaTest() throws Exception {
+    public void testToStringKafka() throws Exception {
         String string = "Khalil;20";
         CashByAgent cashByAgent = new CashByAgent("Khalil",new Long("20"));
         assertEquals(string,cashByAgent.toStringKafka());
