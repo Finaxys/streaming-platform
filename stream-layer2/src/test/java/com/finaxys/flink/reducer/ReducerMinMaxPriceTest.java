@@ -2,8 +2,9 @@ package com.finaxys.flink.reducer;
 
 import com.finaxys.flink.function.reducer.ReduceMinMaxPrice;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ReducerMinMaxPriceTest {
 

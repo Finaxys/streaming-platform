@@ -96,10 +96,16 @@ under the License.
             <artifactId>flink-streaming-scala_2.11</artifactId>
             <version>1.4.2</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.1.0</version>
+            <scope>test</scope>
+        </dependency> -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 

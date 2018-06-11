@@ -10,14 +10,16 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.util.StreamingMultipleProgramsTestBase;
 import org.apache.flink.types.Row;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 import javax.security.auth.callback.CallbackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class MapCashByAgentTest extends StreamingMultipleProgramsTestBase {
 
