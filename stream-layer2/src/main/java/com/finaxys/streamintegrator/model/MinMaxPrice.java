@@ -52,4 +52,20 @@ public class MinMaxPrice {
                 Math.abs(Integer.parseInt(split[2]))
         );
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        MinMaxPrice other = (MinMaxPrice) obj;
+        return this.obName.equals(other.getObName()) && this.bestAskPrice == other.getBestAskPrice() &&  this.bestBidPrice == other.getBestBidPrice() ;
+
+    }
 }
