@@ -11,12 +11,18 @@ services:
       - KAFKA_ADVERTISED_HOST_NAME=kafka
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_ADVERTISED_PORT=9092
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
 
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
     hostname: zookeeper
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
 
   flink:
     build: ./stream-layer2
@@ -28,3 +34,15 @@ services:
     ports:
       - "8081:8081"
     command: /bin/bash -c "cd /docker/flink/flink-1.4.2 && ./bin/start-local.sh && ./bin/flink run /docker/proj/target/FinanceFlinkProject-0.1.jar"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+   
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
