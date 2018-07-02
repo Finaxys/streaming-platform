@@ -5,8 +5,10 @@ import java.util.Properties;
 public class KafkaUtils {
 
     static Properties properties = new Properties();
-    static String brokerList = "10.5.0.5:9092";
-    static String zookeeper = "10.5.0.6:2181";
+    //static String brokerList = "10.5.0.5:9092";
+    static String brokerList = "localhost:9092";
+    //static String zookeeper = "10.5.0.6:2181";
+    static String zookeeper = "localhost:2181";
     static String topicAtom = "TopicSAAS";
 
     public static Properties getProperties() {
@@ -22,13 +24,15 @@ public class KafkaUtils {
 
     public static String getBrokerList() {
         if (brokerList == null)
-            brokerList = "10.5.0.5:9092";
+            //brokerList = "10.5.0.5:9092";
+            brokerList = "localhost:9092";
         return brokerList;
     }
 
     public static String getZookeeper() {
         if (zookeeper == null)
-            zookeeper = "10.5.0.6:2181";
+            //zookeeper = "10.5.0.6:2181";
+            zookeeper = "localhost:2181";
         return zookeeper;
     }
 

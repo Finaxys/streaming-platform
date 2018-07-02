@@ -169,7 +169,7 @@ under the License.
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.finaxys.flink.processor.PriceConsumer</mainClass>
+                                    <mainClass>com.finaxys.flink.processor.AgentConsumer</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
