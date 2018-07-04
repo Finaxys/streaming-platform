@@ -1,0 +1,5 @@
+# Flink
+#- src: https://github.com/andrewrothstein/ansible-flink.git
+
+# Kafka
+- src: https://github.com/jaytaylor/ansible-kafka

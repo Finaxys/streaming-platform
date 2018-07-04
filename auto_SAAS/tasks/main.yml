@@ -1,0 +1,79 @@
+---
+- hosts: saas-pro
+  user: "{{ user }}"
+  become: true
+  vars_files:
+    - ../install/group_vars/all.yml
+
+  roles:
+    - {
+        role: AnsibleShipyard.ansible-zookeeper,
+        zookeeper_version: "{{ role_zookeeper_version }}",
+        when: (role_install_zookeeper)
+    }
+    - {
+        role: java,
+        when: (role_install_java)
+    }
+    - {
+        role: "ansible-kafka",
+        kafka_hosts: ["0.0.0.0"],
+        kafka_zookeeper_hosts: ["0.0.0.0"],
+        kafka_version: "{{ role_kafka_version }}",
+        kafka_scala_severion: "{{ role_scala_severion }}",
+        when: (role_install_kafka)
+    }
+    - {
+        role: flink,
+        when: (role_install_flink)
+    }
+    - {
+        role: elasticsearch,
+        when: (role_install_elasticsearch)
+    }
+    - {
+        role: kibana,
+        when: (role_install_kibana)
+    }
+    - {
+        role: metricbeat,
+        when: (role_install_metricbeat)
+    }
+    - {
+        role: logstash,
+        when: (role_install_logstash)
+    }
+
+  tasks: 
+    - name: Install base packages
+      apt: name={{ item }} state=installed
+      with_items:
+        - git
+        - maven
+      tags:
+        - packages
+
+    - name: Generate SSH key
+      become: false
+      user:
+        name: "{{ user }}"
+        generate_ssh_key: yes
+        ssh_key_file: .ssh/id_rsa
+
+    - name: Clone a private repository into /opt.
+      git:
+        repo: "{{ git_repository }}"
+        version: master
+        dest: /opt/private-repo
+        accept_hostkey: yes
+
+    - name: Create 'test-one' topic
+      become: false
+      shell: /usr/local/kafka/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test-one
+
+    - name: Create 'test-two' topic
+      become: false
+      shell: /usr/local/kafka/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test-two
+
+    - name: Build Project
+      shell: mvn clean install chdir=/opt/private-repo/{{ project_dir }}

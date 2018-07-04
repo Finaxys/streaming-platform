@@ -1,0 +1,56 @@
+---
+# Roles installation
+role_install_flink: true
+role_install_java: true
+role_install_kafka: true
+role_install_flink: true
+role_install_elasticsearch: true
+role_install_kibana: true
+role_install_logstash: true
+role_install_metricbeat: false
+
+role_install_zookeeper: true
+
+# Git
+git_repository: https://github.com/Finaxys/streaming-platform.git
+project_dir: stream-layer2
+
+# Vagrant
+user: vagrant
+
+# Configuration per role
+## Flink
+flink_url: https://archive.apache.org/dist/flink/flink-1.4.2/flink-1.4.2-bin-scala_2.11.tgz
+flink_archive: /usr/local/flink-1.4.2-bin-scala_2.11.tgz
+flink_path: /usr/local/flink-1.4.2
+flink_link: /usr/local/flink
+
+## Elasticsearch
+role_elasticsearch_version: 6.3.0
+role_elasticsearch_host: 0.0.0.0
+role_elastic_search_port: 9200
+
+## Java
+role_java_version: 8
+role_java_subversion: 131
+role_java_build_custom: 11
+
+## Kafka
+role_kafka_version: 0.10.2.1
+role_kafka_scala_severion: 2.11
+role_zookeeper_version: 3.4.12
+
+## Kibana
+role_kibana_version: 6.3.0
+role_kibana_server_host: 
+role_kibana_server_port: 5601
+role_kibana_elasticsearch_url: http://localhost:9200
+
+## Logstash
+role_logstash_version: 6.3.0
+role_logstash_src: ../roles/logstash/templates/apache-01.conf
+role_logstash_dest: /etc/logstash/conf.d/apache-01.conf
+role_logstash_mode: 0644
+
+## Metricbeat
+role_metricbeat_version: 6.3.0
