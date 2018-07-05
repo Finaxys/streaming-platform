@@ -16,9 +16,9 @@
         when: (role_install_java)
     }
     - {
-        role: "ansible-kafka",
-        kafka_hosts: ["0.0.0.0"],
-        kafka_zookeeper_hosts: ["0.0.0.0"],
+        role: ansible-kafka,
+        kafka_hosts: ["{{ role_kafka_hosts }}"],
+        kafka_zookeeper_hosts: ["{{ role_kafka_zookeeper_hosts }}"],
         kafka_version: "{{ role_kafka_version }}",
         kafka_scala_severion: "{{ role_scala_severion }}",
         when: (role_install_kafka)

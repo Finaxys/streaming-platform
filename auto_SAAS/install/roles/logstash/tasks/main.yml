@@ -1,17 +1,19 @@
 ---
+#
+# Installing Logstash
+#
+
 - name: Install base packages
-  apt: name={{ item }} state=installed
-  with_items:
-    - logstash
-  tags:
-    - packages  
-  
+  apt:
+    name: logstash
+    update_cache: yes
+
 - name: example copying file with owner and permissions
   copy:
-    src: ../install/roles/logstash/templates/apache-01.conf
-    dest: /etc/logstash/conf.d/apache-01.conf
-    owner: vagrant
-    mode: 0644  
+    src: "{{ role_logstash_src }}"
+    dest: "{{ role_logstash_dest }}"
+    owner: "{{ user }}"
+    mode: "{{ role_logstash_mode }}"
 
 - name: Start service logstash , if not running
   service:

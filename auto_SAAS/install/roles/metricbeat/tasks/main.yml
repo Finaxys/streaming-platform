@@ -7,7 +7,7 @@
 
 - name: Install Metricbeat with apt
   apt:
-   name: metricbeat
+   name: metricbeat={{ role_metricbeat_version }}
    update_cache: yes
     
 # Starting Metricbeat
