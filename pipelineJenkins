@@ -26,7 +26,7 @@ node {
     }
 
     stage('Deploy') {
-        sh '/var/lib/jenkins/flink-1.4.2/bin/flink run ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject_dev.jar'
+        sh '/var/lib/jenkins/flink-1.4.2/bin/flink run ${WORKSPACE}/stream-layer2/target/FinanceFlinkProject_dev.jar &'
         cleanWs()
     }
 }
