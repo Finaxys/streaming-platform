@@ -1,8 +1,11 @@
 package com.finaxys.flink.processor;
 
+import com.finaxys.flink.function.mapper.MapPriceByCat;
 import com.finaxys.flink.function.mapper.MapTuple2ToMinMax;
 import com.finaxys.streamintegrator.model.Price;
+import com.finaxys.streamintegrator.model.PriceByCat;
 import com.finaxys.streamintegrator.schema.MinMaxPriceSchema;
+import com.finaxys.streamintegrator.schema.PriceByCatSchema;
 import com.finaxys.streamintegrator.schema.PriceSchema;
 import com.finaxys.streamintegrator.Utils.KafkaUtils;
 import com.finaxys.flink.function.mapper.MapMinMaxPrice;
@@ -26,7 +29,9 @@ public class PriceConsumer {
                 .keyBy(0).reduce(new ReduceMinMaxPrice());
         DataStream<MinMaxPrice> minMaxPriceDs = bestPrices.map(new MapTuple2ToMinMax());
         minMaxPriceDs.addSink(new FlinkKafkaProducer011<MinMaxPrice>(KafkaUtils.getBrokerList(), "ResultMinMaxPrice", new MinMaxPriceSchema()));
-        minMaxPriceDs.print();
+        DataStream<PriceByCat> pricesByCat = prices
+                .map(new MapPriceByCat());
+        pricesByCat.addSink(new FlinkKafkaProducer011<PriceByCat>(KafkaUtils.getBrokerList(), "ResultPrice", new PriceByCatSchema()));
         env.execute();
     }
 }

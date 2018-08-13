@@ -89,9 +89,9 @@ public class Price implements  Serializable{
 
     @Override
     public String toString() {
-        return "AtomPrice [obName=" + obName + ", price=" + price + ", executedQuty="
-                + executedQuty + ", dir=" + dir + ", askOrderID=" + askOrderID + ", bidOrderI=" + bidOrderI
-                + ", bestAskPrice=" + bestAskPrice + ", bestBidPrice=" + bestBidPrice + "]";
+        return  obName + ";" + price + ";"
+                + executedQuty + ";" + dir + ";" + askOrderID + ";" + bidOrderI
+                + ";" + bestAskPrice + ";" + bestBidPrice + ";";
     }
 
     public static Price fromString(String string) {

@@ -24,6 +24,7 @@ public class AgentConsumer {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env);
         DataStream<Agent> agents = env.addSource(new FlinkKafkaConsumer011<>(
+
                 KafkaUtils.getTopicAtom(), new AgentSchema(), KafkaUtils.getProperties()));
         tableEnv.registerDataStream("cashTable", agents);
         Table orders = tableEnv.scan("cashTable");
@@ -32,7 +33,7 @@ public class AgentConsumer {
         DataStream<CashByAgent> modelStream = resultSteam
                 .filter(new FilterCashByAgent().getCashByAgent())
                 .map(new MapCashByAgent());
-        modelStream.addSink(new FlinkKafkaProducer011<CashByAgent>(KafkaUtils.getBrokerList(), "ResultCashByAgents", new CashByAgentSchema()));
+        modelStream.addSink(new FlinkKafkaProducer011<CashByAgent>(KafkaUtils.getBrokerList(), "ResultCashByAgent", new CashByAgentSchema()));
         modelStream.print();
         env.execute();
     }
