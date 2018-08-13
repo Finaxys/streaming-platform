@@ -9,7 +9,7 @@
   file: src={{ flink_path }} dest={{ flink_link }} state=link
 
 - name: Chown Flink
-  file: path={{ flink_path }} owner=vagrant recurse=yes
+  file: path={{ flink_path }} owner={{ user }} recurse=yes
 
 #- name: Start Apache Flink
 #  shell: /usr/local/flink/bin/start-local.sh && /usr/local/flink/bin/flink run /opt/private-repo/ {{ project_user_}}/target/FinanceFlinkProject-0.1.jar

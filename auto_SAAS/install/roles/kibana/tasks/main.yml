@@ -7,8 +7,8 @@
 
 - name: Install Kibana with apt
   apt:
-   name: kibana
-   update_cache: yes
+    name: kibana={{ role_kibana_version }}
+    update_cache: yes
  
 # Configurations
 
@@ -16,19 +16,19 @@
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'server.host:'
-   line: 'server.host: 0.0.0.0'
+   line: 'server.host: {{ role_kibana_server_host }}'
 
 - name: Defining server port
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'server.port:'
-   line: 'server.port: 5601'
+   line: 'server.port: {{ role_kibana_server_port }}'
     
 - name: Defining Elasticsearch URL
   lineinfile:
    destfile: /etc/kibana/kibana.yml
    regexp: 'elasticsearch.url:'
-   line: 'elasticsearch.url: "http://localhost:9200"'
+   line: "elasticsearch.url: {{ role_kibana_elasticsearch_url }}"
    
 # Starting Kibana
 

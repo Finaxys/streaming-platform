@@ -14,14 +14,14 @@
 
 - name: Adding Elasticsearch repo
   apt_repository:
-   repo: deb https://artifacts.elastic.co/packages/5.x/apt stable main
+   repo: deb https://artifacts.elastic.co/packages/{{ role_elasticsearch_version }}.x/apt stable main
    state: present
 
 # Installing Elasticsearch
 
 - name: Install Elasticsearch
   apt:
-   name: elasticsearch
+   name: elasticsearch={{ role_elasticsearch_full_version }}
    update_cache: yes
    
 # Update Elasticsearch config file to allow access (to secure Elasticsearch, bind to 'localhost'). 
@@ -30,7 +30,7 @@
   lineinfile:
    destfile: /etc/elasticsearch/elasticsearch.yml
    regexp: 'network.host:'
-   line: 'network.host: 0.0.0.0'
+   line: 'network.host: {{ role_elasticsearch_host }}'
  
 # Update Elasticsearch port in config file 
 
@@ -38,7 +38,7 @@
   lineinfile:
    destfile: /etc/elasticsearch/elasticsearch.yml
    regexp: 'http.port:'
-   line: 'http.port: 9200'
+   line: 'http.port: {{ role_elasticsearch_port }}'
  
 # Start Elasticsearch
 - name: Starting Elasticsearch
