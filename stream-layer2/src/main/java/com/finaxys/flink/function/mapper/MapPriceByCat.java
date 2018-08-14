@@ -7,6 +7,6 @@ import org.apache.flink.api.common.functions.MapFunction;
 public class MapPriceByCat implements MapFunction<Price, PriceByCat> {
 
     public PriceByCat map(Price price) throws Exception {
-        return new PriceByCat(price.getObName(),price.getPrice());
+        return new PriceByCat(price.getObName(),price.getPrice(), price.getExecutedQuty());
     }
 }
