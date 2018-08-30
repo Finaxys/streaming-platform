@@ -1,0 +1,11 @@
+---
+- name: run flink job
+  hosts: localhost
+  serial: 1
+  become: false
+  environment:
+    PATH: '{{ ansible_env.PATH }}:{{ ansible_env.PWD }}/..'
+
+  roles:
+    - role: package/flink-job
+     
