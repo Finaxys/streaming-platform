@@ -8,8 +8,8 @@ public class MapOrderByDir implements MapFunction<Order, OrderByDir> {
 
     public OrderByDir map(Order order) throws Exception {
         if(order.getDir().equals("A"))
-            return new OrderByDir("Ask",order.getQuty());
+            return new OrderByDir("Ask",order.getQuty(),order.getPart());
         else
-            return  new OrderByDir("Buy",order.getQuty());
+            return  new OrderByDir("Buy",order.getQuty(),order.getPart());
     }
 }

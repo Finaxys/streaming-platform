@@ -5,10 +5,12 @@ public class OrderByDir {
 
     private String dir ; // nom de l'Agent
     private Integer quty ;// le quty de l'agent
+    private Long price ; //price of the order
 
-    public OrderByDir(String dir, Integer quty) {
+    public OrderByDir(String dir, Integer quty, Long price) {
         this.dir = dir;
         this.quty = quty;
+        this.price = price;
     }
 
     public OrderByDir() {
@@ -31,6 +33,10 @@ public class OrderByDir {
         this.quty = quty;
     }
 
+    public Long getPrice() { return price; }
+
+    public void setPrice(Long price) { this.price = price; }
+
     @Override
     public String toString() {
         return "qutyByAgent{" +
@@ -42,12 +48,13 @@ public class OrderByDir {
     public static OrderByDir fromString(String string) {
         String[] split = string.split(";");
         return new OrderByDir(split[0],
-                Math.abs(Integer.parseInt(split[1]))
+                Math.abs(Integer.parseInt(split[1])),
+                Math.abs(Long.parseLong(split[2]))
         );
     }
 
     public String toStringKafka(){
-        return this.dir+";"+this.quty;
+        return this.dir+";"+this.quty+";"+this.price;
 
     }
 
@@ -64,6 +71,6 @@ public class OrderByDir {
             return false;
         }
         OrderByDir other = (OrderByDir) obj;
-        return this.dir.equals(other.getdir()) && this.quty.equals(other.getquty()) ;
+        return this.dir.equals(other.getdir()) && this.quty.equals(other.getquty()) && this.price.equals(other.getPrice()) ;
     }
 }
