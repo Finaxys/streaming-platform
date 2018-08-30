@@ -20,7 +20,7 @@ public class KafkaUtils {
 
     public static String getBrokerList() {
         if (brokerList == null)
-            brokerList = "localhost:9092";
+            brokerList = "broker.kafka.l4lb.thisdcos.directory:9092";
         return brokerList;
     }
 

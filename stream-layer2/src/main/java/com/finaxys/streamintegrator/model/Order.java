@@ -8,13 +8,13 @@ public class Order {
     Integer extId; //Order ID (used to cancel or updated it, for instance)
     String type; // Order type (L=LimitOrder, C=CancelOrder, I=IcebergOrder, M=MarketOrder, U=UpdateOrder)
     String dir;  //Order direction (A=ASK (selling) and B=BUY (buying))
-    Integer part; // For IcebergOrder, the quantity of smaller orders to send to complete the all IcebergOrder
+    Long part; // For IcebergOrder, the quantity of smaller orders to send to complete the all IcebergOrder
     Integer quty; // Quantity to sell/buy
     Integer initQuty; // For IcebergOrder, the initial quantity of the order
     Long valid; // Order validity
 
 
-    public Order(String obName, String senderName, Integer extId, String type, String dir, Integer part, Integer quty, Integer initQuty, Long valid) {
+    public Order(String obName, String senderName, Integer extId, String type, String dir, Long part, Integer quty, Integer initQuty, Long valid) {
         this.obName = obName;
         this.senderName = senderName;
         this.extId = extId;
@@ -70,11 +70,11 @@ public class Order {
         this.dir = dir;
     }
 
-    public Integer getPart() {
+    public Long getPart() {
         return part;
     }
 
-    public void setPart(Integer part) {
+    public void setPart(Long part) {
         this.part = part;
     }
 
@@ -127,7 +127,7 @@ public class Order {
                     Math.abs(Integer.parseInt(splitted[3])),
                     splitted[4],
                     splitted[5],
-                    Math.abs(Integer.parseInt(splitted[6])),
+                    Math.abs(Long.parseLong(splitted[6])),
                     Math.abs(Integer.parseInt(splitted[7])),
                     Math.abs(Integer.parseInt(splitted[8])),
                     Math.abs(Long.parseLong(splitted[9]))

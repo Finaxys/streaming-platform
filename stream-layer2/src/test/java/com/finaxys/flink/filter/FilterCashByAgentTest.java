@@ -15,6 +15,7 @@ import org.junit.Test;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FilterCashByAgentTest {
 
@@ -26,7 +27,7 @@ public class FilterCashByAgentTest {
          }
 
     @Test
-    public void testSum() throws Exception {
+    public void should_return_X_when_Y() throws Exception {
 
 
 
@@ -48,14 +49,35 @@ public class FilterCashByAgentTest {
         Tuple2<Boolean, Row> tuple3 = new Tuple2<>(true, row3);
 
         DataSet< Tuple2<Boolean, Row>> dataSet = env.fromElements(tuple1,tuple2,tuple3);
-
-        DataSet< Tuple2<Boolean, Row>> dataSetResult = dataSet.filter(new FilterCashByAgent().getCashByAgent());
+//when
+        DataSet< Tuple2<Boolean, Row>> dataSetResult = dataSet.filter(new FilterCashByAgent());
 
         // call the methods that you have implemented
         assertEquals(Lists.newArrayList(
                 new   Tuple2<Boolean, Row>(true,row1),
                 new   Tuple2<Boolean, Row>(true,row3)
         ),dataSetResult.collect());
+
+
+
+    }
+
+
+    @Test
+    public void should_return_not_filtered_when_called_agent_x() throws Exception {
+
+        //Given
+
+        Tuple2<Boolean, Row> tuple1 = new Tuple2<>(true, null);
+        FilterCashByAgent filter = new FilterCashByAgent();
+        //When
+
+        boolean isFiltered = filter.filter(tuple1);
+
+        // call the methods that you have implemented
+        assertTrue(isFiltered);
+
+
 
     }
 

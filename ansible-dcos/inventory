@@ -1,0 +1,25 @@
+[defaults]
+m1.dcos ansible_ssh_host=192.168.65.90
+a1.dcos ansible_ssh_host=192.168.65.111
+a2.dcos ansible_ssh_host=192.168.65.121
+a3.dcos ansible_ssh_host=192.168.65.131
+a4.dcos ansible_ssh_host=192.168.65.141
+p1.dcos ansible_ssh_host=192.168.65.60
+
+[webservers]
+m1.dcos
+a1.dcos
+a2.dcos
+a3.dcos
+a4.dcos
+p1.dcos
+
+
+[datacenter:children]
+webservers
+
+[datacenter:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_pass=vagrant
+ansible_sudo_pass=vagrant
+username=vagrant

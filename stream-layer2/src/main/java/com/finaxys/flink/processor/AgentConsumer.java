@@ -31,7 +31,7 @@ public class AgentConsumer {
         Table resultCash = orders.groupBy("name").select("name, cash.Sum as cashSum");
         DataStream<Tuple2<Boolean, Row>> resultSteam = tableEnv.toRetractStream(resultCash, Row.class);
         DataStream<CashByAgent> modelStream = resultSteam
-                .filter(new FilterCashByAgent().getCashByAgent())
+                .filter(x -> x.getField(0))
                 .map(new MapCashByAgent());
         modelStream.addSink(new FlinkKafkaProducer011<CashByAgent>(KafkaUtils.getBrokerList(), "ResultCashByAgent", new CashByAgentSchema()));
         modelStream.print();
