@@ -1,0 +1,10 @@
+---
+
+- name: install kubernetes
+  import_playbook: kubernetes.yml
+
+- name: install packages
+  import_playbook: packages.yml
+
+- name: run flink job
+  import_playbook: run-job.yml

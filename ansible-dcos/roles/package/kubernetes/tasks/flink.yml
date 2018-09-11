@@ -1,0 +1,20 @@
+---
+# This playbook runs flink in a kubernetes cluster
+
+#- name: Remove jobmanager deployment in kubernetes
+#  command: "kubectl delete -f {{ role_path }}/tasks/flink/jobmanager-deployment.yaml"
+
+#- name: Remove taskmanager deployment in kubernetes
+#  command: "kubectl delete -f {{ role_path }}/tasks/flink/taskmanager-deployment.yaml"
+
+#- name: Remove jobmanager service in kubernetes
+#  command: "kubectl delete -f {{ role_path }}/tasks/flink/jobmanager-service.yaml"
+
+- name: configure jobmanager deployment in kubernetes
+  command: "kubectl create -f {{ role_path }}/tasks/flink/jobmanager-deployment.yaml"
+
+- name: configure taskmanager deployment in kubernetes
+  command: "kubectl create -f {{ role_path }}/tasks/flink/taskmanager-deployment.yaml"
+
+- name: run jobmanager service in kubernetes
+  command: "kubectl create -f {{ role_path }}/tasks/flink/jobmanager-service.yaml"

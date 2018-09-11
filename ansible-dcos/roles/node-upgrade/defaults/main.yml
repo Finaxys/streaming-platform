@@ -1,0 +1,3 @@
+---
+dcos_path_tmp: /tmp/dcos
+dcos_port_webserver: 8080
