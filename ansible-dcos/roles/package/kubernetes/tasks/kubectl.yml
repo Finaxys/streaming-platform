@@ -42,7 +42,7 @@
 
 - name: wait for kubernetes to come up
   uri:
-    url: "https://{{ groups['webservers'][5] }}:6443"
+    url: "https://{{ groups['webservers'][4] }}:6443"
     validate_certs: no
   retries: 60
   delay: 10
