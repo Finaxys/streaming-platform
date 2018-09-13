@@ -1,3 +1,5 @@
+This project is used to install the Big Data services automatically through Ansible.
+
 # On the remote machine
 ## When "locate" command fails (because the target was recently created or because it is not in the path)
 - sudo updatedb
