@@ -1,4 +1,53 @@
 ---
+### Custom configurations for Streaming As A Service ###
+
+# Roles installation
+role_install_flink: true
+role_install_kafka: true
+role_install_elastic: true
+role_install_kibana: true
+role_install_logstash: true
+
+role_install_kubernetes: true
+
+# Flink
+jar_project_path: '~/Téléchargements/'
+jar_project_name: 'FinanceFlinkProject.jar'
+
+# Kafka
+kafka_version:  2.3.0-1.1.0
+kafka_options_brokers_count: 1
+kafka_options_brokers_cpus: 1
+kafka_options_brokers_mem: 512
+kafka_options_brokers_kafka_offsets: 1
+
+# Elastic
+elastic_version: 2.4.0-5.6.9
+elastic_options_master_nodes_cpus: 0.5
+elastic_options_master_nodes_mem: 512
+elastic_options_master_nodes_heap_size: 256
+elastic_options_data_nodes_count: 1
+elastic_options_data_nodes_cpus: 0.5
+elastic_options_data_nodes_mem: 512
+elastic_options_data_nodes_heap_size: 256
+elastic_options_coordinator_nodes_count: 1
+elastic_options_coordinator_nodes_cpus: 0.5
+elastic_options_coordinator_nodes_mem: 512
+elastic_options_coordinator_nodes_heap_size: 256
+
+# Logstash
+logstash_version: 2.3.4
+logstash_options_logstash_config_string: 'input { kafka { topic_id => "ResultOrderByDir" zk_connect => "master.mesos:2181/dcos-service-kafka" } } output { elasticsearch { hosts =>  "data.elastic.l4lb.thisdcos.directory:9200" index => "streaming_index_kibana"} }'
+logstash_options_logstash_instances: '1'
+
+# Kibana
+kibana_version: 2.4.0-5.6.9
+kibana_options_kibana_elasticsearch_url:  'http://coordinator.elastic.l4lb.thisdcos.directory:9200'
+kibana_options_kibana_cpus: 0.5
+kibana_options_kibana_mem: 1024
+
+### DC/OS Official configurations ### 
+
 # Install latest operating system updates
 os_system_updates: False
 

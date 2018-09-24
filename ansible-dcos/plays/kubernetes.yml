@@ -8,6 +8,7 @@
 
   roles:
     - role: package/kubernetes
+      when: (role_install_kubernetes)
       vars:
         dcos_k8s_enabled: true
         dcos_k8s_app_id: 'kubernetes'
