@@ -13,6 +13,10 @@ USAGE
     $> ./saas.sh or ./saas.sh <config_file> and follow the DC/OS security authentification instruction at the beginning.
 
 
+NOTES & ISSUES
+    Do not Ctrl+C even when a message display to do it to finish faster. Simply let the script run and wait to avoid issues because services running on Kubernetes can not be completely up.
+
+
 BIG DATA SERVICES (see ./plays/main.yml)
     Kubernetes orchestrator:
       - Kubernetes
