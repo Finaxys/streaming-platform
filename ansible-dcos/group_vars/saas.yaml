@@ -8,9 +8,12 @@ role_install_elastic: true
 role_install_kibana: true
 role_install_logstash: true
 
+role_install_kubernetes: true
+
+
 # Flink
-jar_project_path: '~/Téléchargements/'
-jar_project_name: 'FinanceFlinkProject.jar'
+jar_project_path: '/home/finaxys/StreamingAsAService/streaming-platform/stream-layer2/target/'
+jar_project_name: 'FinanceFlinkProject-0.1.jar'
 
 # Kafka
 kafka_version:  2.3.0-1.1.0

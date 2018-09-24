@@ -1,7 +1,7 @@
 #!/bin/bash
 var_folder=./group_vars/
 dest_file=all.yaml
-src_file=all.example
+src_file=saas.yaml.example
 
 src=$var_folder$src_file
 dest=$var_folder$dest_file
