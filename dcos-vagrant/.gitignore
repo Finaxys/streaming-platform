@@ -7,7 +7,6 @@ exhibitor.properties
 
 dcos_generate_config*.sh
 /etc/config.yaml
-/VagrantConfig.yaml
 /installers
 /test-junit.xml
 /*.log

@@ -1,5 +1,7 @@
+/!\ The release only contains R&D 2018 work (saas).
+
 Our work at the lab (05-2018/09-2018) is contained in the following projects.
-In each of them you will find the corresponding documentation (README.md).
+In each of them you will find the corresponding README.md documentation.
 
 We added the following projects to streaming-platform.
   - ansible-dcos (Automatically install and deploy Big Data services on an existing cluster)
