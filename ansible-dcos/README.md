@@ -31,4 +31,4 @@ BIG DATA SERVICES (see ./plays/main.yml)
       - Flink
 
 SOURCE
-    Based on the official dcos-ansible project https://github.com/dcos-labs/ansible-dcos.
+    Based on the official ansible-dcos project https://github.com/dcos-labs/ansible-dcos.
